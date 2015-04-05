@@ -1,0 +1,24 @@
+HKCR
+{
+	IGetic.IGetic.1 = s 'IGetic Class'
+	{
+		CLSID = s '{A621848E-FFAB-441B-8DD0-E33B249EC29C}'
+	}
+	IGetic.IGetic = s 'IGetic Class'
+	{
+		CLSID = s '{A621848E-FFAB-441B-8DD0-E33B249EC29C}'
+		CurVer = s 'IGetic.IGetic.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {A621848E-FFAB-441B-8DD0-E33B249EC29C} = s 'IGetic Class'
+		{
+			ProgID = s 'IGetic.IGetic.1'
+			VersionIndependentProgID = s 'IGetic.IGetic'
+			ForceRemove 'Programmable'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '{1530939A-14D1-4413-81A0-D78752EF341F}'
+			'TypeLib' = s '{C929FD10-0669-4C8B-A044-A48375FB48D4}'
+		}
+	}
+}

@@ -1,0 +1,100 @@
+//============================================================================
+// Author: Octavian Marius Chincisan 2006 March - 2006 Sept
+// Zalsoft Inc 1999-2006
+//============================================================================
+
+rndconst <- {
+	ZERO                = 0,
+	Z_TEXTURE_2D        = 1, 
+	Z_TEXTURE_3D        = 2, 
+	Z_TEXTURE_CUBE_MAP  = 3,
+    Z_FRONT_AND_BACK    = 4,
+	Z_LINE              = 5,
+    Z_FILL              = 6,
+    Z_CULL_FACE         = 7,
+    Z_FRONT             = 8,
+    Z_SHININESS         = 9,
+    Z_BACK              = 10,
+	Z_BLEND             = 11,
+	Z_POINTS            = 12,
+	Z_LINES             = 13,
+	Z_LINE_STRIP        = 14,
+	Z_LINE_LOOP         = 15,
+	Z_TRIANGLES         = 16,
+	Z_TRIANGLE_STRIP    = 17,
+	Z_TRIANGLE_FAN      = 18,
+	Z_QUADS             = 19,
+	Z_QUAD_STRIP        = 20,
+	Z_POLYGON           = 21,
+	Z_ZERO              = 22,
+	Z_ONE               = 23,
+	Z_SRC_COLOR         = 24,
+	Z_ONE_MINUS_SRC_COLOR = 25,
+	Z_SRC_ALPHA         = 26,
+	Z_ONE_MINUS_SRC_ALPHA = 27,
+	Z_DST_ALPHA         = 28,
+	Z_ONE_MINUS_DST_ALPHA = 29,
+	Z_DST_COLOR         = 30,
+	Z_ONE_MINUS_DST_COLOR = 31,
+	Z_SRC_ALPHA_SATURATE  =32,
+    Z_TEXTURE_GEN_S       = 33,
+    Z_TEXTURE_GEN_T       = 34,
+    Z_TEXTURE_GEN_R       = 35,
+    Z_TEXTURE_GEN_Q       = 36,
+    Z_TEXTURE_MAG_FILTER  = 37, 
+    Z_TEXTURE_MIN_FILTER  = 38,
+    Z_TEXTURE_WRAP_S      = 39,
+    Z_TEXTURE_WRAP_T      = 40,
+    Z_TEXTURE_ENV_MODE    = 41,
+    Z_TEXTURE_ENV_COLOR   = 42,
+    Z_TEXTURE_ENV         = 43,
+    Z_CLAMP               = 44,
+    Z_REPEAT              = 45,
+    Z_LAST_ITEM           = 46
+};
+
+vxt<-{
+    VX_NONE  = 0x00000000,
+    VX_COLOR = 0x00010000,
+    VX_NORMAL= 0x00020000,
+    VX_BINORM= 0x00040000,
+    VX_TX1   = 0x00100000,
+    VX_TX2   = 0x00200000,
+    VX_TX3   = 0x00400000,
+    VX_TX4   = 0x00800000
+};
+
+trx<-{
+    OBJ_LOADIDENTITY        =0x1,
+    OBJ_ROTATE              =0x2,
+    OBJ_TRANSLATE           =0x4,
+    OBJ_SCALE               =0x8,
+    OBJ_ROTATE_EX           =0x10,
+    OBJ_BB_CYL              =0x20,
+    OBJ_BB_SPH              =0x40,
+    OBJ_BB_ALL              =0x80,
+    OBJ_HIDE	            =0x100,
+    OBJ_SHOW_ALLWAYS        =0x200,
+    OBJ_INVIEW				=0x400,
+    OBJ_LOCAL_INPUT         =0x800,
+    OBJ_NOCOLLIDE			=0x1000,
+    OBJ_USE_SOFT_TR		    =0x8000, 
+    OBJ_INPVS               =0x10000,
+    OBJ_BILLBOARD           =0x20|0x40|0x80,
+    OBJ_TRANSFORM			=0xFFFFFFFF,
+}
+
+
+blend<-{
+    DS_TEX_CNT_MASK         =0xF,          
+    DS_BLEND_DECAL          =0x10,
+    DS_BLEND_HITMARK        =0x20,   
+    DS_BLEND_LIGHT          =0x40,
+    DS_BLEND_HALLO          =0x80,
+    DS_BLEND_MASK           =0x100,
+    DS_SHOW_BACK            =0x200,
+    DS_DEEPTEST_OFF         =0x400,
+    DS_COLOR			    =0x800,
+    DS_NODEEPTEST           =0x1000,
+    DS_TEXT_BIT 		    =0x2000,
+}

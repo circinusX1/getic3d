@@ -1,0 +1,65 @@
+From: Calin Borz [calin@reea.net]
+Sent: Tuesday, September 13, 2005 12:43 AM
+To: Marius
+Cc: Chincisen, Octavian (GE Consumer & Industrial, consultant)
+Subject: #Getic 3D
+
+Modificarile pe care le-am facut nu sunt foarte mari in fisierele php.
+
+Am eliminat din index.php partea dintre
+
+    include "head.php";
+    include "tail.php";
+
+
+In head.php am pus noul layout. Din cauza ca meniul de aici din head.php 
+deocamdata este pus static, nu am folosit aici functia ta de meniu.
+
+In tail.php am folosit meniul dinamic creat de tine, si am mai adaugat 
+inca un fisier care se include content.php, unde este creata pagina de 
+continut cu ajutorul unui layer (div).
+
+La restul fisierelor am facut redesign la toate. In sensul ca le-am 
+introdus toate textele in tabele care sun 100%, si in dreapta sunt 
+introduse imaginile care se genereaza cu scriptul facut de tine.
+
+Eu sper ca e totul destul de clar, am respectat cam 95% din motorul tau, 
+pentru ca e creat de tine, si ai vrut sa-l folosesti, ceea ce mi se pare 
+un lucru bun, deoarece vei putea interveni oricand destul de repede si 
+eficient.
+
+La titluri am folosit un class="title". Asa ca ar fi bine daca faci 
+pagini noi sa il folosesti pentru titluri, ca sa arate situl uniform.
+
+Am sa iti trimit atasat si celelalte iconite de care ai spus. la 
+dimensiunea de 16x16 si 32x32. Si GIF si JPG sa le poti folosi in orice 
+varianta doresti. Si inca un fisier cub.jpg care e un item de meniu fara 
+perspectiva. Dupa parerea lui Liviu perspectiva de la meniu este 
+importanta, pentru ca se creeaza prin ea acel feeling de 3D.
+La final am atasat si situl intreg ca zip.
+
+Cu speranta ca am avut o colaborare buna, te anunt ca oricand vrei 
+modificari sau reinoiri, poti apela la noi, si le vom face.
+
+Si nu uita de ce ti-am scris intr-un mail anterior referitor la design 
+3D daca esti interesat.
+
+-- 
+
+
+----------------------------------------------------
+Calin Borz
+Webauthor at REEA ROMANIA
+Tudor Vladimirescu, Nr. 61, Ap. 6, Tg Mures, 540014
+http://www.reea.net - Company homepage
+http://www.webnova.ro/cborz - My Personal Homepage
+ICQ: 65324850
+email: calin@reea.net
+P.S.: Daca vrei un calculator ieftin, mergi la:
+http://www.emag.ro?link_type=1&click_to=1477 Merita!
+
+
+-- 
+No virus found in this incoming message.
+Checked by AVG Anti-Virus.
+Version: 7.0.344 / Virus Database: 267.10.18/91 - Release Date: 9/6/2005

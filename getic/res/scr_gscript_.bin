@@ -1,0 +1,101 @@
+//-----------------------------------------------------------------------------
+// GETIC SCRIPT GENERATED FILE.                                     Marius C.
+// DO NOT CHANGE THIS FILE. IS BEEING CHECKED BY ITS CRC
+//-----------------------------------------------------------------------------
+#ifndef __GSCRIPT_HH__
+#define __GSCRIPT_HH__
+
+//#include "..\\script\\headers\\engine.h"
+//--------------------------------------------------------------------------------
+// game messages sent to script
+//------defined------------value-----wparam--------lparam--------eparam----------
+typedef enum _GM_EVENTS{
+    GM_NA   		=-1,		
+	GM_TEST			=0,
+	GM_CREATE,
+	GM_DESTORY,
+	GM_ACTORDIE,
+	GM_ACTOSPAWN,
+	GM_ACTORSTATE,
+	GM_ACTORJOIN,
+	GM_ACTORLEAVE,
+	GM_PAUSE,
+	GM_RESUME,
+	GM_LOOP,
+	GM_USEREVENT,
+    GM_ITEMEVENT,
+}GM_EVENTS;
+
+//--------------------------------------------------------------------------------
+
+typedef long (*EVT_CB)(GameObj*, long );       // events callback
+//--------------------------------------------------------------------------------
+
+//--------------------------------------------------------------------------------
+struct  MAP_TYP
+{
+    GM_EVENTS   ev;
+    int         id;
+    EVT_CB      pf;
+};
+
+//--------------------------------------------------------------------------------
+extern MAP_TYP   _CmdMap[];  
+//--------------------------------------------------------------------------------
+inline long Dispatch(GameObj* pObj, int ev, long id)
+{
+	MAP_TYP*    pHead = _CmdMap;
+
+    try{
+		while(pHead->ev)
+		{ 
+			if(pHead->ev == ev)
+			{
+				if(pHead->id == id)
+				{
+                      return (pHead->pf)(pObj, id);
+				}
+                return (pHead->pf)(pObj, id);
+			}
+			pHead++;
+		}
+    }
+    catch(...)
+    {
+        ;
+    }
+	return 0;
+}
+  
+
+//--------------------------------------------------------------------------------
+extern "C"
+{
+	__declspec(dllexport) long Event(GameObj* pObj, long ev, long id)
+	{
+        return Dispatch(pObj , ev, id);
+	};
+};
+
+//-----------------------------------------------------------------------------
+BOOL __stdcall DllMain (HANDLE hInst,   
+                        unsigned long reason,    
+                        LPVOID reserved)
+{
+	if(DLL_PROCESS_ATTACH == reason)
+	{
+	}
+	else if(DLL_PROCESS_DETACH)
+	{
+	}
+    return TRUE;
+};
+
+//--------------------------------------------------------------------------------
+#define BEGIN_EVENTS()         MAP_TYP _CmdMap[]={ 
+#define ON_EVENT(ev_,foo_)	   {ev_, -1,  (EVT_CB)&foo_} ,
+#define ON_ITEM(ev_,itm_,foo_) {ev_, itm_,(EVT_CB)&foo_} ,
+#define END_EVENTS()           {GM_NA,-1,0}};
+
+//-----------------------------------------------------------------------------
+#endif ///_GSCRIPT_H__

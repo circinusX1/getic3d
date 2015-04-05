@@ -1,0 +1,84 @@
+<SCRIPT Language="JavaScript" type="text/JavaScript">
+<!--
+    function LoadFunction()
+    {
+        var sText = document.LBOX.options(document.LBOX.selectedIndex).text;
+
+        bspviewer.LoadUrlLevel(sText);
+    }
+-->
+</script>
+
+    <p align="center"><font size='5'>gbtX - BSP file viewer ActiveX (Beta Version)
+    <br>
+    </font><b>Compatible with Getic 1.30 BSP file formats</b></p>
+    <table border="0" width="54%">
+    <tr>
+        <td width="48%" rowspan="2">
+        <temp> 
+        <OBJECT ID="bspviewer" width="400" height="300" 
+        CODEBASE="http://www.zalsoft.com/updir/gbtx.dll#version=1,0,0,0" 
+        CLASSID="CLSID:14E283BB-0F94-41E1-B742-F7DE25E295B2"></OBJECT><br>
+        <b>Mouse: Left Capture, Right or Middle Release Capture<br>
+        Keys: A,S,D,W,&nbsp; Arrows and Escape</b><br>
+        </td>
+        <td width="26%">
+        Online Levels</td>
+    </tr>
+    <tr>
+        <td width="26%" height="318">
+        <select size="5" ID="LBOX">
+         <?php
+
+            $handle  = opendir("levels130/");
+            if($handle)
+            {
+                
+                while (false != ($newdir = readdir($handle))) 
+                { 
+                    $fc = substr($newdir,0,1);
+                    if($fc=='~')         continue;
+                    if($fc=="index.xml") continue;
+ 
+                    if(strstr($newdir,"xml"))
+                    {
+                        echo "<option>{$newdir}</option>";
+                    }
+                }
+                closedir($handle);
+            }
+         ?>
+         </select><br>
+         <INPUT TYPE="BUTTON" VALUE="View..." ONCLICK="LoadFunction()">
+         </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+
+<br> <font color="#332222">
+To install the gbtx ActiveX download the binaries from ActiveX Page and run <br>
+        register_gbtx_component.bat <br>
+For Firefox Mozilla visit Mozilla ActiveX pages<br>
+
+You can download 'gbtx' Active X control (C  ) source code from Active X pages
+<br><i>Gbtx ActiveX C   source code is compatible <b>only with Getic 1.30 </b>(trial / full). <br>
+Uncompress the archive over installation directory. It will expand into : <br>
+
+</i>
+</font><font color="#662222">
+        <i>* include directory - common include files for engine bsp viewer and gbtx activex control.<br>
+* baselib - core math library<br>
+* bsputils - common directory for bsp files shared betwen bspviewer and gbtx ActiveX control<br>
+* bspview - bspview project. <br>
+* gbtx - gbtx Active X project. <br>
+* rendergl - OpenGl device plugin for gbtx 'OCX-DLL' and bspviewer 'EXE'<br>
+
+</i>
+</font>
+
+
+        </td>
+    </tr>
+</table>
+
+&nbsp;

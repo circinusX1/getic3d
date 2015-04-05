@@ -1,0 +1,7 @@
+# Microsoft Developer Studio Generated Dependency File, included by baselib.mak
+
+.\baselib.cpp : \
+	".\basecont.h"\
+	".\baselib.h"\
+	".\baseutils.h"\
+	

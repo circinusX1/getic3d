@@ -1,0 +1,80 @@
+# Microsoft Developer Studio Generated Dependency File, included by geticgui.mak
+
+.\geticgui.cpp : \
+	"c:\dxsdk\include\basetsd.h"\
+	
+
+.\geticgui.rc : \
+	".\GeticPlug.rgs"\
+	".\IGetic.rgs"\
+	".\res\bin-itm_.bin"\
+	".\res\bitmap1.bmp"\
+	".\res\bmp00001.bmp"\
+	".\res\bmp_2d_t.bmp"\
+	".\res\bmp_3d_t.bmp"\
+	".\res\bmp_butt.bmp"\
+	".\res\bmp_edmarkers.bmp"\
+	".\res\bmp_splash.bmp"\
+	".\res\bmp_splashedit.bmp"\
+	".\res\bpp\tb_align24.bmp"\
+	".\res\bpp\tb_align_disabled24.bmp"\
+	".\res\bpp\tb_build24.bmp"\
+	".\res\bpp\tb_build_disable24.bmp"\
+	".\res\bpp\tb_csg24.bmp"\
+	".\res\bpp\tb_csg_disable24.bmp"\
+	".\res\bpp\tb_make24.bmp"\
+	".\res\bpp\tb_make_disable24.bmp"\
+	".\res\bpp\tb_select24.bmp"\
+	".\res\bpp\tb_select_disable24.bmp"\
+	".\res\bpp\tb_sizemove24.bmp"\
+	".\res\bpp\tb_sizemove_disable24.bmp"\
+	".\res\bpp\tb_splines24.bmp"\
+	".\res\bpp\tb_splines24d.bmp"\
+	".\res\bpp\tb_view24.bmp"\
+	".\res\bpp\tb_view_disable24.bmp"\
+	".\res\cmove1.cur"\
+	".\res\cur00001.cur"\
+	".\res\cur00002.cur"\
+	".\res\cursor2.cur"\
+	".\res\ge_aboutbox.bmp"\
+	".\res\ge_cross.cur"\
+	".\res\ge_margin.cur"\
+	".\res\ge_move.cur"\
+	".\res\ge_normal.cur"\
+	".\res\ge_rotate.cur"\
+	".\res\ge_scale.cur"\
+	".\res\getic3.ico"\
+	".\res\ico00001.ico"\
+	".\res\ico00002.ico"\
+	".\res\ico_ani_.ico"\
+	".\res\icon2.ico"\
+	".\res\idr_marg.cur"\
+	".\res\item_typ.bmp"\
+	".\res\itm_lbulb.bin"\
+	".\res\itm_script.bin"\
+	".\res\ogetic.ico"\
+	".\res\pb_thflip_d.bmp"\
+	".\res\pb_thflip_f.bmp"\
+	".\res\pb_thflip_u.bmp"\
+	".\res\pb_thflip_x.bmp"\
+	".\res\pb_trot_d.bmp"\
+	".\res\pb_trot_f.bmp"\
+	".\res\pb_trot_u.bmp"\
+	".\res\pb_trot_x.bmp"\
+	".\res\pb_tvflip_d.bmp"\
+	".\res\pb_tvflip_f.bmp"\
+	".\res\pb_tvflip_u.bmp"\
+	".\res\pb_tvflip_x.bmp"\
+	".\res\sce_item.bin"\
+	".\res\scr_gscript_.bin"\
+	".\res\splash_e2.bmp"\
+	".\res\tb_align.bmp"\
+	".\res\tb_build.bmp"\
+	".\res\tb_csg.bmp"\
+	".\res\tb_make.bmp"\
+	".\res\tb_script_ed.bmp"\
+	".\res\tb_select.bmp"\
+	".\res\tb_sizemove.bmp"\
+	".\res\tb_splines.bmp"\
+	".\res\tb_view.bmp"\
+	

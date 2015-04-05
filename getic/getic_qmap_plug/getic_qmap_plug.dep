@@ -1,0 +1,6 @@
+# Microsoft Developer Studio Generated Dependency File, included by getic_qmap_plug.mak
+
+.\StdAfx.cpp : \
+	".\StdAfx.h"\
+	"c:\dxsdk\include\basetsd.h"\
+	

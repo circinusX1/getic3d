@@ -1,0 +1,48 @@
+[Project]
+FileName=C:\mco\Math\getae\getic_qmap_plug\getic_qmap_plug.dev
+Name=getic_qmap_plug
+Ver=1
+IsCpp=1
+Type=3
+Compiler=-D__GNUWIN32__ -W -DWIN32 -DNDEBUG -D_WINDOWS -D_MBCS -D_USRDLL -DGETIC_MS3D_PLUG_EXPORTS 
+CppCompiler=-D__GNUWIN32__ -W -DWIN32 -DNDEBUG -D_WINDOWS -D_MBCS -D_USRDLL -DGETIC_MS3D_PLUG_EXPORTS 
+Includes=..\baselib;..\_include
+Linker=-lkernel32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32 -lole32 -loleaut32 -luuid -lodbc32 -lodbccp32 
+Libs=
+UnitCount=5
+Folders="Source Files","Resource Files"
+[Unit1]
+FileName=./getic_qmap_plug.cpp
+Folder="Source Files"
+Compile=1
+CompileCpp=1
+Link=1
+Priority=1000
+[Unit2]
+FileName=./Pqmaploader.cpp
+Folder="Source Files"
+Compile=1
+CompileCpp=1
+Link=1
+Priority=1000
+[Unit3]
+FileName=./PqmapLoader.h
+Folder="Source Files"
+Compile=1
+CompileCpp=1
+Link=1
+Priority=1000
+[Unit4]
+FileName=./StdAfx.cpp
+Folder="Source Files"
+Compile=1
+CompileCpp=1
+Link=1
+Priority=1000
+[Unit5]
+FileName=./StdAfx.h
+Folder="Source Files"
+Compile=1
+CompileCpp=1
+Link=1
+Priority=1000

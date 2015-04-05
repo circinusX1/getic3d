@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "baselib", "baselib.vcproj", "{FE7D700A-AE6D-4E6D-81E9-9FC584D3E440}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{FE7D700A-AE6D-4E6D-81E9-9FC584D3E440}.Debug.ActiveCfg = Debug|Win32
+		{FE7D700A-AE6D-4E6D-81E9-9FC584D3E440}.Debug.Build.0 = Debug|Win32
+		{FE7D700A-AE6D-4E6D-81E9-9FC584D3E440}.Release.ActiveCfg = Release|Win32
+		{FE7D700A-AE6D-4E6D-81E9-9FC584D3E440}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

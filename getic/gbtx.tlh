@@ -1,0 +1,77 @@
+// Created by Microsoft (R) C/C++ Compiler Version 12.00.8964.0 (26320bf1).
+//
+// f:\getae\getic\release\gbtx.tlh
+//
+// C++ source equivalent of Win32 type library ..\\_bin\\gbtx.dll
+// compiler-generated file created 12/04/05 at 18:13:30 - DO NOT EDIT!
+
+#pragma once
+#pragma pack(push, 8)
+
+#include <comdef.h>
+
+//
+// Forward references and typedefs
+//
+
+struct /* coclass */ gbt;
+struct __declspec(uuid("364281ae-1482-4d49-ad51-c3e231482f81"))
+/* dual interface */ Igbt;
+
+//
+// Smart pointer typedef declarations
+//
+
+_COM_SMARTPTR_TYPEDEF(Igbt, __uuidof(Igbt));
+
+//
+// Type library items
+//
+
+struct __declspec(uuid("14e283bb-0f94-41e1-b742-f7de25e295b2"))
+gbt;
+    // [ default ] interface Igbt
+
+struct __declspec(uuid("364281ae-1482-4d49-ad51-c3e231482f81"))
+Igbt : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall put_AutoSize (
+        VARIANT_BOOL pbool ) = 0;
+    virtual HRESULT __stdcall get_AutoSize (
+        VARIANT_BOOL * pbool ) = 0;
+    virtual HRESULT __stdcall get_Window (
+        long * phwnd ) = 0;
+    virtual HRESULT __stdcall put_Appearance (
+        short pappearance ) = 0;
+    virtual HRESULT __stdcall get_Appearance (
+        short * pappearance ) = 0;
+    virtual HRESULT __stdcall LoadLevel (
+        BSTR url ) = 0;
+    virtual HRESULT __stdcall LoadUrlLevel (
+        BSTR bsLevel ) = 0;
+    virtual HRESULT __stdcall put_LevelPath (
+        BSTR _arg1 ) = 0;
+    virtual HRESULT __stdcall put_WebSite (
+        BSTR _arg1 ) = 0;
+    virtual HRESULT __stdcall put_WorkingFolder (
+        BSTR _arg1 ) = 0;
+    virtual HRESULT __stdcall put_Port (
+        long _arg1 ) = 0;
+};
+
+//
+// Named GUID constants initializations
+//
+
+extern "C" const GUID __declspec(selectany) LIBID_GBTXLib =
+    {0x315230a7,0xaf07,0x49ca,{0x86,0x20,0x43,0xa9,0xc9,0x44,0xbf,0x02}};
+extern "C" const GUID __declspec(selectany) CLSID_gbt =
+    {0x14e283bb,0x0f94,0x41e1,{0xb7,0x42,0xf7,0xde,0x25,0xe2,0x95,0xb2}};
+extern "C" const GUID __declspec(selectany) IID_Igbt =
+    {0x364281ae,0x1482,0x4d49,{0xad,0x51,0xc3,0xe2,0x31,0x48,0x2f,0x81}};
+
+#pragma pack(pop)

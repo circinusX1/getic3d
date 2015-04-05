@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="z-edmap">
+</Property><Property Name="Solution File" Value="E:\mco_code_collection\_prjs\Getae\getic\getic\z-edmap.sln">
+</Property><Property Name="User Options File" Value="E:\mco_code_collection\_prjs\Getae\getic\getic\z-edmap.suo">
+</Property><Property Name="Date" Value="Tuesday, November 25, 2008">
+</Property><Property Name="Time" Value="20:17 PM">
+</Property><Property Name="Log Number" Value="2">
+</Property></Properties><Event ErrorLevel="2" Project="" Source="z-edmap.sln" Description="Error creating backup file: E:\mco_code_collection\_prjs\Getae\getic\getic\z-edmap.sln.old">
+</Event><Event ErrorLevel="0" Project="" Source="z-edmap.suo" Description="File successfully backed up as E:\mco_code_collection\_prjs\Getae\getic\getic\z-edmap.suo.old">
+</Event><Event ErrorLevel="0" Project="getic_3ds_plug" Source="..\getic_3ds_plug\getic_3ds_plug.vcproj" Description="Project upgraded successfully.">
+</Event><Event ErrorLevel="3" Project="getic_3ds_plug" Source="..\getic_3ds_plug\getic_3ds_plug.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="getic_ms3d_plug" Source="..\getic_ms3d_plug\getic_ms3d_plug.vcproj" Description="Project upgraded successfully.">
+</Event><Event ErrorLevel="3" Project="getic_ms3d_plug" Source="..\getic_ms3d_plug\getic_ms3d_plug.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="getic_qmap_plug" Source="..\getic_qmap_plug\getic_qmap_plug.vcproj" Description="Project upgraded successfully.">
+</Event><Event ErrorLevel="3" Project="getic_qmap_plug" Source="..\getic_qmap_plug\getic_qmap_plug.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="getic_UT_plug" Source="..\getic_ut_plug\getic_UT_plug.vcproj" Description="Project upgraded successfully.">
+</Event><Event ErrorLevel="3" Project="getic_UT_plug" Source="..\getic_ut_plug\getic_UT_plug.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="geticgui" Source="geticgui.vcproj" Description="Project upgraded successfully.">
+</Event><Event ErrorLevel="3" Project="geticgui" Source="geticgui.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="z_edmap" Source="z_edmap.vcproj" Description="Project upgraded successfully.">
+</Event><Event ErrorLevel="3" Project="z_edmap" Source="z_edmap.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="z-edmap.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="z-edmap.sln" Description="Converted">
+</Event></UpgradeLog>

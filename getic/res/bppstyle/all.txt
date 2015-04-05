@@ -1,0 +1,25 @@
+ Volume in drive F is F
+ Volume Serial Number is 649D-B21B
+
+ Directory of F:\getae\getic\res\bpp
+
+06/13/2004  01:13a      <DIR>          .
+06/13/2004  01:13a      <DIR>          ..
+06/13/2004  01:13a                   0 all.txt
+06/11/2004  07:44p              26,472 tb_align24.bmp
+06/11/2004  07:32p              26,472 tb_align_disabled24.bmp
+06/11/2004  06:40p              10,248 tb_build24.bmp
+06/11/2004  06:47p              10,248 tb_build_disable24.bmp
+06/11/2004  06:48p               6,192 tb_csg24.bmp
+06/11/2004  06:48p               6,192 tb_csg_disable24.bmp
+06/11/2004  06:40p              29,540 tb_make24.bmp
+06/11/2004  06:47p              29,540 tb_make_disable24.bmp
+06/11/2004  06:40p               9,104 tb_select24.bmp
+06/11/2004  06:47p               9,104 tb_select_disable24.bmp
+06/11/2004  06:40p              10,248 tb_sizemove24.bmp
+06/11/2004  06:47p              10,248 tb_sizemove_disable24.bmp
+06/11/2004  07:44p               2,744 tb_splines24.bmp
+06/11/2004  06:40p              10,248 tb_view24.bmp
+06/11/2004  06:47p              10,248 tb_view_disable24.bmp
+              16 File(s)        206,848 bytes
+               2 Dir(s)  16,869,445,632 bytes free

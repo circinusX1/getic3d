@@ -1,0 +1,33 @@
+1.How do you decide which integer type to use? 
+    Integer is a fundamental type. jou just use it
+    The question has to be reformulated.
+
+2.What should the 64-bit integer type on new, 64-bit machines be?
+    By compiler. if compiler tests the platform will do the int 64 bits
+
+3.What’s the best way to declare and define global variables? 
+    At the top of the file.
+
+4.What does extern mean in a function declaration? 
+    Implememnted in another unit code
+
+5.What’s the auto keyword good for? 
+    Variable has local extent.
+
+6.I can’t seem to define a linked list node which contains a pointer to itself. 
+    Definitions are used to define. A pointer is an instance of a defined entity.
+    An instance of a node can point to itself but the question is wrong formulated.
+    
+7.How do I declare an array of N pointers to functions returning pointers to functions returning pointers to characters? 
+    ((char(*)()) (*)())[N]
+
+8.How can I declare a function that returns a pointer to a function of its own type? 
+
+
+    
+
+9.My compiler is complaining about an invalid redeclaration of a function, but I only define it once and call it once. What’s happening? 
+10.What can I safely assume about the initial values of variables which are not explicitly initialized? 
+11.Why can’t I initialize a local array with a string? 
+12.What is the difference between char a[] = “string"; and char *p = “string"; ? 
+13.How do I initialize a pointer to a function? 

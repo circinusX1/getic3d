@@ -1,0 +1,116 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "baselib"=..\..\baselib\Projects\baselib.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "getic_3ds_plug"=..\getic_3ds_plug\getic_3ds_plug.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "getic_ms3d_plug"=..\getic_ms3d_plug\getic_ms3d_plug.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "getic_qmap_plug"=..\getic_qmap_plug\getic_qmap_plug.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "getic_ut_plug"=..\getic_ut_plug\getic_UT_plug.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "geticgui"=.\geticgui.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "z_edmap"=.\z_edmap.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name baselib
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name getic_3ds_plug
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name getic_ms3d_plug
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name getic_qmap_plug
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name getic_ut_plug
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

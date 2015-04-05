@@ -1,0 +1,11 @@
+HKCR
+{
+	NoRemove AppID
+	{
+		{1530939A-14D1-4413-81A0-D78752EF341F} = s 'Z_edmap'
+		'Z_edmap.EXE'
+		{
+			val AppID = s {1530939A-14D1-4413-81A0-D78752EF341F}
+		}
+	}
+}

@@ -1,0 +1,112 @@
+// Created by Microsoft (R) C/C++ Compiler Version 12.00.8447.0 (f4c00d35).
+//
+// getic.tlh
+//
+// C++ source equivalent of Win32 type library ..\\bin\\getic.exe
+// compiler-generated file created 03/03/04 at 15:19:30 - DO NOT EDIT!
+
+#pragma once
+#pragma pack(push, 8)
+
+#include <comdef.h>
+
+//
+// Forward references and typedefs
+//
+
+struct __declspec(uuid("7abcc0ea-9a33-4713-bcda-85c8de424b6c"))
+/* dual interface */ IIGetic;
+struct __declspec(uuid("2cadea3e-a57c-4336-ad13-91be804ee9f4"))
+/* dual interface */ IGeticPlug;
+struct _Plg_Brush;
+struct _Plg_Poly;
+struct _Plg_Vertex;
+struct /* coclass */ IGetic;
+
+//
+// Smart pointer typedef declarations
+//
+
+_COM_SMARTPTR_TYPEDEF(IIGetic, __uuidof(IIGetic));
+_COM_SMARTPTR_TYPEDEF(IGeticPlug, __uuidof(IGeticPlug));
+
+//
+// Type library items
+//
+
+struct __declspec(uuid("7abcc0ea-9a33-4713-bcda-85c8de424b6c"))
+IIGetic : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall Test ( ) = 0;
+};
+
+struct __declspec(uuid("2cadea3e-a57c-4336-ad13-91be804ee9f4"))
+IGeticPlug : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+    virtual HRESULT __stdcall ImportFile (
+        BSTR bsFileName,
+        struct _Plg_Brush * * ppBrush ) = 0;
+    virtual HRESULT __stdcall ExportFile (
+        BSTR bsFileName,
+        struct _Plg_Brush * pBrush ) = 0;
+    virtual HRESULT __stdcall GetMenuStringAndType (
+        BSTR * bsFileName,
+        enum _EPLUGTYPE * type ) = 0;
+};
+
+struct _Plg_Brush
+{
+    unsigned long flags;
+    struct _Plg_Poly * pPolys;
+    int nCnt;
+    short name[32];
+};
+
+struct _Plg_Poly
+{
+    unsigned long flags;
+    unsigned char color[4];
+    struct _Plg_Vertex * vXes;
+    int nCnt;
+};
+
+struct _Plg_Vertex
+{
+    float xyz[3];
+    float nrm[3];
+    float uv[2];
+    float lm[2];
+};
+
+enum _EPLUGTYPE
+{
+    PLUG_IMPORTER = 1,
+    PLUG_EXPORTER = 2
+};
+
+struct __declspec(uuid("a621848e-ffab-441b-8dd0-e33b249ec29c"))
+IGetic;
+    // [ default ] interface IIGetic
+
+//
+// Named GUID constants initializations
+//
+
+extern "C" const GUID __declspec(selectany) LIBID_ZedmapLib =
+    {0xc929fd10,0x0669,0x4c8b,{0xa0,0x44,0xa4,0x83,0x75,0xfb,0x48,0xd4}};
+extern "C" const GUID __declspec(selectany) IID_IIGetic =
+    {0x7abcc0ea,0x9a33,0x4713,{0xbc,0xda,0x85,0xc8,0xde,0x42,0x4b,0x6c}};
+extern "C" const GUID __declspec(selectany) IID_IGeticPlug =
+    {0x2cadea3e,0xa57c,0x4336,{0xad,0x13,0x91,0xbe,0x80,0x4e,0xe9,0xf4}};
+extern "C" const GUID __declspec(selectany) CLSID_IGetic =
+    {0xa621848e,0xffab,0x441b,{0x8d,0xd0,0xe3,0x3b,0x24,0x9e,0xc2,0x9c}};
+
+#pragma pack(pop)

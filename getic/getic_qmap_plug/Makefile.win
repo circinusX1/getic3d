@@ -1,0 +1,39 @@
+# Project: getic_qmap_plug
+# Makefile created by Dev-C++ 4.9.9.1
+
+CPP  = g++.exe
+CC   = gcc.exe
+WINDRES = windres.exe
+RES  = 
+OBJ  = getic_qmap_plug.o Pqmaploader.o StdAfx.o $(RES)
+LINKOBJ  = getic_qmap_plug.o Pqmaploader.o StdAfx.o $(RES)
+LIBS =  -L"C:/Dev-Cpp/lib" -lkernel32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32 -lole32 -loleaut32 -luuid -lodbc32 -lodbccp32 
+INCS =  -I"C:/Dev-Cpp/include"  -I"../baselib"  -I"../_include" 
+CXXINCS =  -I"C:/Dev-Cpp/include/c++"  -I"C:/Dev-Cpp/include/c++/mingw32"  -I"C:/Dev-Cpp/include/c++/backward"  -I"C:/Dev-Cpp/include"  -I"../baselib"  -I"../_include" 
+BIN  = getic_qmap_plug.dll
+CXXFLAGS = $(CXXINCS) -D__GNUWIN32__ -W -DWIN32 -DNDEBUG -D_WINDOWS -D_MBCS -D_USRDLL -DGETIC_MS3D_PLUG_EXPORTS 
+CFLAGS = $(INCS) -D__GNUWIN32__ -W -DWIN32 -DNDEBUG -D_WINDOWS -D_MBCS -D_USRDLL -DGETIC_MS3D_PLUG_EXPORTS 
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before getic_qmap_plug.dll all-after
+
+
+clean: clean-custom
+	rm -f $(OBJ) $(BIN)
+
+DLLWRAP=dllwrap.exe
+DEFFILE=libgetic_qmap_plug.def
+STATICLIB=libgetic_qmap_plug.a
+
+$(BIN): $(LINKOBJ)
+	$(DLLWRAP) --output-def $(DEFFILE) --driver-name c++ --implib $(STATICLIB) $(LINKOBJ) $(LIBS) -o $(BIN)
+
+getic_qmap_plug.o: getic_qmap_plug.cpp stdafx.h   C:/Dev-Cpp/include/windows.h PQmapLoader.h ../baselib/baselib.h   C:/Dev-Cpp/include/math.h C:/Dev-Cpp/include/float.h   C:/Dev-Cpp/include/stdlib.h C:/Dev-Cpp/include/memory.h   ../baselib/basecont.h ../baselib/baseutils.h   C:/Dev-Cpp/include/direct.h C:/Dev-Cpp/include/io.h   C:/Dev-Cpp/include/sys/types.h C:/Dev-Cpp/include/stdint.h   C:/Dev-Cpp/include/stdio.h C:/Dev-Cpp/include/tchar.h   C:/Dev-Cpp/include/assert.h ../_include/geticplug.h
+	$(CPP) -c getic_qmap_plug.cpp -o getic_qmap_plug.o $(CXXFLAGS)
+
+Pqmaploader.o: Pqmaploader.cpp stdafx.h C:/Dev-Cpp/include/windows.h   C:/Dev-Cpp/include/stdio.h C:/Dev-Cpp/include/sys/types.h   ../_include/BspFIleStr.h ../baselib/baselib.h C:/Dev-Cpp/include/math.h   C:/Dev-Cpp/include/float.h C:/Dev-Cpp/include/stdlib.h   C:/Dev-Cpp/include/memory.h ../baselib/basecont.h   ../baselib/baseutils.h C:/Dev-Cpp/include/direct.h   C:/Dev-Cpp/include/io.h C:/Dev-Cpp/include/stdint.h   C:/Dev-Cpp/include/tchar.h C:/Dev-Cpp/include/assert.h PqmapLoader.h   ../_include/geticplug.h
+	$(CPP) -c Pqmaploader.cpp -o Pqmaploader.o $(CXXFLAGS)
+
+StdAfx.o: StdAfx.cpp stdafx.h C:/Dev-Cpp/include/windows.h
+	$(CPP) -c StdAfx.cpp -o StdAfx.o $(CXXFLAGS)

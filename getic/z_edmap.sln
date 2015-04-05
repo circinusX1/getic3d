@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "baselib", "..\..\baselib\Projects\baselib.dsp", "{2CD2274D-145B-4F82-AA31-47FDF07F9639}"
+EndProject
+Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "getic_3ds_plug", "..\getic_3ds_plug\getic_3ds_plug.dsp", "{EC2D1DE3-7B48-46FD-B8B3-944814EE7C91}"
+EndProject
+Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "getic_ms3d_plug", "..\getic_ms3d_plug\getic_ms3d_plug.dsp", "{D9E2011B-8410-437F-A984-FD65154CC287}"
+EndProject
+Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "getic_qmap_plug", "..\getic_qmap_plug\getic_qmap_plug.dsp", "{074069E2-2E54-4B85-8B30-FC8C1209B9D7}"
+EndProject
+Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "getic_ut_plug", "..\getic_ut_plug\getic_UT_plug.dsp", "{30461607-26BB-4506-891A-A846B832AA59}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geticgui", "geticgui.vcproj", "{E98CDC38-A5A6-4334-BBC6-FFED3B2812D6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "z_edmap", "z_edmap.vcproj", "{18B31048-0E75-4FDC-90B4-E4AE0440BBB5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2CD2274D-145B-4F82-AA31-47FDF07F9639} = {2CD2274D-145B-4F82-AA31-47FDF07F9639}
+		{EC2D1DE3-7B48-46FD-B8B3-944814EE7C91} = {EC2D1DE3-7B48-46FD-B8B3-944814EE7C91}
+		{D9E2011B-8410-437F-A984-FD65154CC287} = {D9E2011B-8410-437F-A984-FD65154CC287}
+		{074069E2-2E54-4B85-8B30-FC8C1209B9D7} = {074069E2-2E54-4B85-8B30-FC8C1209B9D7}
+		{30461607-26BB-4506-891A-A846B832AA59} = {30461607-26BB-4506-891A-A846B832AA59}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+		ReleaseTrial|Win32 = ReleaseTrial|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E98CDC38-A5A6-4334-BBC6-FFED3B2812D6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E98CDC38-A5A6-4334-BBC6-FFED3B2812D6}.Debug|Win32.Build.0 = Debug|Win32
+		{E98CDC38-A5A6-4334-BBC6-FFED3B2812D6}.Release|Win32.ActiveCfg = Release|Win32
+		{E98CDC38-A5A6-4334-BBC6-FFED3B2812D6}.Release|Win32.Build.0 = Release|Win32
+		{E98CDC38-A5A6-4334-BBC6-FFED3B2812D6}.ReleaseTrial|Win32.ActiveCfg = Release|Win32
+		{E98CDC38-A5A6-4334-BBC6-FFED3B2812D6}.ReleaseTrial|Win32.Build.0 = Release|Win32
+		{18B31048-0E75-4FDC-90B4-E4AE0440BBB5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{18B31048-0E75-4FDC-90B4-E4AE0440BBB5}.Debug|Win32.Build.0 = Debug|Win32
+		{18B31048-0E75-4FDC-90B4-E4AE0440BBB5}.Release|Win32.ActiveCfg = Release|Win32
+		{18B31048-0E75-4FDC-90B4-E4AE0440BBB5}.Release|Win32.Build.0 = Release|Win32
+		{18B31048-0E75-4FDC-90B4-E4AE0440BBB5}.ReleaseTrial|Win32.ActiveCfg = ReleaseTrial|Win32
+		{18B31048-0E75-4FDC-90B4-E4AE0440BBB5}.ReleaseTrial|Win32.Build.0 = ReleaseTrial|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

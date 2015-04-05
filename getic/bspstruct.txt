@@ -1,0 +1,271 @@
+GETIC BSP FILE STRUCTURE (VERSION 0.2)
+
+
+Structure member alignment 8 octets (bytes)
+Maxim image size	  1024x1024x3bpp
+Default Front Face:   Clock-Wise  (configurable from Editor Settings)
+Default unit measure. cm (centimeter).
+World Axis Y-up X-right Z-from screen to you (Open GL)
+BSP VERSION	2
+
+*DATA STRUCTURES AND CONSTANTS
+**ITEMS
+typedef enum _EITEM
+{
+    ITM_NONE=0,
+    ITM_LIGTBULB,
+    ITM_AMONITION,
+    ITM_WEAPON,
+    ITM_HEALTHPACK,
+    ITM_DORKEY,
+    ITM_MESSAGE,
+    ITM_POWERAMMO,
+    ITM_SHIELD1,
+    ITM_SHIELD2,
+    ITM_FLY,
+    ITM_JUMP,
+    ITM_GRAVPERP,
+    ITM_DARVIEW,
+    ITM_SCUBA,
+    ITM_SPACECUST,
+    ITM_INVINCIB,
+    ITM_TRIGER,
+    ITM_TELEPORTER,
+    ITM_TELEPORT_DOORIN,
+    ITM_TELEPORT_DOOROUT,
+}EITEM;
+**DETAIL BRUSHES PROPERTIES
+
+#define MODEL_NOCOLIDE		0x2		// model does not colide
+#define MODEL_DYNAMIC		0x4		//model has dynamic motion data hoked to it
+#define MODEL_MAT_SHOWBACK	0x8		// model shoes back surfaces
+#define MODEL_MAT_BRICK		0x10	// model material is brick
+#define MODEL_MAT_WOOD		0x20	// wook
+#define MODEL_MAT_METAL		0x40	// metal
+#define MODEL_MAT_ICE		0x80	// ice
+#define MODEL_MAT_GLASS		0x100	// glass
+#define MODEL_MAT_LAND		0x200	// land
+
+define  MODEL_DY_TRIGER 0x100000	// model driven by triger
+#define MODEL_DY_SCRIPT 0x200000	// model driven by script
+#define MODEL_DY_TIMER  0x400000	// model driven by timer
+....................................// more to come
+
+
+**FACES PROPERTIES
+
+#define FACE_SKY            0x1000		//	face is sky
+#define FACE_MIRROR         0x2000		//  face is mirror
+#define FACE_SHOWBACK       0x4000		// face shoes back
+#define FACE_NOCOLLIDE      0x8000		// face does not get collision
+#define FACE_NOLIGTMAP      0x10000		// face does not have light map
+#define FACE_FULLBRIGHT     0x20000		// fave is full bright
+#define FACE_HASHALLO       0x40000		// face builds a trapezoidal hallo
+#define FACE_HASFOG         0x80000		// face is foggy
+#define FACE_TRANSPARENT    0x100000	// face is transparent
+#define FACE_METALIC        0x200000	// face is metalic env mapping
+#define FACE_TA_SHIFT       0x400000	// face animates texture by shifting it
+#define FACE_TA_RAD         0x800000	// face animates texture by exploding it
+#define FACE_TA_SPIN        0x1000000	// face animates texture by rotating it
+........................................// more to come (up to 32)
+
+BSP FILE SECTIONS. the file is chunked in sections. each section has a generic header
+indicating the chunk data type and length in bytes or elements. If the reader doen not
+want to read a certain section it can jump over it by the offset specified in the header
+of the section
+
+enum eSECT
+{
+    SECT_SCENE = 1,	// scene information section 
+    SECT_SKYDOM,	// skydom section				(optional )
+    SECT_TEXRGB,	// texture data section			(optional )
+    SECT_TEXINFO,	// texture information section
+    SECT_LMINFO,	// light map information section(optional )
+    SECT_LMRGB,		// light map data				(optional )
+    SECT_SNDINFO,	// sound section				(optional )
+    SECT_SNDWAV,	// sound data section			(optional )
+    SECT_ITEMS,		// items section				(optional )
+    SECT_ITEMSINFO,	// item details information		(optional )
+    SECT_V3,		// BSP map vertexex pool
+	SECT_PLANES,	// BSP map planes
+	SECT_POLYS,		// BSP polygonos
+	SECT_NODES,		// BSP nodes
+	SECT_LEAFS,		// BSP leafs
+	SECT_MODELS,	// BSP detail brushes
+    SECT_BSPS,		// BSP section
+    SECT_PORTALS,	// BSP portals					(optional )
+    SECT_PVS,		// Posible View Set				(optional )
+    SECT_EOF=-1,	// end of file
+};
+
+Each section has a coresponding Structure where data for that section is beeing
+read. Each section starts with SectionHeader. The structures for reading/Saving a 
+Getic-Beam-Tree 'GBT' file are prefixed by 'BTF_' (Beam Tree File).
+
+1.	THE FILE STARTS WITH A GENERIC HEADER THAT HAS NO 'BTF_Section'
+
+struct BTF_Header               
+{
+    DWORD   version;            // editor version
+    GUID    uuid;               // unique id for this file
+    char    comments[80];       // comments
+};
+
+
+2.	SECTION HEADER. Each Section Starts with this header
+
+struct BTF_Section  
+{
+    int _type;              // type of this section
+    int _elems;             // number of elements (structures)
+};
+
+For Each Section in 'eSECT' the structures are:
+
+3.	SECT_SCENE
+
+enum{LEV_QUEST, LEV_TEAM, LEV_MULTITEAM};
+struct BST_SceneInfo               // SECT_LEVEL
+{
+    char    author[32];         // level author
+    char    comments[32];       // name of the level
+    DWORD   levelType;          // level type (not implemented yet) see enum section above
+    int     maxActors;          // maxim actors
+    DWORD   maxFrags;           // maxim frags 
+    DWORD   maxTime;            // maxim time
+    CLR     defLumin;           // ilumination  
+    DWORD   gravAcc;            // gravitation acceleration
+    V3      camOrient1;         // not used
+    V3      camOrient2;         // not used
+    REAL    camNear;            // camera near
+    REAL    camFar;             // camera far
+    REAL    camFov;             // camera fow
+    REAL    sceSpeed;           // scene speed
+    DWORD   sceFlags;           // scene user flags
+};
+
+
+4.	SECT_SKYDOM
+
+enum { SKY_CUBE, SKY_CONE, SKY_CYL, SKY_SPHERE};
+struct BTF_SkyDom
+{
+    DWORD   shape;		// see enum section
+    DWORD   flags;		// tbd
+    int     texSky;		// sky texture	index in texture info section
+    int     texClouds;	// clouds texture -"-
+    int     texLand;	// land texture -"-
+    int     texLava;	// lava texture -"-
+    int     texEast;	// east texture -"-
+    int     texWest;	// west texture -"-
+    int     texSouth;	// south texture -"-
+    int     texNorth;	// north texture -"-
+    V3      rotSpeed;	// rotation speed -"-
+    UV      cloudSpeed;	// clouds scheme animation -"-
+    UV      lavaSpeed;	// lava scheme animation -"-
+    V3      boxExt;     // far horizon bounding box 
+    V3      boxInt;     // near horizon bounfing box
+};
+
+5.	SECT_TEXRGB. Stores the information for each individual texture
+The section may be missing from the file (configurable by editor). 
+In this case you can load the files pointed by texinfo section.
+
+struct BTF_TextureRGB           // SECT_TEXRGB
+{
+    int     sz;                 // size in bytes of the image
+    int     bpp;                // bits per pixel       
+    int     cx;                 // width in pixels
+    int     cy;                 // height in pixels
+    DWORD   flags;              // not used yet. compresion alo flag
+};
+TO read the RGB data read the header. The section-header indicates the number of the
+'BTF_TextureRGB' structures each of it followed by the image 'RBG' data
+[SECT-HDR][BTF_TextureRGB](sz bytes)[BTF_TextureRGB](sz bytes)...
+The order index of each texture is the index where polygons textures 
+are pointing. 
+
+6.	SECT_TEXINFO 
+
+Contain information for current texture. If previous section exist in file
+this section can be savely skipped. If not the textures should be loaded
+from the file pointed by 'texname'. 
+
+struct BTF_TextureInfo      
+{
+    DWORD   flags;          // texture mipmap and file type
+    char    texname[80];    // name of the texture file 
+};	
+
+
+7.	SECT_LMINFO. Light map information. Descriibes the light map buffer section
+in the 'SECT_LMRGB'
+
+struct BTF_LmapInfo 
+{
+
+    int index;      // offset in BYTES the Light map bytestream (SECT_LMRGB)
+    int bpp;        // bits per pixel of the lmap
+    int xsz;        // width dim in pixels
+    int ysz;        // height dim in pixels
+    DWORD  flags;	// light map animation and mapping info
+};	
+
+8.	SECT_LMRGB	Light Map data byte stream. Each individual light map is 
+stored here one after ecah other.
+
+BYTE*	pBytes. // The length in bytes in stored in the header of this section
+
+9.	SECT_SNDINFO	Under Development
+10.	SECT_SNDWAV		Under Development
+	
+11	SECT_ITEMS		Under Development. Will contain all item can be placed in the game
+including light bulbs, sparks effects, etc.
+
+
+12.	SECT_ITEMSINFO	Expand the data for each item type. The 'SCE_ITEMS' will point
+custom data for each particular item in this section.
+
+13.	SECT_V3		All vertexes of all polygons from the BSP
+
+struct BTF_V3
+{
+	float x;
+	float y;
+	float z;
+
+};
+
+13.	SECT_PLANES	All planes from the BSP
+
+struct BTF_Plane
+{
+    V3		normal;		//plane normal
+    REAL	dist;		//plane const
+};
+
+14.	SECT_POLYS	All polygons from BSP
+
+struct  BTF_Poly
+{
+    int         planeIdx;	// index of the plane 
+	int			brIdx;		// original brush index
+    UV          tanimA;
+    UV          tanimB;
+    V3          dummyA;
+    V3          dummyB;
+    CLR         color;
+    DWORD       flags;
+    int         lmIdx;
+    int         texIdx;
+    int         vxCount;
+};
+
+
+SECT_NODES,		// BSP nodes
+SECT_LEAFS,		// BSP leafs
+SECT_MODELS,	// BSP detail brushes
+SECT_BSPS,		// BSP section
+SECT_PORTALS,	// BSP portals					(optional )
+SECT_PVS,		// Posible View Set				(optional )
+SECT_EOF=-1,	// end of file

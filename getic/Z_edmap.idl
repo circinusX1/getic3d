@@ -1,0 +1,124 @@
+
+// Z-edmap.idl : IDL source for Z-edmap.exe
+//
+// This file will be processed by the MIDL tool to
+// produce the type library (Z-edmap.tlb) and marshalling code.
+import "oaidl.idl";
+import "ocidl.idl";
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+// brush raw geometry file management
+typedef struct _Plg_Vertex
+{
+	float	xyz[3];
+	float	nrm[3];
+	float	uv[2];
+	float	lm[2];
+}Plg_Vertex;
+
+//-----------------------------------------------------------------------------
+typedef struct _Plg_Poly
+{
+	DWORD		flags;			// POLYGON PROPERTIES (BspFIleStr.h)
+	BYTE		color[4];		// global color for polygon
+	Plg_Vertex*	vXes;			// pointer to vertexes
+	int			nCnt;			// count of vertexes
+
+}Plg_Poly;
+
+//-----------------------------------------------------------------------------
+typedef struct _Plg_Brush
+{
+	DWORD		flags;			// BRUSH PROPERTIES  (BspFIleStr.h)
+	Plg_Poly	*pPolys;		// pointer to polygons
+	int			nCnt;			// how many polys
+	short		name[32];		// brush name
+}Plg_Brush;
+
+
+//-----------------------------------------------------------------------------
+// one plane
+typedef struct _Plg_Plane
+{
+	float	normal[3];
+	float	ddist;
+}Plg_Plane;
+
+//-----------------------------------------------------------------------------
+typedef enum _EPLUGTYPE
+{
+	PLUG_IMPORTER=1,
+	PLUG_EXPORTER,
+}EPLUGTYPE;
+//-----------------------------------------------------------------------------
+
+
+[
+	uuid(C929FD10-0669-4C8B-A044-A48375FB48D4),
+	version(1.0),
+	helpstring("Z_edmap 1.0 Type Library")
+]
+library ZedmapLib
+{
+
+	[
+		object,
+		uuid(7ABCC0EA-9A33-4713-BCDA-85C8DE424B6C),
+		dual,
+		helpstring("IIGetic Interface"),
+		pointer_default(unique)
+	]
+	interface IIGetic : IDispatch
+	{
+		[id(1), helpstring("method Test")] HRESULT Test();
+	};
+	
+	[
+		object,
+		uuid(2CADEA3E-A57C-4336-AD13-91BE804EE9F4),
+		dual,
+		helpstring("IGeticPlug Interface"),
+		pointer_default(unique)
+	]
+	interface IGeticPlug : IDispatch
+	{
+		[id(1), helpstring("method ImportFile")] HRESULT ImportFile(BSTR bsFileName, Plg_Brush** ppBrush);
+		[id(2), helpstring("method ExportFile")] HRESULT ExportFile(BSTR bsFileName, Plg_Brush* pBrush);
+		[id(3), helpstring("method GetMenuStringAndType")] HRESULT GetMenuStringAndType(BSTR* bsFileName,EPLUGTYPE* type);
+	};
+
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+	[
+		uuid(A621848E-FFAB-441B-8DD0-E33B249EC29C),
+		helpstring("IGetic Class")
+	]
+	
+	coclass IGetic
+	{
+		[default] interface IIGetic;
+	};
+	/*
+	[
+		uuid(D0509879-F208-4BC8-B20E-2ACEF6D86EE6),
+		helpstring("GeticPlug Class")
+	]
+	coclass GeticPlug
+	{
+		[default] interface IGeticPlug;
+	};
+	*/
+/*
+	[
+		uuid(EF351CE7-3A13-45F4-B779-02DE2CD346C8),
+		helpstring("GeticEditor Class")
+	]
+	coclass GeticEditor
+	{
+		[default] interface IGeticEditor;
+	};
+*/
+
+};
+
+	

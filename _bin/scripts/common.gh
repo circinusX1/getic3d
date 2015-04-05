@@ -1,0 +1,63 @@
+
+set <- {
+	debug=0,
+}
+_s <- {
+    SYS_CONFIGURE        = 40000, // StartStruct, RndStruct @ /_include/
+	SYS_START            = 40001, // cmdline, sysdata
+	SYS_TOGLESCRREN      = 40002, //screen full/windowed, sysdata  
+	SYS_ESCAPE           = 40003, //0, sysdata  
+	SYS_EXIT             = 40004, //0, sysdata
+	SYS_CLOSEAPP         = 40005, //0, sysdata
+	SYS_INPUT            = 40006,
+	SYS_UICOMMAND        = 40007, //cmd, 0
+	SYS_UIMOUSEENTER     = 40008, //cms, 1 enter 0 exit
+	SYS_RENDER_2D        = 40009, //0, paint prim plan
+	SYS_RENDER_3D        = 40010, //IRender, (long)&_sysData
+	SYS_ANIMATE          = 40011, //IRender, (long)&_sysData
+	SYS_SETERROR         = 40012, //0, sysdata
+}
+
+
+//----------------------------------------------------------------------------
+sys_states <- {
+    PLAY_MODE        = 0,
+    SET_MODE         = 1,
+    DOWNLOADING_MODE = 2,
+
+};
+
+
+hud <- {
+    HUD_ARROW   = 0x1,
+    HUD_HELP    = 0x2,
+    HUD_TRACE   = 0x4,
+    HUD_CONSOLE = 0x8
+};
+
+//----------------------------------------------------------------------------
+spin <-
+{
+    NO_IN_SPIN     = 0x1,
+    NO_NET_SPIN     = 0x2,
+    NO_CAM_SPIN       = 0x4,
+    NO_RENDER        = 0x8,
+    NO_PAINT        = 0x10,
+    NO_SQ_CALL        = 0x20,
+};
+
+
+
+
+//----------------------------------------------------------------------------
+err <- {
+    NO_ERROR    =0,
+}
+
+//----------------------------------------------------------------------------
+function trace(s)
+{
+    if(set.debug)
+        print("Script :" + s);
+}
+

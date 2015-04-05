@@ -1,0 +1,24 @@
+HKCR
+{
+	GeticPlug.GeticPlug.1 = s 'GeticPlug Class'
+	{
+		CLSID = s '{D0509879-F208-4BC8-B20E-2ACEF6D86EE6}'
+	}
+	GeticPlug.GeticPlug = s 'GeticPlug Class'
+	{
+		CLSID = s '{D0509879-F208-4BC8-B20E-2ACEF6D86EE6}'
+		CurVer = s 'GeticPlug.GeticPlug.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {D0509879-F208-4BC8-B20E-2ACEF6D86EE6} = s 'GeticPlug Class'
+		{
+			ProgID = s 'GeticPlug.GeticPlug.1'
+			VersionIndependentProgID = s 'GeticPlug.GeticPlug'
+			ForceRemove 'Programmable'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '{1530939A-14D1-4413-81A0-D78752EF341F}'
+			'TypeLib' = s '{C929FD10-0669-4C8B-A044-A48375FB48D4}'
+		}
+	}
+}
