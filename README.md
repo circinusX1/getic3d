@@ -1,5 +1,6 @@
 # 3D Editor with BSP compiler
 # GETIC 3D
+#### see also the GETAE PROJECT WHICH IS RELATED  https://github.com/comarius/GETAE
 #### Read 'Ge' as in George
 #### BSD Zero Clause License
 #### Was last compiled with Visual Studio 2010 (Express + MFC). Windows OS only
