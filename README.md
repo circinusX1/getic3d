@@ -9,5 +9,7 @@ https://youtu.be/l7wYiHln06Y
 
 * This is getic 3D on wine under ubuntu 12 (click to play demo)
 
-[![Alt text for your video](http://marius.mine.nu/_res/getic/about11.jpg)](http://marius.mine.nu/_dnls/out.ogv)
+[![Alt text for your video](http://marius.mine.nu/_res/getic/about11.jpg)](https://youtu.be/l7wYiHln06Y)
+
+
 
