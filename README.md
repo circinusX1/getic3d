@@ -1,4 +1,5 @@
 # 3D Editor with BSP compiler
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L9RVWU5NUZ4YG)   [donations are taken care by meeiot domain]
 # GETIC 3D
 #### see also the GETAE PROJECT WHICH IS RELATED  https://github.com/comarius/GETAE
 https://youtu.be/l7wYiHln06Y
