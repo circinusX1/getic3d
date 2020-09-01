@@ -39,7 +39,7 @@ howto for Linux. I started a port to QT thouhg few years ago, aka see: qgetic bu
 time to finish it. In windows, I dont know if still runs, but under Linux using wine looks like is working.
 
   * Clone the git
-  * [](https://photos.google.com/album/AF1QipO90BvOH6X4MEuR0-82ejTIKWLimoWhNPBSZXRM/photo/AF1QipPo2Hyb6gUXHoMGWiIgQYsHiq9DGg3fiEqCzvOm)
+  * ![start](https://photos.google.com/album/AF1QipO90BvOH6X4MEuR0-82ejTIKWLimoWhNPBSZXRM/photo/AF1QipPo2Hyb6gUXHoMGWiIgQYsHiq9DGg3fiEqCzvOm)
 
 
 
