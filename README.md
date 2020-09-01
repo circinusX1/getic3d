@@ -40,7 +40,8 @@ time to finish it. In windows, I dont know if still runs, but under Linux using 
 
   * Clone the git
  
- ![start](https://photos.google.com/album/AF1QipO90BvOH6X4MEuR0-82ejTIKWLimoWhNPBSZXRM/photo/AF1QipPo2Hyb6gUXHoMGWiIgQYsHiq9DGg3fiEqCzvOm)
+![image](https://user-images.githubusercontent.com/69641625/91868488-c5dfda00-ec42-11ea-94b3-766b66500cb1.png)
+
 
 
 
