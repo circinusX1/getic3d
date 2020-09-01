@@ -1,0 +1,45 @@
+//============================================================================
+// Author: Octavian Marius Chincisan 2006 March - 2006 Sept
+// Zalsoft Inc 1999-2006
+//============================================================================
+
+
+TheApp<-{
+    [_s.SYS_START]        = OnStart, 
+    [_s.SYS_TOGLESCRREN]  = OnToggleScreen,
+    [_s.SYS_ESCAPE]       = OnEscape,
+    [_s.SYS_PAINT]        = OnPaint,
+    [_s.SYS_EXIT]         = OnExit,
+    [_s.SYS_RENDER]       = OnRender,
+    [_s.SYS_SPIN]         = OnSpin,
+    [_s.SYS_BSP_READ]     = OnBspRead,
+    [_s.SYS_STATUSTEXT]   = OnStatusText,
+    [_s.SYS_NETREC]       = OnNetReceive,
+    [_s.SYS_PHYSICS]      = OnPhysics,
+    system                = null,
+    render                = null,
+};
+
+
+function Main(system)
+{
+    return "SystemProc";
+}
+
+function SystemProc(system,msg, param1, param2)
+{
+    if (msg in TheApp)
+    {
+        if(msg==_s.SYS_START)
+        {
+            TheApp.system = system;
+            TheApp.render = param1.GetRenderSys();
+        }
+        return (TheApp[msg])(system,param1, param2);
+    }
+    return 0;
+}
+
+
+
+

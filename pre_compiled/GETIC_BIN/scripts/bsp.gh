@@ -1,0 +1,68 @@
+//============================================================================
+// Author: Octavian Marius Chincisan 2006 March - 2006 Sept
+// Zalsoft Inc 1999-2006
+//============================================================================
+// bsp sections.
+section <- {
+    SECT_INITGAME = 1,
+    SECT_SCENE    = 2,
+    SECT_SKYDOM   = 3,
+    SECT_TEXRGB   = 4,
+    SECT_TEXINFO  = 5,
+    SECT_LMINFO   = 6,
+    SECT_LMRGB    = 7,
+    SECT_SNDFILE  = 8,
+    SECT_SNDINFO  = 9,
+    SECT_ITEMCAT  = 10,
+    SECT_ITEMS   = 11,
+    SECT_ITEMSINFO = 12,
+    SECT_V3        = 13,
+    SECT_PLANES    = 14,
+    SECT_POLYS     = 15,
+    SECT_NODES     = 16,
+    SECT_LEAFS     = 17,
+    SECT_MODELS    = 18,
+    SECT_PORTALS   = 19,
+    SECT_PVS       = 20,
+    SECT_MOTION    = 21,  
+    SECT_SCRINFO   = 22,
+    SECT_SCRDATA   = 23,
+    SECT_MATERIALS = 24,
+    SECT_POLYPROPS = 25,
+    SECT_SHADERS   = 26,
+    SECT_ZONES     = 27,  
+    SECT_TERRAIN   = 28,
+    SECT_TERRAINGLIGHT = 29,
+    SECT_TERRAINNODES  = 30,
+    SECT_TERRAINLEAFS  = 31,
+    SECT_DETAILS       = 32,
+    SECT_EOF          =-1,
+};
+
+_b <- {
+    MBSP_0          = 50000,
+    BM_SCENEINFO    = 50000,
+    BM_SCRIPT       = 50001,
+    BM_SCRIPTINFO   = 50002,
+    BM_MOVEMODEL    = 50003,
+    BM_COLLIDEMODEL = 50004,
+    BM_READCATEGORY = 50005,
+    BM_READITEM     = 50006,
+    BM_CREATED      = 50007
+};
+
+
+_bspflag<-
+{
+    WANT_BSP_LOAD        =0x1,
+    WANT_BSP_MODELMOVE   =0x2,
+    WANT_BSP_LEAFCHANGE  =0x4
+};
+
+_item<-{
+    ITM_LIGTBULB  = 1,
+    ITM_TRIGER    = 2,
+    ITM_SNDSOURCE = 3,
+    ITM_STARTPLAY = 4
+};
+    
