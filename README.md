@@ -1,4 +1,8 @@
 # 3D Editor with BSP compiler
+#### This is a 17 years old project.
+#### Built on Visual Studio MFC version ???
+#### How to at the bottom of tha page.
+
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L9RVWU5NUZ4YG)   [donations are taken care by meeiot domain]
 # GETIC 3D
 #### see also the GETAE PROJECT WHICH IS RELATED  https://github.com/comarius/GETAE
@@ -26,4 +30,19 @@ https://youtu.be/l7wYiHln06Y
 [reverse ssh as a service](http://www.mylinuz.com)
 
 [key value database as a service](https://www.meeiot.org)
+
+
+## How to.
+As I dont have any Windows machines anymore and this was writen in old times using 
+C++ MFC and Visual studio I am left with a prebuild version since. This short tutorial follows
+howto for Linux. I started a port to QT thouhg few years ago, aka see: qgetic but I did not have 
+time to finish it. In windows, I dont know if still runs, but under Linux using wine looks like is working.
+
+  * Clone the git
+  * [](https://photos.google.com/album/AF1QipO90BvOH6X4MEuR0-82ejTIKWLimoWhNPBSZXRM/photo/AF1QipPo2Hyb6gUXHoMGWiIgQYsHiq9DGg3fiEqCzvOm)
+
+
+
+
+
 
