@@ -31,7 +31,6 @@ https://youtu.be/l7wYiHln06Y
 
 [key value database as a service](https://www.meeiot.org)
 
-
 ## How to.
 As I dont have any Windows machines anymore and this was writen in old times using 
 C++ MFC and Visual studio I am left with a prebuild version since. This short tutorial follows
@@ -128,5 +127,5 @@ time to finish it. In windows, I dont know if still runs, but under Linux using 
 ![image](https://user-images.githubusercontent.com/69641625/91874971-dbf09900-ec48-11ea-8414-a9421e3bc854.png)
 
 
-      
+      ... tb continued...
 
