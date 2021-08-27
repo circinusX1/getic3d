@@ -334,12 +334,12 @@ CZ_ed2Doc::~CZ_ed2Doc()
 } //OCR_SIZEALL
 
 
-BOOL CZ_ed2Doc::OnOpenDocument(LPCTSTR lpszPathName) 
+BOOL CZ_ed2Doc::OnOpenDocument(const char* lpszPathName) 
 {
     Poly::__Max=V3(0,0,0);
     if(_scene.GetPrimitives()->size() && _docDirty)
     {
-        UINT retval = AfxMessageBox("Do you want to Save the current Getic scene file ? ", MB_YESNOCANCEL|MB_ICONQUESTION);
+        size_t retval = AfxMessageBox("Do you want to Save the current Getic scene file ? ", MB_YESNOCANCEL|MB_ICONQUESTION);
         if(retval==IDCANCEL)
             return 0;
         if(retval==IDYES)
@@ -358,7 +358,7 @@ BOOL CZ_ed2Doc::OnNewDocument()
     Poly::__Max=V3(0,0,0);
     if(_scene.GetPrimitives()->size() && _docDirty)
     {
-        UINT retval = AfxMessageBox("Do you want to Save the current Getic scene file ?", MB_YESNOCANCEL|MB_ICONQUESTION);
+        size_t retval = AfxMessageBox("Do you want to Save the current Getic scene file ?", MB_YESNOCANCEL|MB_ICONQUESTION);
         if(retval==IDCANCEL)
             return 0;
         if(retval==IDYES)
@@ -1378,9 +1378,9 @@ void CZ_ed2Doc::SelectVertex(int brSel, int nPoly, int vxSel)
             return;
         }
 
-        if((UINT)nPoly >= b->_polys.size())       return;
+        if((size_t)nPoly >= b->_polys.size())       return;
                 Poly& p = b->_polys[nPoly];
-        if((UINT)vxSel >= p._vtci.size())         return;
+        if((size_t)vxSel >= p._vtci.size())         return;
             Vtx2& x = p._vtci[vxSel]; 
 
 	    SelectAllBrushVertexes(*b, x);
@@ -2441,7 +2441,7 @@ void    CZ_ed2Doc::OnFinishMoveRotScale(int dirty, vvector<Brush*>* pBrushes)
     if(dirty == 0)
         return;
 
-    DWORD           dw = GetTickCount();
+    size_t           dw = GetTickCount();
 	vvector<Brush*>	extraToAdjust;
     int             is = 0;
     int             id = 0;
@@ -3423,7 +3423,7 @@ void CZ_ed2Doc::EvaluateDetailbrsh(Brush* pb)
         return;
     }
     
-    if(pb->_polys.size() >= (UINT)GMinDetPolys)
+    if(pb->_polys.size() >= (size_t)GMinDetPolys)
     {
         pb->_brushflags |= BRSH_DETAIL;
         return;
@@ -3431,7 +3431,7 @@ void CZ_ed2Doc::EvaluateDetailbrsh(Brush* pb)
 }
 
 
-BOOL CZ_ed2Doc::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
+BOOL CZ_ed2Doc::OnCmdMsg(size_t nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
 {
 	_cmdMsg=TRUE;
     BOOL b = CDocument::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
@@ -3620,7 +3620,7 @@ void CZ_ed2Doc::DelItem(SceItem* pItem)
 }
 
 
-BOOL CZ_ed2Doc::OnSaveDocument(LPCTSTR lpszPathName) 
+BOOL CZ_ed2Doc::OnSaveDocument(const char* lpszPathName) 
 {
 	return TRUE;
 }
@@ -3741,8 +3741,8 @@ void CZ_ed2Doc::OnImport()
     char expectedBlock[64];
     char expectedObject[64];
     
-    _stprintf(expectedBlock, "block %d {", mBlkCnt);
-    _stprintf(expectedObject, "block %d {", mObjCnt);
+    sprintf(expectedBlock, "block %d {", mBlkCnt);
+    sprintf(expectedObject, "block %d {", mObjCnt);
 
     vvector<V3>  block;
     vvector <vvector<V3> > blocks;
@@ -3756,7 +3756,7 @@ void CZ_ed2Doc::OnImport()
             if(strstr(line, expectedBlock))
             {
                 mBlkCnt++;
-                _stprintf(expectedBlock, "block %d {", mBlkCnt);
+                sprintf(expectedBlock, "block %d {", mBlkCnt);
 
                 ReadBlock(fw);
 
@@ -3765,7 +3765,7 @@ void CZ_ed2Doc::OnImport()
             if(strstr(line, expectedObject))
             {
                 mObjCnt++;
-                _stprintf(expectedObject, "block %d {", mObjCnt);
+                sprintf(expectedObject, "block %d {", mObjCnt);
             }
 
 
@@ -3942,7 +3942,7 @@ void CZ_ed2Doc::SplitBySplitterBrush(Brush* pb)
 
     if(FALSE == (bisP|bisB))
     {
-        UINT id = AfxMessageBox("Do you want to split the Brushe(s) \n (Press No To Split the Polygons) \n\n All brushes motion will be deleted", MB_ICONQUESTION|MB_YESNOCANCEL);
+        size_t id = AfxMessageBox("Do you want to split the Brushe(s) \n (Press No To Split the Polygons) \n\n All brushes motion will be deleted", MB_ICONQUESTION|MB_YESNOCANCEL);
         if(IDYES==id)
         {
             bisB=TRUE;
@@ -4100,7 +4100,7 @@ void CZ_ed2Doc::OnSametexface() // Ctl+G
 
 	    Poly*	pP       = _pSelPolys.back();
 	    Brush*	pB       = pP->_pBrush;
-        UINT    sametex  = (int)pP->GetHtex(GUtex);
+        size_t    sametex  = (int)pP->GetHtex(GUtex);
 
         if(AKEY(VK_SHIFT))//accumulates selections
         {
@@ -4354,7 +4354,7 @@ void CZ_ed2Doc::OnMerge()
         Brush* pba = _pSelBrushes[0];
         DeSelectBrush(pba);
 
-        for(UINT i=0; i<_pSelBrushes.size();i++)
+        for(size_t i=0; i<_pSelBrushes.size();i++)
         {
             Brush& bb = *_pSelBrushes[i];
             pba->AppendPrim(bb);
@@ -4554,7 +4554,7 @@ void CZ_ed2Doc::UpdateCutsCollisionList(Brush** pMovedBrushes, int nCount)
     int			nBrushes     = nCount;
 	Brush**     pWlkBrush	 = pMovedBrushes;
 	BOOL		bDlgOn       = FALSE;
-    DWORD		timeStart    = GetTickCount();
+    size_t		timeStart    = GetTickCount();
 	
 
 	// collect all brushes tha have to be updated
@@ -4790,13 +4790,13 @@ void  CZ_ed2Doc::SbarShowCurMode()
     switch(_brmode)
     {
     case BR_VIEW:
-        _tcscpy(selText,"View Mode, ");
+        strcpy(selText,"View Mode, ");
         break;
     case BR_MOVE:
-        _tcscpy(selText,"Move Mode, ");
+        strcpy(selText,"Move Mode, ");
         break;
     case BR_SCALE:
-        _tcscpy(selText,"Scale Mode, ");
+        strcpy(selText,"Scale Mode, ");
         break;
     case BR_ROTATE:
         found=FALSE;    
@@ -4806,11 +4806,11 @@ void  CZ_ed2Doc::SbarShowCurMode()
             {
                 if(AKEY(VK_SHIFT))
                 {
-                    _tcscpy(selText,MKSTR("Rotates -PI/%d, ",i));
+                    strcpy(selText,MKSTR("Rotates -PI/%d, ",i));
                 }
                 else
                 {
-                    _tcscpy(selText,MKSTR("Rotates +PI/%d, ",i));
+                    strcpy(selText,MKSTR("Rotates +PI/%d, ",i));
                 }
                 found=TRUE;
                 break;
@@ -4818,10 +4818,10 @@ void  CZ_ed2Doc::SbarShowCurMode()
         }
         if(found)
             break;
-        _tcscpy(selText,"Rotate Mode, ");
+        strcpy(selText,"Rotate Mode, ");
         break;
     case BR_RISE:
-        _tcscpy(selText,"Not Used, ");
+        strcpy(selText,"Not Used, ");
         break;
     }
 
@@ -4865,7 +4865,7 @@ void CZ_ed2Doc::OnPermcut()
     try{
         Brush* pResultSceneBrsh  = 0;
                
-        DWORD flags = 0;
+        size_t flags = 0;
 
         // collect solids tounching each other
         FOREACH(PBrushes,  _pSelBrushes, ppb)
@@ -4922,7 +4922,7 @@ void CZ_ed2Doc::OnPermcut()
 
     _TRY
     {
-        DWORD flags = 0;
+        size_t flags = 0;
 
         // collect solids tounching each other
         FOREACH(PBrushes,  selCopy, ppb)
@@ -5282,7 +5282,7 @@ void     CZ_ed2Doc::SaveTempFile()
 #endif //    
     if(!GAutoSave) return;
 
-    char                loco[_MAX_PATH];
+    char                loco[PATH_MAX];
     char                iittaa[32];
     int                 lastID = 0;
     string              filenames[32];
@@ -5378,7 +5378,7 @@ void     CZ_ed2Doc::SaveTempFile()
 void     CZ_ed2Doc::TestBackupFile()
 {   
     char iittaa[32];
-    char                loco[_MAX_PATH];
+    char                loco[PATH_MAX];
     int                 lastID = 0;
     vvector<string>     filenames;
     
@@ -5644,7 +5644,7 @@ void CZ_ed2Doc::OnCamLspot()
     Invalidate();
 }
 
-BOOL CZ_ed2Doc::HasExtension(LPCTSTR szex)
+BOOL CZ_ed2Doc::HasExtension(const char* szex)
 {
     return _extensions.find(szex)!=-1;
 }
@@ -5873,7 +5873,7 @@ void CZ_ed2Doc::OnWbck()
     Invalidate();
 }
 
-extern UINT UTimer;
+extern size_t UTimer;
 void CZ_ed2Doc::OnPaintimer() 
 {
     if(UTimer)

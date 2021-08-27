@@ -91,7 +91,7 @@ void DlgMotionState::OnCancel()
 	CBASEDLG::OnCancel();
 }
 
-BOOL DlgMotionState::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
+BOOL DlgMotionState::OnCmdMsg(size_t nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
 {
     if(nCode == EN_CHANGE)
     {

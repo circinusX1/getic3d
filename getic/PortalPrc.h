@@ -4,7 +4,7 @@
 #ifndef __PORTAL_PRC__
 #define __PORTAL_PRC__
 
-#include "BspTree.h"
+#include "Bsptree.h"
 #include "Poly.h"
 
 
@@ -113,7 +113,7 @@ public:
     int             _idxThis;
     int             _planeIdx;       // index in planes index of the BSP wich ortal belons too
     int             _planeIdxFinal;
-    DWORD           _flags;
+    size_t           _flags;
     vvector<V3>     _vxes;
     vvector<int>    _sideLIdx;
     vvector<int>    _sideLIdxFinal;

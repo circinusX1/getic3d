@@ -17,7 +17,7 @@
 #else
     #include "RC_GETICPLUG.H"
 #endif
-#include "StaticGL.h"
+#include "Staticgl.h"
 #include "ToolFrame.h"
 #include "Crc.h"
 
@@ -51,7 +51,7 @@ struct Sec
 };
 //static Sec sec = {"@:$",0,0,0,"@@@@@@@@@@@@@@@"};
 
-static DWORD __gKey = 0x5A;
+static size_t __gKey = 0x5A;
 static SYSTEMTIME PAYED_TIME = {2000,1,0,31,11,59,59,89};
 
 static void Encode(BYTE* pd,  int ln)
@@ -66,7 +66,7 @@ static void Decode(BYTE* pd,  int ln)
 		*(pd+i)=*(pd+i)^__gKey;
 }
 
-static DWORD GetOffset(BYTE* pb, long len)
+static size_t GetOffset(BYTE* pb, long len)
 {
     for(long i=0;i<len; i++,pb++)
     {
@@ -146,12 +146,12 @@ public:
         Decode((BYTE*)_pSec,sizeof(Sec));      
 
 		::memcpy(&firsttime, &_pSec->st, sizeof(firsttime));
-        DWORD       crcFromDll = _pSec->crc;                          
+        size_t       crcFromDll = _pSec->crc;                          
         Encode((BYTE*)_pSec,sizeof(Sec));
 
         // calc crc with crc == 0 couse the crc changes
         _pSec->crc = 0;     // make crc 0
-        DWORD dwCrcCalc = _crc.update_crc(0, _file, len);   
+        size_t dwCrcCalc = _crc.update_crc(0, _file, len);   
 
         Decode((BYTE*)_pSec,sizeof(Sec));
         // check id crc calculated is differen than the one stored
@@ -228,9 +228,9 @@ private:
   
     BYTE*    _file;
     Sec*    _pSec;
-    DWORD   _offset;
+    size_t   _offset;
     CCrc    _crc;
-    DWORD   _crcFromReg;
+    size_t   _crcFromReg;
     FILETIME _ft;
 };
 

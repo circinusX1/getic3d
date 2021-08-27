@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "z-edmap.h"
 #include "DlgTextures.h"
-#include "TexLbox.h"
+#include "Texlbox.h"
 #include "geticgui.h"
 #include "DlgResBrowser.h"
 
@@ -127,7 +127,7 @@ void CTexLbox::DrawItem(LPDRAWITEMSTRUCT pDraw)
 	    {
 		    if(pDraw->itemID != -1)
 		    {
-			    _stprintf(exTra, _T("Cannot Load '%s'"),tOut);
+			    sprintf(exTra, _T("Cannot Load '%s'"),tOut);
 			    pDC->DrawText(exTra,strlen(exTra),&pDraw->rcItem, DT_CENTER|DT_BOTTOM|DT_SINGLELINE);
                 _invalides << pszTn;
 		    }
@@ -181,7 +181,7 @@ void CTexLbox::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
     }
 }
 
-void CTexLbox::OnRButtonDown(UINT nFlags, CPoint point) 
+void CTexLbox::OnRButtonDown(size_t nFlags, CPoint point) 
 {
     
     DlgResBrowser    d;   
@@ -206,7 +206,7 @@ void    CTexLbox::DrawBmp(HDC hDc, CBitmap* pBmp, int x, int y, int slice)
     ::DeleteDC(hMemDC);
 }
 
-void CTexLbox::OnLButtonDown(UINT nFlags, CPoint point) 
+void CTexLbox::OnLButtonDown(size_t nFlags, CPoint point) 
 {
     /*
 	if(point.x<(LEFT_MARG-1))

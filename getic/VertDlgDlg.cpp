@@ -15,7 +15,7 @@ HICON	CVertDlgDlg::_handIco[2];
 int		CVertDlgDlg::_instances = 0;
 
 
-CVertDlgDlg::CVertDlgDlg(UINT iDD, CWnd* pParent /*=NULL*/)
+CVertDlgDlg::CVertDlgDlg(size_t iDD, CWnd* pParent /*=NULL*/)
 	: CBASEDLG(iDD, pParent)
 {
 	//{{AFX_DATA_INIT(CVertDlgDlg)
@@ -76,7 +76,7 @@ BOOL CVertDlgDlg::OnInitDialog()
 	return TRUE; 
 }
 
-void CVertDlgDlg::OnSysCommand(UINT nID, LPARAM lParam)
+void CVertDlgDlg::OnSysCommand(size_t nID, LPARAM lParam)
 {
     CBASEDLG::OnSysCommand(nID, lParam);
 }
@@ -130,7 +130,7 @@ void CVertDlgDlg::CreateGroups()
     int     relation = GW_CHILD|GW_HWNDFIRST;
     while(pWnd = pWnd->GetWindow(relation))
     {
-        UINT iD = pWnd->GetDlgCtrlID();
+        size_t iD = pWnd->GetDlgCtrlID();
 
         pWnd->GetWindowText(wt, 128);
         ::GetClassName(pWnd->m_hWnd, wc, 128);
@@ -154,7 +154,7 @@ void CVertDlgDlg::CreateGroups()
     while(pWnd = pWnd->GetWindow(relation))
     {
 		relation = GW_HWNDNEXT;
-        UINT iD = pWnd->GetDlgCtrlID();
+        size_t iD = pWnd->GetDlgCtrlID();
         pWnd->GetWindowText(wt, 128);
         if(wt[0]=='-' || wt[0]=='+')
 		{
@@ -189,7 +189,7 @@ void CVertDlgDlg::CreateGroups()
     for(; b!=e; ++b)
     {
         Group* pG = (*b);
-        UINT id = pG->_pCtl->GetDlgCtrlID();
+        size_t id = pG->_pCtl->GetDlgCtrlID();
         rtn = pG->_grect;
         rtn.bottom = rtn.top+18;
         pG->_pCtl->GetWindowText(wt, 128);
@@ -286,7 +286,7 @@ void CVertDlgDlg::UpdateControls()
 	Invalidate();
 }
 
-void    CVertDlgDlg::Colapse(UINT group)
+void    CVertDlgDlg::Colapse(size_t group)
 {
     CString cs;
     GetDlgItem(group)->GetWindowText(cs);
@@ -294,7 +294,7 @@ void    CVertDlgDlg::Colapse(UINT group)
         OnCommand(group, 0) ;
 }
 
-void    CVertDlgDlg::EnableGroup(UINT group, BOOL en)
+void    CVertDlgDlg::EnableGroup(size_t group, BOOL en)
 {
     vector<Group*>::iterator b = _groups.begin();
     vector<Group*>::iterator e = _groups.end();
@@ -375,7 +375,7 @@ BOOL CVertDlgDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 	return CBASEDLG::OnCommand(wParam, lParam);
 }
 
-void CVertDlgDlg::OnLButtonDown(UINT nFlags, CPoint point) 
+void CVertDlgDlg::OnLButtonDown(size_t nFlags, CPoint point) 
 {
     if(_viewportY > _wndRect.bottom )    
     {
@@ -389,7 +389,7 @@ void CVertDlgDlg::OnLButtonDown(UINT nFlags, CPoint point)
     _scrooled = 0;
 }
 
-void CVertDlgDlg::OnLButtonUp(UINT nFlags, CPoint point) 
+void CVertDlgDlg::OnLButtonUp(size_t nFlags, CPoint point) 
 {
     if(GetCapture()==this)
         ReleaseCapture();
@@ -403,7 +403,7 @@ void CVertDlgDlg::OnLButtonUp(UINT nFlags, CPoint point)
     CBASEDLG::OnLButtonUp(nFlags, point);
 }
 
-void CVertDlgDlg::OnMouseMove(UINT nFlags, CPoint point) 
+void CVertDlgDlg::OnMouseMove(size_t nFlags, CPoint point) 
 {
     if(_scrDn)
     {
@@ -431,7 +431,7 @@ void CVertDlgDlg::OnKillFocus(CWnd* pNewWnd)
 	
 }
 
-BOOL CVertDlgDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) 
+BOOL CVertDlgDlg::OnSetCursor(CWnd* pWnd, size_t nHitTest, size_t message) 
 {
 	if(_viewportY > _wndRect.bottom )    
 	{
@@ -450,7 +450,7 @@ BOOL CVertDlgDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	return CBASEDLG::OnSetCursor(pWnd, nHitTest, message);
 }
 
-HBRUSH CVertDlgDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+HBRUSH CVertDlgDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, size_t nCtlColor) 
 {
 	HBRUSH hbr = CBASEDLG::OnCtlColor(pDC, pWnd, nCtlColor);
 
@@ -467,7 +467,7 @@ void    CVertDlgDlg::Reset()
     int     relation = GW_CHILD|GW_HWNDFIRST;
     while(pWnd = pWnd->GetWindow(relation))
     {
-        UINT iD = pWnd->GetDlgCtrlID();
+        size_t iD = pWnd->GetDlgCtrlID();
         pWnd->GetWindowText(wt, 128);
         ::GetClassName(pWnd->m_hWnd, wc, 128);
         ::CharUpper(wc);

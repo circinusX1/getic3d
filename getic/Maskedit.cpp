@@ -36,7 +36,7 @@ CMaskEdit::~CMaskEdit()
     UnregisterClass("GETIC_EDIT",AfxGetApp()->m_hInstance);
 }
 
-LRESULT CALLBACK CMaskEdit::WndProc(HWND hWnd, UINT uMsg, WPARAM wP, LPARAM lP)
+LRESULT CALLBACK CMaskEdit::WndProc(HWND hWnd, size_t uMsg, WPARAM wP, LPARAM lP)
 {
     return (CMaskEdit::_op)(hWnd, uMsg, wP, lP);
 

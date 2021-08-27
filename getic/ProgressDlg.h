@@ -4,7 +4,7 @@
 
 #ifndef __PROGRESS_DLG___
 #define __PROGRESS_DLG___
-#pragma warning (disable: 4786)
+//   #pragma warning (disable: 4786)
 #include "geticgui.h"
 
 class ProgressDlg  
@@ -20,15 +20,15 @@ public:
 		CloseHandle(event);
 	}
 
-	typedef UINT (*THREADPROC)(LPVOID pVoid);
+	typedef size_t (*THREADPROC)(LPVOID pVoid);
 	
 		
 // ITheDlg
 public:
-	void	Show(int action, LPCSTR text, UINT nDlgID = DLG_WAIT);
+	void	Show(int action, LPCSTR text, size_t nDlgID = DLG_WAIT);
 
 	static	BOOL		_visible;
-	static	DWORD		timeStart;
+	static	size_t		timeStart;
 	static	HWND		hDialog;
 	static	HANDLE		event;
 	char				tstring[128];

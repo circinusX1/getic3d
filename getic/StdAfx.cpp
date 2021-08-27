@@ -23,7 +23,7 @@ extern BOOL _Ginitializing;
 BOOL    GFrustCull   = 0;
 BOOL    BShowLCirc   = 1;
 BOOL    BShowTrPolys = 1;
-DWORD   PaintCounter = 0;
+size_t   PaintCounter = 0;
 BOOL    GNewUID     = 1; 
 REAL	GEpsilon	= .5f;
 BOOL    GDetEnabled = FALSE;
@@ -43,8 +43,8 @@ BOOL	GForceBSP	= FALSE;
 BOOL    GCarving    = FALSE;
 BOOL	GUpdateImm  = FALSE;
 BOOL    GAutoSave   = 1;
-UINT    GUtex       = 0;  
-UINT    GAnimCompilation = FALSE;
+size_t    GUtex       = 0;  
+size_t    GAnimCompilation = FALSE;
 BOOL    GSelTexFace = 1;
 BOOL    BrushTask   = 1;
 BOOL    BVxNormals  = 0;
@@ -100,10 +100,10 @@ char    GeticGeometryRawFile[] = "GGRF";   // getic primitive geometry file
 char    GeticGeometryBeamTree[] = "GGBT";   // getic primitive geometry file
 
 
-const char* MakeBinStr(DWORD dw)
+const char* MakeBinStr(size_t dw)
 {
 	static char ret[512]={0};
-	DWORD   mask = 0x1;
+	size_t   mask = 0x1;
 	int     j = 0;
 	memset(ret,0,512);
 	for(int i=0; i <31; i++)
@@ -126,7 +126,7 @@ const char* MakeBinStr(DWORD dw)
 */
 
 
-int __stdcall BrowseCtrlCallback(HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpData)
+int __stdcall BrowseCtrlCallback(HWND hwnd, size_t uMsg, LPARAM lParam, LPARAM lpData)
 {
 	if (uMsg == BFFM_INITIALIZED && lpData != NULL)
 	{
@@ -136,9 +136,9 @@ int __stdcall BrowseCtrlCallback(HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpD
 	return 0;
 } // End of BrowseCtrlCallback
 
-LPCTSTR BrowseForFolder(char* title,  const char* cs)
+const char* BrowseForFolder(char* title,  const char* cs)
 { 
-    static char    szpath[_MAX_PATH];
+    static char    szpath[PATH_MAX];
     BOOL            success = 0;
     memset(szpath,0,sizeof(szpath));
     
@@ -146,8 +146,8 @@ LPCTSTR BrowseForFolder(char* title,  const char* cs)
 
     if (::SHGetMalloc(&lpMalloc) == NOERROR)
     {
-        char szBuffer[_MAX_PATH]={0};
-        char sdn[_MAX_PATH];
+        char szBuffer[PATH_MAX]={0};
+        char sdn[PATH_MAX];
 
         
         BROWSEINFO browseInfo;
@@ -167,7 +167,7 @@ LPCTSTR BrowseForFolder(char* title,  const char* cs)
             {
                 if(szBuffer[0]!='\0')
                 {
-                    _tcscpy(szpath,szBuffer);
+                    strcpy(szpath,szBuffer);
                     strcat(szpath,"\\");
                     success = 1;
                 }
@@ -196,12 +196,12 @@ static int LTP(void* wh)
 void    DelayUpdateWindow(HWND wh)
 {
     
-    DWORD tid;
+    size_t tid;
     if(!_Ginitializing)
         CloseHandle(::CreateThread(0,1024,(LPTHREAD_START_ROUTINE)LTP,(void*)wh,0,&tid));
     //::PostMessage((HWND)wh,WM_REDRAW_DLG,0,0);
 /*    
-    DWORD dwc = GetTickCount();
+    size_t dwc = GetTickCount();
     MSG msg;
     while(GetTickCount() - dwc < 32 )
     {
@@ -217,13 +217,13 @@ void    DelayUpdateWindow(HWND wh)
 }
 
 //. gst   getic script template
-BOOL GetOpenCommand(LPCTSTR regPath, CString& command)
+BOOL GetOpenCommand(const char* regPath, CString& command)
 {
     HKEY    hKey = NULL;
 
     if (::RegOpenKeyEx(HKEY_CLASSES_ROOT, regPath,0, KEY_READ, &hKey) == ERROR_SUCCESS)
     {
-        DWORD cbData = 0;
+        size_t cbData = 0;
         if (::RegQueryValueEx(hKey, NULL, NULL, NULL, NULL, &cbData) == ERROR_SUCCESS && cbData > 0)
         {
             char psz[1024] = {0};
@@ -306,16 +306,16 @@ BOOL    G_CopyFolder(const char* dst, const char* src, const char* filter, BOOL 
 }
 
 
-DWORD GetHDSerialNumber()
+size_t GetHDSerialNumber()
 {
-    DWORD   nVolumeSerialNumber;
-    DWORD   nLength = 256;
+    size_t   nVolumeSerialNumber;
+    size_t   nLength = 256;
 	char    szVolBuffer[256];
-	DWORD   nVolumeNameSize = 256;
-	DWORD   nMaximumComponentLength;
-	DWORD   nFileSystemFlags;     
+	size_t   nVolumeNameSize = 256;
+	size_t   nMaximumComponentLength;
+	size_t   nFileSystemFlags;     
 	char    szFileSystemNameBuffer[256];
-	DWORD   nFileSystemNameSize = 256;
+	size_t   nFileSystemNameSize = 256;
 
 	GetVolumeInformation("C:\\",szVolBuffer,
                                 nVolumeNameSize,
@@ -339,7 +339,7 @@ BOOL IsValidUL(char* out)
 {
     char cRealn[256];
     char cName[256];
-    DWORD dw = 255;
+    size_t dw = 255;
 
     GetComputerName(cName,&dw);
     CharUpper(cName);
@@ -353,8 +353,8 @@ BOOL IsValidUL(char* out)
         ++j;
     }
     cName[il]=0;
-    DWORD poly = cName[0]<<31 | cName[1]<<24 | cName[2]<<16 | cName[3];
-    DWORD acum = GetHDSerialNumber();
+    size_t poly = cName[0]<<31 | cName[1]<<24 | cName[2]<<16 | cName[3];
+    size_t acum = GetHDSerialNumber();
     
     char loc[256];
     sprintf(loc, "%X:%X:%s", poly, acum, cRealn);
@@ -368,8 +368,8 @@ BOOL IsValidUL(char* out)
 
 BOOL SetWindowtext(const char* cstring)
 {
-    DWORD hddser;
-    DWORD poly;
+    size_t hddser;
+    size_t poly;
     char  cName[128];
 
     sscanf(cstring,"%X:%X:%s",&poly, &hddser, cName);
@@ -384,9 +384,9 @@ BOOL SetWindowtext(const char* cstring)
     cName[il]=0;
 
     CCrc    crc(poly);
-    DWORD   dwRet = crc.update_crc(hddser, (BYTE*)cName, strlen(cName));
+    size_t   dwRet = crc.update_crc(hddser, (BYTE*)cName, strlen(cName));
 
-    DWORD ulong = theApp.GetProfileInt("MAIN","UNLOCK", 0);
+    size_t ulong = theApp.GetProfileInt("MAIN","UNLOCK", 0);
     return 1;//ulong == dwRet;
 }
 

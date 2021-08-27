@@ -55,8 +55,8 @@ void CDlgCompilerPath::OnSelpath()
 
 void CDlgCompilerPath::OnOk() 
 {
-    char szpath[_MAX_PATH];
-    _efPath.GetWindowText(szpath,_MAX_PATH);
+    char szpath[PATH_MAX];
+    _efPath.GetWindowText(szpath,PATH_MAX);
     theApp.CompilerDir(szpath);
     CBASEDLG::OnOK();
 }

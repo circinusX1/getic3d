@@ -1,6 +1,6 @@
 
 #include "baseutils.h"
-#include "..\\_include\\geticplug.h"
+#include "geticplug.h"
 #include "geticplugbsp.h"
 
 
@@ -42,7 +42,7 @@ public:
         }
     }
     
-    void Pos(unsigned long pos, DWORD cseek=SEEK_SET){
+    void Pos(unsigned long pos, size_t cseek=SEEK_SET){
         if(_plg.IsValid())
         {
             _plg->seek(pos,(SEEK_POS)cseek);
@@ -64,7 +64,7 @@ public:
         }
     }
     
-    DWORD GetPos(){
+    size_t GetPos(){
         if(_plg.IsValid())
         {
             return _plg->tell();
@@ -72,16 +72,16 @@ public:
         return ::ftell(_pf);
     }
     
-    DWORD Getlength(){
+    size_t Getlength(){
         if(_plg.IsValid())
         {
             _plg->seek(0,FSEEK_END);
-            DWORD flength = ftell(_pf);
+            size_t flength = ftell(_pf);
             _plg->seek(0,FSEEK_SET);
             return flength;
         }
         ::fseek(_pf,0,SEEK_END);
-        DWORD flength = ftell(_pf);
+        size_t flength = ftell(_pf);
         ::fseek(_pf,0,SEEK_SET);
         return flength;
     }
@@ -156,23 +156,23 @@ public:
     int WriteTextAsIs(const char* t){
         if(_plg.IsValid())
         {
-            short l = _tcslen(t);
-            return _plg->write(t, 1, _tcslen(t));
+            short l = strlen(t);
+            return _plg->write(t, 1, strlen(t));
         }
-        short l = _tcslen(t);
-        return fwrite(t, 1, _tcslen(t),  _pf);
+        short l = strlen(t);
+        return fwrite(t, 1, strlen(t),  _pf);
     }
     
     int WriteStr(const char* t){
         if(_plg.IsValid())
         {
-            short l = _tcslen(t);
+            short l = strlen(t);
             _plg->write(&l, 1, sizeof(short));
-            return _plg->write(t, 1, _tcslen(t));
+            return _plg->write(t, 1, strlen(t));
         }
-        short l = _tcslen(t);
+        short l = strlen(t);
         ::fwrite(&l, 1, sizeof(short), _pf);
-        return fwrite(t, 1, _tcslen(t),  _pf);
+        return fwrite(t, 1, strlen(t),  _pf);
     }
     
     int ReadStr(const char* t){

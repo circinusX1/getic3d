@@ -1,271 +1,424 @@
-// --------------------------------------------------------------------------------------
-// Copyright (c) 2000-2005 Zalsoft Inc
-// Copyright: zalsoft Inc
-// --------------------------------------------------------------------------------------
+/**
+# Copyright (C) 2006-2014 Chincisan Octavian-Marius(mariuschincisan@gmail.com) - coinscode.com - N/A
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+*/
 
-#ifndef __BASETHREAD_H__
-#define __BASETHREAD_H__
+#ifndef __OS_H__
+#define __OS_H__
 
-//---------------------------------------------------------------------------------------
-#include "baselib.h"
-#include <windows.h>
-#include <process.h>
+#include <errno.h>
+#include <unistd.h>
 #include <assert.h>
-#ifdef  WIN32
-  #include <eh.h>
-#endif //MS_WIN32    
+#include <pthread.h>
+#include <semaphore.h>
+#include <stdio.h>
+#include <inttypes.h>
 
-//---------------------------------------------------------------------------------------
-namespace getae_thread
+#ifdef MA_UNICODE
+#   include <wchar.h>
+#   define _ttfopen      _wfopen
+#   define _ttstrchr     wcschr
+#   define _ttstrstr     wcsstr
+#   define _ttsnprintf   wsnprintf
+#   define _ttatoi       _wtoi
+#   define _ttstrtok     wcstok
+#   define _ttgetenv     _wgetenv
+#   define _ttsystem     _wsystem
+#   define _ttasctime    _wasctime
+#   define _ttremove     _wremove
+#   define _ttrename     _wrename
+#else
+#   define _ttfopen      fopen
+#   define _ttstrchr     strchr
+#   define _ttstrstr     strstr
+#   define _ttsnprintf   snprintf
+#   define _ttatoi       atoi
+#   define _ttstrtok     strtok
+#   define _ttgetenv     getenv
+#   define _ttsystem     system
+#   define _ttasctime    asctime
+#   define _ttremove     remove
+#   define _ttrename     rename
+#endif
+
+#define UNUS(x_)   (void)(x_)
+
+typedef unsigned long ulong;
+typedef unsigned long THANDLE;
+typedef const char kchar;
+
+
+//-----------------------------------------------------------------------------
+class mutex;
+class condition
 {
-
-    // macros handling HANDLE
-    #define INVALID_HANDLE(x) ((x) == INVALID_HANDLE_VALUE)
-    #define VALID_HANDLE(x) ((x) != INVALID_HANDLE_VALUE)
-    #define DELETTHIS	-10
-
-    typedef unsigned (__stdcall *PTHREAD_START)(void*);
-    #define IMPLEMENT_TP(_class, _method)                                   \
-    protected:                                                              \
-    static unsigned __stdcall _class##ThrCallback(void* pVoid){             \
-            _class* pThis = reinterpret_cast<_class*>(pVoid);               \
-            HANDLE hStartUp = pThis->GetStartUpEvent();                     \
-            ::SetEvent(hStartUp);                                           \
-            ::Sleep(0);                                                     \
-            pThis->m_dwExitCode = 0;                                        \
-            pThis->m_dwExitCode = pThis->_method(pThis->m_hStop);           \
-            return  0;														\
-        };                                                                  \
-    virtual PTHREAD_START GetThreadProc() {return _class##::_class##ThrCallback;};\
-    UINT _method(const HANDLE hStophandle)
-    // safe closes handles
-    #define SAFE_CLOSEHANDLE(_handle)  if(VALID_HANDLE(_handle))\
-                                        {\
-                                            BOOL b = ::CloseHandle(_handle);\
-                                            assert(b);\
-                                            if(b)\
-                                                _handle = INVALID_HANDLE_VALUE;\
-                                        }     
-    // Wraps the _beginthreadex to accept the parameters as CreateThread call
-    #define BEGINTHREADEX(psa, cbStack, pfnStartAddr, pvParam, fdwCreate, pdwThreadID)  \
-                        ((HANDLE) _beginthreadex((void*)psa, (UINT)cbStack,             \
-                                        (PTHREAD_START)(pfnStartAddr),                  \
-                                        (void*)pvParam, (UINT)(fdwCreate),              \
-                                        (UINT*)(pdwThreadID)))
-
-    // main class of thread
-    class Cthread  
+public:
+    condition()
     {
-    public:
-        Cthread():m_hThread(INVALID_HANDLE_VALUE),
-                            m_hStop(INVALID_HANDLE_VALUE),
-                            m_hStartUp(INVALID_HANDLE_VALUE),
-                            m_internalThrID(0),
-                            m_dwExitCode(0),m_nLoopCount(0)
-        {
-            ::InterlockedIncrement(&Cthread::INTERNALTHRID);
-            ::InterlockedExchange(&m_internalThrID, Cthread::INTERNALTHRID);
-		    //printf("Thread() %d \r\n", m_internalThrID);
-		    m_testAtClose = TRUE;
-        }
-        Cthread::~Cthread()
-        {
-		    if(m_testAtClose)
-		    {
-			    assert (0 == IsAlive());
-			    assert(INVALID_HANDLE(m_hStop));
-			    assert(INVALID_HANDLE(m_hThread));
-			    assert(INVALID_HANDLE(m_hStartUp));
-		    }
-		    ::InterlockedDecrement(&Cthread::INTERNALTHRID);
-		    //printf("~Thread() %d \r\n", m_internalThrID);
-        }
-                              
-        operator HANDLE(){
-            return m_hThread;
-        }
-        virtual BOOL Start()
-        {
-            assert(INVALID_HANDLE(m_hThread));
-            assert(INVALID_HANDLE(m_hStop));
+        pthread_cond_init(&_cond, NULL);
+        pthread_mutex_init(&_mutex  ,NULL);
+    }
+    ~condition()
+    {
+        pthread_cond_signal(&_cond);
+        pthread_mutex_unlock(&_mutex);
 
-            if( VALID_HANDLE(m_hThread) ||
-                VALID_HANDLE(m_hStop) || 
-                VALID_HANDLE(m_hStartUp))
-                    return FALSE;
-            // manual reset event
-            m_hStop = ::CreateEvent(NULL, TRUE, FALSE, 0);          
-            if(INVALID_HANDLE(m_hStop))
-            {
-                Stop();
-                return FALSE;
-            }
-            // automatic reset event
-            m_hStartUp = ::CreateEvent(NULL, FALSE, FALSE, 0);  
-            if(INVALID_HANDLE(m_hStartUp))
-            {
-                Stop();
-                return FALSE;
-            }
-            assert(GetThreadProc());
-            DWORD  nDummy = 0;
-            HANDLE hTemp = ::CreateThread(0, 0, (LPTHREAD_START_ROUTINE)GetThreadProc(),
-                                        static_cast<void*>(this),
-                                        CREATE_SUSPENDED, &nDummy);
-            if(0 == hTemp)  
-            {
-                Stop();
-                return FALSE;
-            }
-            m_hThread = hTemp;
-            if(-1 == ::ResumeThread(m_hThread))
-            {
-                Kill();
-                return FALSE;
-            }
-            // wait's for safe startup
-            DWORD dwRetCode = ::WaitForSingleObject(m_hStartUp, WAIT_START);
-            assert(VALID_HANDLE(m_hStartUp));
-            SAFE_CLOSEHANDLE(m_hStartUp);
-            if(dwRetCode != WAIT_OBJECT_0)
-            {
-                Kill();
-                return FALSE;
-            }
-            return IsAlive() ? TRUE : FALSE;
-        }
-
-        virtual void Cthread::Stop()
-        {
-            if(VALID_HANDLE(m_hStop) && VALID_HANDLE(m_hThread))
-            {
-                if(IsAlive())
-                {
-                    SetEvent(m_hStop);
-		            Sleep(200);
-                    DWORD dwRetVal=WaitForSingleObject(m_hThread, WAIT_TERMINATE);
-                    if(WAIT_OBJECT_0 != dwRetVal)
-                    {
-                        Kill();
-                    }
-                }
-            }
-            SafeCloseHandlers();
-            assert (0 == IsAlive());
-        }
-        void Kill(){                            // unsave call
-            if(VALID_HANDLE(m_hThread))
-            if(IsAlive())
-            {
-                BOOL b = ::TerminateThread(m_hThread, 0);
-                assert(b);
-            }
-            Sleep(1);
-            SafeCloseHandlers();
-        };
-        BOOL IsAlive()
-        {
-            if(VALID_HANDLE(m_hThread))
-            {
-                DWORD code = 0;
-                BOOL  b    = GetExitCodeThread(m_hThread, &code);
-                assert(b);
-                return (code == STILL_ACTIVE);
-            }
-            return FALSE; 
-        }
-
-        void Cthread::IssueStop()
-        {
-            assert(VALID_HANDLE(m_hStop));
-            if(m_hStop>0){
-                BOOL b = ::SetEvent(m_hStop);
-                assert(b);
-            }
-        }
-	    long IsSuspended(){
-		    long lr;
-		    ::InterlockedExchange(&lr,m_suspend);
-		    return lr;
-	    }
-	    void Resume(){
-		    int i = ::ResumeThread(m_hThread);
-		    if(-1 == i)
-		    {
-			    int err = GetLastError();
-			    assert(0);
-		    }
-		    ::InterlockedDecrement(&m_suspend);
-	    }
-	    void Suspend(){
-		    int i = ::SuspendThread(m_hThread);
-		    if(-1 == i)
-		    {
-			    int err = GetLastError();
-			    assert(0);
-		    }
-		    ::InterlockedIncrement(&m_suspend);
-	    }
-
-        LONG    GetSpinCount()const{
-            return m_nLoopCount;
-        };
-        LONG    GetID()const{
-            return m_internalThrID;
-        }
-
-    protected:
-        virtual PTHREAD_START GetThreadProc(){ 
-            return  0;
-        };
-        HANDLE GetStartUpEvent() const
-        {
-            return m_hStartUp;
-        }
-
-        void IncrementLoopCount() {++m_nLoopCount;}     // increments 
-        void SafeCloseHandlers(){                       // closes all handlers
-            SAFE_CLOSEHANDLE(m_hStartUp);
-            SAFE_CLOSEHANDLE(m_hThread);
-            SAFE_CLOSEHANDLE(m_hStop);
-        }
-    protected:    
-        //  only valid when running.
-        HANDLE                  m_hThread;           
-        HANDLE                  m_hStop;             
-        HANDLE                  m_hStartUp;          
-        DWORD                   m_dwExitCode;        
-        DWORD                   m_nLoopCount;        
-        long                    m_internalThrID;     
-	    long                    m_suspend;     
-	    BOOL					m_testAtClose;
-    public:
-        static long             INTERNALTHRID;
-        static DWORD      WAIT_START;               
-        static DWORD      WAIT_TERMINATE;           
+        pthread_cond_destroy(&_cond);
+        pthread_mutex_destroy(&_mutex);
+    }
+    void lock()
+    {
+        pthread_mutex_lock(&_mutex);
+    }
+    void signal()
+    {
+        pthread_cond_signal(&_cond);
+    }
+    void broadcast()
+    {
+        pthread_cond_broadcast(&_cond);
     };
 
-    __declspec (selectany) DWORD Cthread::WAIT_START	 = 30000;         // 3 seconds. mco
-    __declspec (selectany) DWORD Cthread::WAIT_TERMINATE = 10000;    // 10 seconds. mco
-    __declspec (selectany) long  Cthread::INTERNALTHRID	 = 0;
-
-    //----------------------||----------------------------------------------------------------
-    class NO_VT UnlockExit
+    void wait()
     {
+        pthread_cond_wait(&_cond, &_mutex);
+    }
+    void unlock()
+    {
+        pthread_mutex_unlock(&_mutex);
+    }
+private:
+
+    pthread_cond_t _cond;
+    pthread_mutex_t _mutex;
+};
+//-------;----------------------------------------------------------------------
+class mutex
+{
+    mutable pthread_mutex_t _mut;
+public:
+    mutex()
+    {
+        pthread_mutexattr_t     attr;
+
+        pthread_mutexattr_init(&attr);
+        pthread_mutexattr_settype(&attr,PTHREAD_MUTEX_RECURSIVE);
+        pthread_mutex_init(&_mut,&attr);
+        pthread_mutexattr_destroy(&attr);
+    }
+
+    virtual ~mutex()
+    {
+        pthread_mutex_unlock(&_mut);
+        pthread_mutex_destroy(&_mut);
+    }
+
+    int mlock() const
+    {
+        int err = pthread_mutex_lock(&_mut);
+        return err;
+    }
+
+    int try_lock() const
+    {
+        int err =pthread_mutex_trylock(&_mut);
+        return err;
+    }
+
+    int munlock() const
+    {
+        int err =pthread_mutex_unlock(&_mut);
+        return err;
+    }
+};
+
+//-----------------------------------------------------------------------------
+class semaphore
+{
+    sem_t _sem;
+
+public:
+    semaphore( int init = 0 )
+    {
+        sem_init(&_sem,0,init);
+    }
+
+    virtual ~semaphore()
+    {
+        sem_destroy(&_sem);
+    }
+
+    int swait(int to=-1) const
+    {
+        UNUS(to);
+        sem_wait((sem_t *)&_sem);
+        return 1;
+    }
+
+    int stry_wait(int to=-1) const
+    {
+        UNUS(to);
+        return (sem_trywait((sem_t *)&_sem)?errno:0);
+    }
+
+    int snotify() const
+    {
+        return (sem_post((sem_t *)&_sem) ? errno : 0);
+    }
+
+    int value() const
+    {
+        int val = -1;
+        sem_getvalue((sem_t *)&_sem,&val);
+        return val;
+    }
+    void reset( int init = 0 )
+    {
+        sem_destroy(&_sem);
+        sem_init(&_sem,0,init);
+    }
+};
+
+
+//-----------------------------------------------------------------------------
+class AutoLock
+{
+public:
+    AutoLock(mutex* m):_mutex(m)
+    {
+         _mutex->mlock();
+    }
+    AutoLock(const mutex* m):_mutex((mutex*)m)
+    {
+         _mutex->mlock();
+    }
+    ~AutoLock()
+    {
+        _mutex->munlock();
+    }
+private:
+    mutex* _mutex;
+};
+
+//-----------------------------------------------------------------------------
+class Mvi1Wr
+{
+    pthread_rwlock_t       rwlock;
+public:
+    Mvi1Wr():rwlock(PTHREAD_RWLOCK_INITIALIZER)
+    {
+
+    }
+    ~Mvi1Wr()
+    {
+        pthread_rwlock_destroy(&rwlock);
+    }
+
+    void writing()
+    {
+        int rc = pthread_rwlock_wrlock(&rwlock);
+        assert(0 ==rc);
+    }
+
+    void done()
+    {
+         pthread_rwlock_unlock(&rwlock);
+    }
+
+    int viewing()
+    {
+        int k = 65535;//avoid dead infinitte
+        int rc = pthread_rwlock_tryrdlock(&rwlock);
+        while(rc == EBUSY && k--)
+        {
+           usleep(0x1FF);
+           rc = pthread_rwlock_tryrdlock(&rwlock);
+        }
+        return rc;
+    }
+
+
+    void viewed(int rc)
+    {
+        if(rc==0)
+            pthread_rwlock_unlock(&rwlock);
+    }
+
+    class Read
+    {
+        const Mvi1Wr& _mv;
+        int rc;
+
     public:
-	    UnlockExit(CRITICAL_SECTION& cs){
-		    _pcs = &cs;
-		    ::EnterCriticalSection(&cs);
-	    }
-	    ~UnlockExit(){
-		    ::LeaveCriticalSection(_pcs);
-	    }
-    private:
-	    CRITICAL_SECTION* _pcs;
+
+        Read(const Mvi1Wr &v):_mv(v)
+        {
+            rc = ((Mvi1Wr &)v).viewing();
+        }
+        ~Read()
+        {
+            ((Mvi1Wr&)_mv).viewed(rc);
+        }
     };
 
-};//nanespace
-#endif //__BASETHREAD_H__
+private:
+    mutex       _mv, _m, _mp;
+    u_int32_t   _viewers;
+
+};
+
+//-----------------------------------------------------------------------------
+class OsThread
+{
+public:
+    OsThread()
+    {
+        _bstop   = 1;
+        _hthread = 0;
+        _joined  = false;
+        _init = -1;
+    }
+
+    virtual ~OsThread()
+    {
+        if(!_stopped)
+        {
+            stop_thread();
+        }
+
+        if(_joined && _hthread)
+        {
+            //printf("\ndetaching thread %p \n", _hthread);//mem leak fix valgrind
+            pthread_detach(_hthread);
+        }
+        if(_init==0)
+            pthread_attr_destroy(&_attr);
+        _hthread = 0;
+
+    }
+    virtual void _post_thread_foo()
+    {
+        ;
+    }
+    virtual bool _pre_thread_foo()
+    {
+        return true;
+    }
+    virtual int  start_thread()
+    {
+        _bstop   = 0;
+
+        _init=pthread_attr_init(&_attr);
+        pthread_attr_setdetachstate(&_attr, PTHREAD_CREATE_JOINABLE);
+
+        if (pthread_create(&_hthread, &_attr, SFoo, this) != 0)
+        {
+            pthread_attr_destroy(&_attr);
+            return errno;
+        }
+        pthread_attr_destroy(&_attr);
+        usleep(1000);
+        _start.swait();
+        return 0;
+    }
+
+    virtual void signal_to_stop()
+    {
+        _bstop = 1;
+    }
+    virtual void    stop_thread()
+    {
+        if(!_stopped)
+        {
+            _bstop = 1;
+            usleep(100000);
+            t_join();
+        }
+
+    }
+
+    bool  is_stopped()
+    {
+        return _bstop;
+    }
+
+    int t_join()
+    {
+        if(!_joined)
+        {
+            _joined = true;
+            //printf("\njoining thread %p \n", _hthread);//mem leak fix valgrind
+            return pthread_join(_hthread,0);
+        }
+        return 0;
+    }
+
+    int kill()
+    {
+        return 0;
+    }
+    int detach()
+    {
+        return 0;
+    }
+
+    void set_prio(int boost)
+    {
+        if(_hthread)
+        {
+            // pthread_setschedprio(_hthread, 32);
+        }
+    }
+protected:
+    virtual void thread_main() {};
+    int         _bstop;
+private:
+    int         _init;
+    mutex       _mutex;
+    semaphore   _start;
+    pthread_attr_t  _attr;
+    THANDLE     _hthread;
+    int         _stopped;
+    bool        _joined;
+    static void* SFoo(void* pData)
+    {
+        OsThread* pT = reinterpret_cast<OsThread*>(pData);
+        pT->_stopped = 0;
+        pT->_start.snotify();
+        if(pT-> _pre_thread_foo())
+        {
+            pT->thread_main();
+            pT->_stopped = 1;
+            pT->_post_thread_foo();
+            // no member access couse can be deleted
+        }
+        return 0;
+    }
+};
 
 
+template < typename T, class P>struct AutoCall
+{
+    AutoCall(T f, P p):_f(f),_p(p) {}
+    ~AutoCall()
+    {
+        _f(_p);
+    }
+    T _f;
+    P _p;
+};
+
+#define _PLATFORM_ "LINUX"
+#endif // !__OS_H__
 

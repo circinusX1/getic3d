@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "TexRef.h"
+#include "Texref.h"
 #include "z-edmap.h"
 #include "z_ed2Doc.h"
 #include "mainfrm.h"
@@ -36,7 +36,7 @@ BOOL __FixBadName(char* pszname)
 class CDocSaver : public FileWrap
 {
 public:
-    CDocSaver(LPCTSTR szFile, BOOL bsave, BOOL pref=0):_pref(pref),_version(DOC_VERSION8),_filename(szFile),_bsave(bsave),_maxspliterIdx(0),_selection(0),_pTerBrush(0){}
+    CDocSaver(const char* szFile, BOOL bsave, BOOL pref=0):_pref(pref),_version(DOC_VERSION8),_filename(szFile),_bsave(bsave),_maxspliterIdx(0),_selection(0),_pTerBrush(0){}
     BOOL    Open(){
         return this->FileWrap::Open(_filename.c_str(),_bsave ? "wb" : "rb");
     }
@@ -61,7 +61,7 @@ public:
     SceItem* SerializeItem(SceItem* pi);
 
 private:
-    DWORD            _version;
+    size_t            _version;
     int              _maxspliterIdx;   
     map<int,int>     _texassoc;
     vvector<Texture> _texNames;
@@ -490,7 +490,7 @@ void CDocSaver::SerializePolygon(Brush* pB, Poly* pp)
             this->Read(texID);
             this->Read(applyTex);
 
-            if(texID >=0 && (UINT)texID < _texNames.size())
+            if(texID >=0 && (size_t)texID < _texNames.size())
             {
                 pp->SetApply(applyTex,k);
                 pp->SetTex(_texNames[texID].filename, k, _texNames[texID].hTex.glTarget);
@@ -503,7 +503,7 @@ void CDocSaver::SerializePolygon(Brush* pB, Poly* pp)
             }
         }
     }
-    DWORD utempval = pp->Combine();
+    size_t utempval = pp->Combine();
     this->Serialize(utempval);
     this->Serialize(pp->_polyflags);
     this->Serialize(pp->_polyflags2);
@@ -706,7 +706,7 @@ void CDocSaver::SerializeScripts()
     {
         int     nCount = 0;
         int     nLength = 0;
-        char   szBuff[_MAX_PATH];
+        char   szBuff[PATH_MAX];
         char*   pszScr;    
 
         this->Read(nCount);
@@ -743,16 +743,16 @@ void CDocSaver::SerializeScripts()
 //----------------------------------------------------------------------------------------
 void CDocSaver::SerializeCatFiles()
 {
-    char sFileName[_MAX_PATH] = {0};
+    char sFileName[PATH_MAX] = {0};
     if(_bsave)
     {
 	    if(theApp.XsdCatItmFile()[0])
 		    strcpy(sFileName, theApp.XsdCatItmFile());
-	    this->Write((void*)sFileName,_MAX_PATH);
+	    this->Write((void*)sFileName,PATH_MAX);
     }
     else
     {
-		this->Read((void*)sFileName,_MAX_PATH);
+		this->Read((void*)sFileName,PATH_MAX);
 		if(sFileName[0])
 		{
 			if(SCENE().SearchCats((char*)sFileName))
@@ -840,7 +840,7 @@ void      CZ_ed2Doc::SavePrefFile()
                 brush.Move(-center);
 
                 char locName[64];
-                _tcscpy(locName, brush._name);
+                strcpy(locName, brush._name);
 			    if(__FixBadName(locName))
 				    continue;
             
@@ -861,7 +861,7 @@ void      CZ_ed2Doc::SavePrefFile()
 }
 
 //----------------------------------------------------------------------------------------
-BOOL CZ_ed2Doc::LoadPrefFile(LPCTSTR szFileName, Brush** pBRet)
+BOOL CZ_ed2Doc::LoadPrefFile(const char* szFileName, Brush** pBRet)
 {
 	Brush*			  pB = 0;
 
@@ -957,8 +957,8 @@ void CZ_ed2Doc::OnFileOpen()
     
     TexHandler::SetSearchPath(MKSTR("%s%s_res",ph.Path(),ph.JustFile()));    
 
-    char szupper[_MAX_PATH];
-    ::_tcscpy(szupper, dlg.m_ofn.lpstrFile);
+    char szupper[PATH_MAX];
+    ::strcpy(szupper, dlg.m_ofn.lpstrFile);
     CharUpper(szupper);
     if(_tcsstr(szupper,".GBT"))
     {
@@ -1104,7 +1104,7 @@ public:
     {
         WriteValue(sect, (int) f);
     }
-    void WriteValue(const char* sect, DWORD f)
+    void WriteValue(const char* sect, size_t f)
     {
         WriteValue(sect, (int) f);
     }
@@ -1168,7 +1168,7 @@ struct XmlFace{
 };
 
 //---------------------------------------------------------------------------------------
-void CZ_ed2Doc::SaveInXML(LPCTSTR pSzName, BOOL bBrshes)
+void CZ_ed2Doc::SaveInXML(const char* pSzName, BOOL bBrshes)
 {
     map<int,int>    texids;
     int             idx = 0;
@@ -1244,7 +1244,7 @@ void CZ_ed2Doc::SaveInXML(LPCTSTR pSzName, BOOL bBrshes)
         vvector<CLR>        colors(4096);    
         vvector<V3>         vxes(16384);
         vvector<UV>         tcs(8912);
-        UINT                k;
+        size_t                k;
 
         PBrushes* brshses = _scene.GetPrimitives();
         FOREACH(PBrushes, (*brshses), ppb)
@@ -1395,7 +1395,7 @@ void CZ_ed2Doc::SaveInXML(LPCTSTR pSzName, BOOL bBrshes)
                         break;
                     case ITM_TRIGER:
                         {
-                            DWORD   ptr = -1;
+                            size_t   ptr = -1;
                             V3 ex = ((TriggerItem*)pItem)->_drawBrush._box.GetExtends();
                             w.WriteValue("effectpoint",((TriggerItem*)pItem)->_efectPoint);
                             w.WriteValue("extends",ex);
@@ -1449,7 +1449,7 @@ void CZ_ed2Doc::SaveInXML(LPCTSTR pSzName, BOOL bBrshes)
 //---------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------
-void CZ_ed2Doc::SaveInFile(LPCTSTR pSzName, BOOL selection)
+void CZ_ed2Doc::SaveInFile(const char* pSzName, BOOL selection)
 {
     CDocSaver cfv(pSzName, TRUE);
     

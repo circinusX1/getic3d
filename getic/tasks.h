@@ -1,11 +1,11 @@
 #ifndef __TASKS_H__
 #define __TASKS_H__
 
-#include "brush.h"
+#include "Brush.h"
 extern HWND  _Hmain;
 //---------------------------------------------------------------------------------------
 
-
+/*
 template <class T> class TaskClass
 {
     typedef int (T::*PFCB) (void); 
@@ -14,18 +14,18 @@ template <class T> class TaskClass
         T*      pThis;
     };
     T                  *_pcurent;    
-    CRITICAL_SECTION    _cs;
+    mutex               _cs;
     deque<Spr>          _tasks;
     HANDLE              _h,_s,_e;
 
     public:
     TaskClass(){
-        DWORD dw;
+        size_t dw;
         _h = ::CreateThread(0,0,(LPTHREAD_START_ROUTINE)TaskClass::TP, this, 0, &dw);
         _s = CreateEvent(0,0,0,0);
         _e = CreateEvent(0,0,0,0);
         ::InitializeCriticalSection(&_cs);
-    }
+  -  }
     void    Stop(){
         ::SetEvent(_s);
         ::SetEvent(_e);
@@ -44,7 +44,7 @@ template <class T> class TaskClass
         Spr     t;
         while(1)
         {
-            DWORD dc = ::WaitForMultipleObjects(2,hndls,0,INFINITE)-WAIT_OBJECT_0;
+            size_t dc = ::WaitForMultipleObjects(2,hndls,0,INFINITE)-WAIT_OBJECT_0;
             if(dc==1)
                 break;
             if(_tasks.size())
@@ -86,6 +86,7 @@ template <class T> class TaskClass
         ::SetEvent(_e);
     }
 };
+*/
 
 
 

@@ -9,7 +9,6 @@
 
 //---------------------------------------------------------------------------------------
 #include "baselib.h"            //  uses #pragma pack(push, 8)
-#include <tchar.h>
 #include "bspfilestr.h"         // for brushes and faces flags
 
 #define _PLUG_MSG0  55000       // internaly used by editor
@@ -65,12 +64,12 @@ typedef struct _Plg_Item
 // Polygon structure
 typedef struct _Plg_Poly
 {
-	DWORD		flags;			        // polygon flags (see above values)
-	DWORD		user;			        // polygon flags (see above values)
+	size_t		flags;			        // polygon flags (see above values)
+	size_t		user;			        // polygon flags (see above values)
 	CLR 		color;		            // polygon color across al vertexes (0-255)
     int         texIdx[3];              // texture indexes for 3 stages(in the scene textures)
-    DWORD       texapply[3];            // how to apply each/all textures/ or (gen tc) on this poly (see irender.h) 
-    DWORD       combine;                // how to set up register combiners 
+    size_t       texapply[3];            // how to apply each/all textures/ or (gen tc) on this poly (see irender.h)
+    size_t       combine;                // how to set up register combiners
     V3          texax[2];               // texture axis         (use them to save q and ut map file)
     UV          texShift;               // shift on u and v     (use them to save q and ut map file)
     UV          texScale;               // scale on u and v     (use them to save q and ut map file)
@@ -83,7 +82,7 @@ typedef struct _Plg_Poly
 // brush structure
 typedef struct _Plg_Brush
 {
-	DWORD		flags;			        // see above flags
+	size_t		flags;			        // see above flags
 	Plg_Poly*   pPolys;		            // brush polygons
 	int			nPolys;			        // number of polygons
 	char		name[64];		        // name of the brush
@@ -95,8 +94,8 @@ typedef struct _Plg_Brush
 // Texture structure. 
 typedef struct _Plg_Texture
 {
-    DWORD       flags;                   // pass in engine what you want from this texture
-	DWORD		target;                  // creation flags, 1D, 2D, 3D, CUBE (see irender.h)
+	size_t       flags;                   // pass in engine what you want from this texture
+	size_t		target;                  // creation flags, 1D, 2D, 3D, CUBE (see irender.h)
     char        filename[64];            // filename to load. absolute path or relative to 
                                          // current directory from where the file was imported
                                          // filename has to have proper extension 
@@ -121,7 +120,7 @@ typedef struct _Plg_Texture
 
 typedef struct _Plg_Scene
 {
-	DWORD		    flags;              // scene flags (not used)
+	size_t		    flags;              // scene flags (not used)
 	Plg_Brush*	    pBrushes;           // pointer to the brushes
 	int			    nBrushes;           // number of brushes    
     Plg_Texture*    pTextures;          // pointer to textures
@@ -134,7 +133,7 @@ typedef struct _Plg_Scene
 class IGeticEditor
 {
 public:
-    virtual long _stdcall GetTextureInfo(_Plg_Texture* pt)     = 0;
+    virtual long  GetTextureInfo(_Plg_Texture* pt)     = 0;
 
     
 };
@@ -145,11 +144,11 @@ public:
 class IGeticPlug 
 {
 public:
-   	virtual long _stdcall ImportFile(IGeticEditor* pEditor, char* ,char* bsFileName, Plg_Scene** ppScene)       = 0;
-	virtual long _stdcall GetMenuStringAndType(char* bsFileName,DWORD* type)      = 0;
-    virtual long _stdcall ReleaseScene(Plg_Scene* ppBrush)                         = 0;
-    virtual long _stdcall ExportFile(IGeticEditor* pEditor, char* , char* bsFileName, const Plg_Scene* ppScene)  = 0;
-    virtual long _stdcall GetVersion()                                             = 0;
+	virtual long  ImportFile(IGeticEditor* pEditor, char* ,char* bsFileName, Plg_Scene** ppScene)       = 0;
+	virtual long  GetMenuStringAndType(char* bsFileName,size_t* type)      = 0;
+	virtual long  ReleaseScene(Plg_Scene* ppBrush)                         = 0;
+	virtual long  ExportFile(IGeticEditor* pEditor, char* , char* bsFileName, const Plg_Scene* ppScene)  = 0;
+	virtual long  GetVersion()                                             = 0;
 };
 
 // Yuu  can create all structures using this function to get them properly initialized

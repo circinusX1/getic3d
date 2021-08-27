@@ -371,7 +371,7 @@ void CDlgCompile::OnKillFocus(CWnd* pNewWnd)
 
 }
 
-HBRUSH CDlgCompile::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+HBRUSH CDlgCompile::OnCtlColor(CDC* pDC, CWnd* pWnd, size_t nCtlColor) 
 {
 	HBRUSH hbr = CBASEDLG::OnCtlColor(pDC, pWnd, nCtlColor);
 	return hbr;

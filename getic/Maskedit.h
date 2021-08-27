@@ -20,7 +20,7 @@ public:
     int         _iStdButtonWndExtra;
 
     static WNDPROC _op;
-    static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wP, LPARAM lP);
+    static LRESULT CALLBACK WndProc(HWND hWnd, size_t uMsg, WPARAM wP, LPARAM lP);
 };
 
 #endif // !defined(AFX_MASKEDIT_H__2CA041FA_005A_4E42_8A89_F71E3C304A72__INCLUDED_)

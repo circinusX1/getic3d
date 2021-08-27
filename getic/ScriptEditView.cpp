@@ -71,7 +71,7 @@ BOOL CScriptEditView::PreCreateWindow(CREATESTRUCT& cs)
 	return TRUE;
 }
 
-BOOL CScriptEditView::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
+BOOL CScriptEditView::OnCmdMsg(size_t nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
 {
 	return 1;//CView::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 }

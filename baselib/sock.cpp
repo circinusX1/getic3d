@@ -7,11 +7,11 @@
 #include "sock.h"
 
 //-----------------------------------------------------------------------------
-DWORD       sock::_tout = 15000;
+size_t       sock::_tout = 15000;
 class IP2String
 {
 public:
-   IP2String(DWORD dw){
+   IP2String(size_t dw){
        ::sprintf( _s,"%u.%u.%u.%u",
                       (int)(dw&0xFF),
                       (int)((dw&0xFF00)>>8),
@@ -43,7 +43,7 @@ void sock::Uninit()
 }
 
 //-----------------------------------------------------------------------------
-BOOL sock::CTime(void* , DWORD time)
+BOOL sock::CTime(void* , size_t time)
 {
      return time < sock::_tout;
 }
@@ -64,7 +64,7 @@ sock::~sock()
 };
 
 //-----------------------------------------------------------------------------
-int sock::setblocking(DWORD block)
+int sock::setblocking(size_t block)
 {
     if(isopen())
     {
@@ -86,12 +86,12 @@ int sock::create(int )
 }
 
 //-----------------------------------------------------------------------------
-int  sock::GetLocalIP(DWORD* dw)
+int  sock::GetLocalIP(size_t* dw)
 {
     sockaddr_in locSin    ;
     hostent*    pHe       = 0;
     char        szBuf[80] = {0};
-    DWORD       dwSize    = 0;
+    size_t       dwSize    = 0;
 
     locSin.sin_family = AF_INET;
     dwSize = sizeof(szBuf);
@@ -111,7 +111,7 @@ int sock::GetLocalIP(char* pRetLocalAddr)
     sockaddr_in locSin;
     hostent*    pHe;
     char        szBuf[80];
-    DWORD       dwSize;
+    size_t       dwSize;
 
     locSin.sin_family = AF_INET;
     dwSize = sizeof(szBuf);
@@ -138,7 +138,8 @@ int sock::getoption(int option)
     {
         int optionVal;
         int optLen = sizeof(optionVal);
-        if(0 == getsockopt(_sock, SOL_SOCKET, option, (char*)&optionVal, &optLen))
+        if(0 == getsockopt(_sock, SOL_SOCKET, option, (char*)&optionVal,
+                           (socklen_t*)&optLen))
             return optionVal;
     }
     return -1;
@@ -297,7 +298,7 @@ int tcp_srv_sock::accept(tcp_cli_sock& cliSock)
     int clilen = sizeof(cliSock._remote_sin);
     cliSock._sock = ::accept(_sock,
                              (struct sockaddr*)&cliSock._remote_sin,
-                             &clilen);
+                             (socklen_t*)&clilen);
     if(cliSock._sock < 0)
     {
 		_error = ge_error();
@@ -312,7 +313,7 @@ int tcp_cli_sock::create(int opt)
 }
 
 //-----------------------------------------------------------------------------
-int tcp_cli_sock::pconnect(DWORD ip, int port)
+int tcp_cli_sock::pconnect(size_t ip, int port)
 {
     _error = 0;
     if(_sock != -1)
@@ -355,7 +356,7 @@ int tcp_cli_sock::pconnect(const char* sip, int port, CancelCB cbCall, void* pUs
 
     // non blocking node couse we can cancel it by Cancel Call
     setblocking(0);
-    DWORD         ti = ge_gettick();
+    size_t         ti = ge_gettick();
     err = ::connect(_sock, (const struct sockaddr*)&_remote_sin, sizeof(_remote_sin));
 
     if(0==cbCall)
@@ -408,7 +409,7 @@ int tcp_cli_sock::connect(const char* sip, int port, CancelCB cbCall, void* pUse
 
 
 //-----------------------------------------------------------------------------
-BOOL sock::DefCBCall(void*, DWORD dw)
+BOOL sock::DefCBCall(void*, size_t dw)
 {
     return dw < 10000;
 }
@@ -490,7 +491,7 @@ int  udp_sock::receive(BYTE* buff, int length, struct sockaddr_in& rsin)
                            (char*)buff, length,
                            0,
                            (struct sockaddr  *) &rsin,
-                           &iRecvLen);
+                           (socklen_t*)&iRecvLen);
     }
     if(rcv==-1){
         _error = ge_error();
@@ -520,7 +521,7 @@ int  udp_sock::receive(BYTE* buff, int length, int port, const char* ip)
                                (char*)buff, length,
                                0,
                                (struct sockaddr  *) &_remote_sin,
-                               &iRecvLen);
+                               (socklen_t*)&iRecvLen);
 
         }
         else
@@ -530,7 +531,7 @@ int  udp_sock::receive(BYTE* buff, int length, int port, const char* ip)
             rcv =  (int)recvfrom (_sock, (char*)buff, length,
                                  0,
                                  (struct sockaddr  *) &_remote_sin,
-                                 &iRecvLen);
+                                 (socklen_t*)&iRecvLen);
  
         }
     }
@@ -603,7 +604,7 @@ int  udp_sock::connect(const char* sip, int port, CancelCB cbCall, void* pUser)
 
     // non blocking node couse we can cancel it by Cancel Call
     setblocking(0);
-    DWORD         ti = ge_gettick();
+    size_t         ti = ge_gettick();
     err = ::connect(_sock, (const struct sockaddr*)&_remote_sin, sizeof(_remote_sin));
     if(0==cbCall)
         cbCall = sock::DefCBCall;

@@ -3,12 +3,12 @@
 #define AFX_STATICGL_H__93624CAF_5EA2_45FE_BAE9_B2A4B696BA81__INCLUDED_
 
 
-#include <gl/gl.h>			
-#include <gl/glu.h>			
-#include <gl/glaux.h>	
-#include "mmove.h"	
+#include <GL/gl.h>
+#include <GL/glu.h>
+// #include <gl/Glaux.h>
+#include "MMove.h"
 #include "camera.h"	
-#include "brush.h"	
+#include "Brush.h"	
 #include "zedtypes.h"
 
 enum V_MODE{
@@ -29,7 +29,7 @@ typedef void (*CbSize)(CWnd* pwnd, int x, int y);
 typedef void (*CbPrepPaint)(CWnd* pdc, V_MODE mode, BOOL init);
 typedef void (*CbPaint)(CWnd* pdc, V_MODE mode);
 typedef void (*CbInit)(CWnd* pwnd);
-typedef BOOL (*CbMouse)(UINT msg, V_ACTION m, CPoint& pt, V3& xyz) ;
+typedef BOOL (*CbMouse)(size_t msg, V_ACTION m, CPoint& pt, V3& xyz) ;
 
 
 // CStaticGL window
@@ -59,7 +59,7 @@ public:
     }
     int     GetViewIndex(){ return (int)(_vt-'x');};
     void    InitialUpdate();
-    BOOL    CreateWnd(CWnd* parent, UINT isctrl);
+    BOOL    CreateWnd(CWnd* parent, size_t isctrl);
     void    GLPaint();
     void    UseSelection(BOOL b= TRUE){_bsel=b;}
     REAL    Wnd2World(REAL coord, char dir);
@@ -131,16 +131,16 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnDestroy();
 	afx_msg void OnPaint();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
-	afx_msg void OnMButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnMButtonUp(UINT nFlags, CPoint point);
-    afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+	afx_msg void OnSize(size_t nType, int cx, int cy);
+	afx_msg void OnMouseMove(size_t nFlags, CPoint point);
+	afx_msg void OnLButtonDown(size_t nFlags, CPoint point);
+	afx_msg void OnLButtonUp(size_t nFlags, CPoint point);
+	afx_msg void OnRButtonDown(size_t nFlags, CPoint point);
+	afx_msg void OnRButtonUp(size_t nFlags, CPoint point);
+	afx_msg void OnShowWindow(BOOL bShow, size_t nStatus);
+	afx_msg void OnMButtonDown(size_t nFlags, CPoint point);
+	afx_msg void OnMButtonUp(size_t nFlags, CPoint point);
+    afx_msg BOOL OnSetCursor(CWnd* pWnd, size_t nHitTest, size_t message);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
@@ -148,7 +148,7 @@ protected:
 	BOOL TestButtons(CPoint& pt, BOOL bGoDown);
     
     V3      _angle;
-    UINT    _timer;
+    size_t    _timer;
     BOOL    _bsel;
 public:
     REAL    _dist;

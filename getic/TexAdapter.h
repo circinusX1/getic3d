@@ -1,14 +1,15 @@
 #ifndef __TEXADAPTER_H__
 #define __TEXADAPTER_H__
 
-#include <gl/gl.h>			
-#include "extern/glext.h"	
-#include "extern/glu.h"			
-#include "extern/glaux.h"	
+#include <GL/gl.h>
+#include <GL/glu.h>
+//#include "extern/glext.h"
+//
+//#include "extern/Glaux.h"
 #include "TexRef.h"
 
 extern 	Htex		_dumptex;
-extern  UINT        GUtex;    
+extern  size_t        GUtex;
 #define     FLAGS_DISABLED  (0x80000000)
 
 
@@ -18,8 +19,8 @@ struct LmInfo
     LmInfo():_flags(0),_lmIndex(-1){}
 
     int     _lmIndex;
-    SIZE    _size;
-    DWORD   _flags;
+    size_t    _size;
+    size_t   _flags;
     V3      _lmAxes[3];
 };
 
@@ -29,14 +30,14 @@ class TexCarrier
 public:
     TexCarrier():_combine(0){}
     ~TexCarrier(){}
-    void            SetCombine(DWORD d){_combine=d;};
-    DWORD           Combine(){return _combine;};
+    void            SetCombine(size_t d){_combine=d;};
+    size_t           Combine(){return _combine;};
     Texs&           GetTexs(){return _textures;}
     Htex&           GetHtex(int index){return _textures._texts[index];}
     void            SetHtex(Htex& ht, int index){_textures._texts[index]=ht;}
-    void            SetApply(DWORD apply, int index){_textures._texApply[index]=apply;}
-    DWORD&          Apply(int index){return _textures._texApply[index];}
-    Htex&           SetTex(const char* name, int stage=GUtex, DWORD flags=0){
+    void            SetApply(size_t apply, int index){_textures._texApply[index]=apply;}
+    size_t&          Apply(int index){return _textures._texApply[index];}
+    Htex&           SetTex(const char* name, int stage=GUtex, size_t flags=0){
         Htex& rv = _textures[stage].Assign(name,flags);
         if((int)rv)
             _combine |= (1<<stage);
@@ -45,7 +46,7 @@ public:
         return rv;
     }
 protected:
-    DWORD           _combine;
+    size_t           _combine;
     Texs            _textures;
 };
 
@@ -55,9 +56,9 @@ class NO_VT Tadapt
 public:
     Tadapt():_glTarget(0),_glGen(0),_enabled(0),old_enabled(1){}
 
-    BOOL Binds(Htex* pTexts, DWORD comb);
+    BOOL Binds(Htex* pTexts, size_t comb);
     BOOL Bind(const TexCarrier& pTexts, int stage=0);
-    BOOL Bind(Htex& tex, DWORD flags=0);
+    BOOL Bind(Htex& tex, size_t flags=0);
     INLN BOOL Bind(TexCarrier* pTexts, int stage){return Bind(*pTexts, stage);}
     INLN BOOL Bind(Texs& txs, int stage=0){return Bind((Htex&)txs._texts[stage], txs._texApply[stage]);};
     INLN void Disable();
@@ -67,15 +68,15 @@ public:
 
 private:
     
-    DWORD   _glTarget;
-    DWORD   _glGen;
+    size_t   _glTarget;
+    size_t   _glGen;
     BOOL    _enabled;
     BOOL    old_enabled;
     HTEX    _hTex;
 };
 
 extern Tadapt      Ta; 
-extern UINT Targets[];
+extern size_t Targets[];
 
 
 INLN void Tadapt::Enable()

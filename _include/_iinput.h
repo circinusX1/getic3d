@@ -38,7 +38,7 @@ typedef enum _EKEYSS
 //--------------------------------------------------------------------------------------
 struct UIInputMap
 {
-    void                SetName(const TCHAR* n){::_tcscpy(name,n);}
+    void                SetName(const TCHAR* n){::strcpy(name,n);}
     const TCHAR*        GetName(void){return name;}
     void                SetAKM(int a, int k, int m){keyAction=a; dikKey=k; mouseBut=m;}
     int                 GetAKM(){return (keyAction | (16<<dikKey) | (24<<mouseBut));}
@@ -138,7 +138,7 @@ public:
 	virtual BOOL  Create(HWND hwnd,
                          HINSTANCE appInstance,
                          BOOL isExclusive, 
-                         DWORD flags)=0;
+                         size_t flags)=0;
 	virtual BOOL  Destroy()=0;
     virtual BOOL  AcquireAll()=0;
 	virtual void  UnacquireAll(BOOL b=TRUE)=0;

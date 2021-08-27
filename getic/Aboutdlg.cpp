@@ -1,13 +1,13 @@
 
 #include "stdafx.h"
 #include "z-edmap.h"
-#include "AboutDlg.h" 
+#include "Aboutdlg.h"
 #include "VertDlgDlg.h"
 #include "MainFrm.h"
 #include "versionmacro.h"//#define _TRIAL
 #include "z_ed2Doc.h"
 
-BOOL GetOpenCommand(LPCTSTR regPath, CString& command);
+BOOL GetOpenCommand(const char* regPath, CString& command);
 static CAboutDlg* PAbout;
 static REAL       Dst = -2000.0, J=0;
 //---------------------------------------------------------------------------------------
@@ -161,14 +161,14 @@ BOOL CAboutDlg::OnInitDialog()
 }
 
 //---------------------------------------------------------------------------------------
-HBRUSH CAboutDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+HBRUSH CAboutDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, size_t nCtlColor) 
 {
     return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 }
 
 
 //---------------------------------------------------------------------------------------
-BOOL CAboutDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) 
+BOOL CAboutDlg::OnSetCursor(CWnd* pWnd, size_t nHitTest, size_t message) 
 {
 	return CDialog::OnSetCursor(pWnd, nHitTest, message);
 }
@@ -189,7 +189,7 @@ void CAboutDlg::OnDestroy()
 	
 }
 
-void CAboutDlg::OnTimer(UINT nIDEvent) 
+void CAboutDlg::OnTimer(size_t nIDEvent) 
 {
     _pStaticGL->GLPaint();
 	CDialog::OnTimer(nIDEvent);

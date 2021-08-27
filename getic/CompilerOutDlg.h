@@ -17,7 +17,7 @@ class CCompilerOutDlg : public CDialogBar
 public:
 	CCompilerOutDlg(CWnd* pParent = NULL);   // standard constructor
 
-	void	AddText(LPCTSTR );
+	void	AddText(const char* );
 // Dialog Data
 	//{{AFX_DATA(CCompilerOutDlg)
 	enum { IDD = DLG_COMPILERPROG };
@@ -42,11 +42,11 @@ protected:
 	//{{AFX_MSG(CCompilerOutDlg)
 	virtual void OnCancel();
 	afx_msg void OnOk();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnSize(size_t nType, int cx, int cy);
 	afx_msg void OnDestroy();
 	afx_msg void OnDblclkOut();
 	afx_msg void OnClose();
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, size_t nCtlColor);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

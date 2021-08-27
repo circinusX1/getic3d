@@ -6,8 +6,7 @@
 #endif // _MSC_VER > 1000
 // TabDlgSel.h : header file
 //
-#pragma warning (disable: 4786)
-#include "uienhancer.h"
+#include "UiEnhancer.h"
 /////////////////////////////////////////////////////////////////////////////
 // TabDlgSel window
 class CDlgBar;
@@ -22,7 +21,7 @@ public:
 
 // Operations
 public:
-	void AddDialog(CBASEDLG * pDlg, LPCSTR pTitle,int iMage, UINT iD );
+	void AddDialog(CBASEDLG * pDlg, LPCSTR pTitle,int iMage, size_t iD );
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(TabDlgSel)
@@ -42,7 +41,7 @@ public:
 	DECLARE_MESSAGE_MAP()
 public:
     CDlgBar*                 _pParent;
-    map<CDialog*, UINT>     _rects;   
+    map<CDialog*, size_t>     _rects;   
 };
 
 /////////////////////////////////////////////////////////////////////////////

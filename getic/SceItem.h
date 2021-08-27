@@ -3,11 +3,11 @@
 #define __SCEITEM_H__
 
 #include "stdafx.h"     // for GBackface
-#include <gl/gl.h>			
-#include <gl/glu.h>			
-#include <gl/glaux.h>	
+#include <GL/gl.h>
+#include <GL/glu.h>
+// #include <gl/Glaux.h>
      
-#include "..\\_include\\BspFIleStr.h"
+#include "bspfilestr.h"
 #include "baseutils.h"
 #include "TexRef.h"
 #include "TexAdapter.h"
@@ -91,11 +91,11 @@ public:
     EITEM           _item;
     char            _catname[16];
     int             _id;
-    DWORD           _props;
-    DWORD           _flags;
+    size_t           _props;
+    size_t           _flags;
 	BOOL			_selected;
     CLR             _colorD;
-    DWORD           _zonearea;
+    size_t           _zonearea;
     V3              _t;
     V3              _s;
     V3              _euler;

@@ -20,8 +20,8 @@ public:
 	CppCompiler();
 	virtual ~CppCompiler();
 
-    DWORD           Compile(char* buffer);
-    DWORD           InvokeExternalApp(const char* p, char* );
+    size_t           Compile(char* buffer);
+    size_t           InvokeExternalApp(const char* p, char* );
     const char*    GetResultString(BOOL cr = FALSE){
 		if(cr)
 			_results+="\r\n";
@@ -29,8 +29,8 @@ public:
     };  
     const BYTE*     GetResultBinary(long& len);
     void            CleanTmpFiles();
-    DWORD           CompileFile(const char* pFileName);
-    DWORD           MakeDLL();
+    size_t           CompileFile(const char* pFileName);
+    size_t           MakeDLL();
     BOOL            TestDLL();
 private:
     

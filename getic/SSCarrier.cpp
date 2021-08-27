@@ -40,7 +40,7 @@ BOOL	SoundCarrier::AddSound(int iidx)
 
 int		SoundCarrier::GetSound(int i)
 {
-	if(_pSoundsIdxes.size()>(UINT)i)
+	if(_pSoundsIdxes.size()>(size_t)i)
 		return _pSoundsIdxes[i];
 	return 0;
 }

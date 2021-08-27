@@ -2,10 +2,9 @@
 //---------------------------------------------------------------------------------------
 #ifndef __DLG_FACE_PRP_H__
 #define __DLG_FACE_PRP_H__
-#pragma warning (disable: 4786)
 #include "resource.h"
-#include "vertdlgdlg.h"
-#include "StaticGL.h"
+#include "VertDlgDlg.h"
+#include "Staticgl.h"
 #include "Drawout1.h"
 
 //---------------------------------------------------------------------------------------
@@ -65,7 +64,7 @@ protected:
 	virtual void OnCancel();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnDestroy();
-	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+	afx_msg void OnShowWindow(BOOL bShow, size_t nStatus);
 	afx_msg void OnSelchangeEffects();
 	afx_msg void OnGensc();
 	afx_msg void OnGensc2();

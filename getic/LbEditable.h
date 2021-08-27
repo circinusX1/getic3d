@@ -10,9 +10,9 @@
 /////////////////////////////////////////////////////////////////////////////
 #ifndef LBEDITABLE_H
 #define LBEDITABLE_H
-#pragma warning(disable: 4786)
+//   #pragma warning(disable: 4786)
 
-#include "poly.h"
+#include "Poly.h"
 #include <string>
 #include <map>
 #include <vector>
@@ -47,7 +47,7 @@ protected:
 	//{{AFX_MSG(CCbFromLb)
 		// NOTE - the ClassWizard will add and remove member functions here.
 	//}}AFX_MSG
-    void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+    void OnKeyDown(size_t nChar, size_t nRepCnt, size_t nFlags);
     void OnCloseup() ;
 
 	DECLARE_MESSAGE_MAP()
@@ -81,7 +81,7 @@ public:
 protected:
 	//{{AFX_MSG(CEditFromLb)
 	//}}AFX_MSG
-    void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+    void OnKeyDown(size_t nChar, size_t nRepCnt, size_t nFlags);
 
 	DECLARE_MESSAGE_MAP()
 	//////////////////////
@@ -117,7 +117,7 @@ public:
     CLbItem(C_TYPE_ t, const char* prop,  CLR& val)
     {
         char s[32];
-        _stprintf(s,"%d,%d,%d",val.r,val.g,val.b);
+        sprintf(s,"%d,%d,%d",val.r,val.g,val.b);
         _vtype = V_CLR;
         SetItem(t, prop, s);
     }
@@ -126,7 +126,7 @@ public:
     {
         char s[32];
         _vtype = V_REAL;
-        _stprintf(s,"%.4f",val);
+        sprintf(s,"%.4f",val);
         SetItem(t, prop, s);
     }
 
@@ -148,7 +148,7 @@ public:
 		else if(t==CBOX)
 		{
             char local[1024];
-            _tcscpy(local, p);
+            strcpy(local, p);
 		
             char tk[] = ",";
 			char* token = _tcstok( local, tk);
@@ -202,7 +202,7 @@ public:
 	int  InsertItem(CLbItem* pItem)
 	{
 		int i = AddString(pItem->_prop.c_str());
-		SetItemData(i, (DWORD)pItem);
+		SetItemData(i, (size_t)pItem);
         return i;
 	}
     

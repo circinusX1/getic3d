@@ -9,7 +9,7 @@ inline VAR FromSignature(const char* sig)
 {
     if(!stricmp(sig,"BYTE"))
         return V_BYTE;
-    if(!stricmp(sig,"CHAR"))
+    if(!stricmp(sig,"char"))
         return V_CHAR;
     if(!strcmp(sig,"TEXT"))
         return V_TEXT;

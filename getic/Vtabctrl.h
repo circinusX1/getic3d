@@ -13,8 +13,8 @@ public:
 
 // Attributes
 public:
-    BOOL    Create(UINT ID, CWnd* pParent);
-    void AddChildren(CDialog* pDlg, UINT ID, LPCTSTR pTitle=0);
+    BOOL    Create(size_t ID, CWnd* pParent);
+    void AddChildren(CDialog* pDlg, size_t ID, const char* pTitle=0);
 
 // Operations
 public:
@@ -33,11 +33,11 @@ public:
 	// Generated message map functions
 protected:
 	//{{AFX_MSG(CVTabCtrl)
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDown(size_t nFlags, CPoint point);
+	afx_msg void OnLButtonUp(size_t nFlags, CPoint point);
+	afx_msg void OnMouseMove(size_t nFlags, CPoint point);
 	afx_msg void OnDestroy();
-	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+	afx_msg BOOL OnSetCursor(CWnd* pWnd, size_t nHitTest, size_t message);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
     static BOOL     _registered;

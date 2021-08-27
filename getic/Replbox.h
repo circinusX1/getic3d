@@ -38,7 +38,7 @@ protected:
 	//{{AFX_MSG(CRepLBox)
 	afx_msg void OnDblclk();
 	afx_msg void OnDestroy();
-	afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+	afx_msg HBRUSH CtlColor(CDC* pDC, size_t nCtlColor);
 	//}}AFX_MSG
 
 	DECLARE_MESSAGE_MAP()

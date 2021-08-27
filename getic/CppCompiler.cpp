@@ -45,15 +45,15 @@ CppCompiler::~CppCompiler()
 }
 
 //--|  CppCompiler::Compile|--------------------------------------------------------------
-DWORD  CppCompiler::Compile(char* buffer)
+size_t  CppCompiler::Compile(char* buffer)
 {
-    char szTmpFile[_MAX_PATH];
+    char szTmpFile[PATH_MAX];
     
-    _tcscpy(szTmpFile, "temp\\temp.cpp");
+    strcpy(szTmpFile, "temp\\temp.cpp");
     FILE* pf = _tfopen(szTmpFile,"rb");
     if(!pf)
       return FALSE;
-    fwrite(buffer,_tcslen(buffer),1,pf);
+    fwrite(buffer,strlen(buffer),1,pf);
     fclose(pf);
     return CompileFile(szTmpFile);
 }
@@ -66,18 +66,18 @@ BOOL  CppCompiler::TestDLL()
     _results="";
 /*    
     MyEngine me;
-    // virtual _stdcall char* GetName()PURE;
+    // virtual  char* GetName()PURE;
     HINSTANCE hdll = ::LoadLibrary("temp\\temp.dll");
     
     _TRY{        
     if(hdll < (HINSTANCE)32)
         {
-            _results += MKSTR("Cannot load glued code: %d / %d",GetLastError(), (DWORD)hdll);
+            _results += MKSTR("Cannot load glued code: %d / %d",GetLastError(), (size_t)hdll);
             return FALSE;
         }
         
         EVT_CB pIs = (EVT_CB)::GetProcAddress(hdll,"Event");
-        DWORD rv = 0;
+        size_t rv = 0;
         if(pIs)
         {
             rv = (pIs)(GM_CREATE, &me,0);
@@ -112,7 +112,7 @@ const BYTE* CppCompiler::GetResultBinary(long& len)
 }
 
 //--| CppCompiler::CompileFile|-----------------------------------------------------------
-DWORD CppCompiler::CompileFile(const char* pFileName)
+size_t CppCompiler::CompileFile(const char* pFileName)
 {
     _results = "";
     
@@ -121,7 +121,7 @@ DWORD CppCompiler::CompileFile(const char* pFileName)
     HRSRC     hrsrc = FindResource(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_GSCRIPT_HDR1), "GSCRIPT_HDR");
     if(hrsrc)
     {
-        DWORD dwsz = SizeofResource(AfxGetResourceHandle(), hrsrc);
+        size_t dwsz = SizeofResource(AfxGetResourceHandle(), hrsrc);
         
         HGLOBAL hResLoad = LoadResource(AfxGetResourceHandle(), hrsrc);
         if(hResLoad)
@@ -145,12 +145,12 @@ DWORD CppCompiler::CompileFile(const char* pFileName)
       delete[]_binary;
     _binary = 0;
     
-    char appExe[_MAX_PATH];
+    char appExe[PATH_MAX];
     char cmdLine[2048] = {0};
     
-    _stprintf(appExe,"%s\\%s",theApp.CompilerDir(),"g++.exe");
+    sprintf(appExe,"%s\\%s",theApp.CompilerDir(),"g++.exe");
     
-    _tcscpy(cmdLine, "-c temp\\temp.cpp -o temp\\temp.o -I\"temp/\" -I\"script/headers/\" -g3"); //-vtable-thunks
+    strcpy(cmdLine, "-c temp\\temp.cpp -o temp\\temp.o -I\"temp/\" -I\"script/headers/\" -g3"); //-vtable-thunks
     return InvokeExternalApp(appExe,cmdLine);
     
 }
@@ -164,27 +164,27 @@ void  CppCompiler::CleanTmpFiles()
 }
 
 //--|  CppCompiler::MakeDLL|--------------------------------------------------------------
-DWORD  CppCompiler::MakeDLL()
+size_t  CppCompiler::MakeDLL()
 {
-    char appExe[_MAX_PATH];
+    char appExe[PATH_MAX];
     char cmdLine[2048] = {0};
     _results = "";
     
-    _stprintf(appExe,"%s\\%s",theApp.CompilerDir(),"dllwrap.exe");
+    sprintf(appExe,"%s\\%s",theApp.CompilerDir(),"dllwrap.exe");
     
-    _tcscpy(cmdLine, "--output-def temp\\temp.def --driver-name c++ --implib temp\\temp.a temp\\temp.o  --no-export-all-symbols --add-stdcall-alias -o temp\\temp.dll");
+    strcpy(cmdLine, "--output-def temp\\temp.def --driver-name c++ --implib temp\\temp.a temp\\temp.o  --no-export-all-symbols --add-stdcall-alias -o temp\\temp.dll");
     return InvokeExternalApp(appExe,cmdLine);
 }
 
 //--| CppCompiler::InvokeExternalApp|-----------------------------------------------------
-DWORD CppCompiler::InvokeExternalApp(const char* pCmd,char* cmdLine)
+size_t CppCompiler::InvokeExternalApp(const char* pCmd,char* cmdLine)
 {
     STARTUPINFO          tsi = {0};
     PROCESS_INFORMATION  tpi = {0};
-    DWORD                nRead;
+    size_t                nRead;
     SECURITY_ATTRIBUTES  sa  = {0};
     char                 outBuff[256];
-    DWORD                rtVal=9999;
+    size_t                rtVal=9999;
     
     _results = "";
     
@@ -215,19 +215,19 @@ DWORD CppCompiler::InvokeExternalApp(const char* pCmd,char* cmdLine)
     
     // pass new env variables to this process
     //
-    char    cdALL[_MAX_PATH];
-    char    cdBIN[_MAX_PATH];
-    char    cdCD[_MAX_PATH];
+    char    cdALL[PATH_MAX];
+    char    cdBIN[PATH_MAX];
+    char    cdCD[PATH_MAX];
     
-    _getcwd(cdCD, _MAX_PATH);
+    _getcwd(cdCD, PATH_MAX);
     
-    _tcscpy(cdALL,"path=");
+    strcpy(cdALL,"path=");
     //    _tcscat(cdALL, cdBIN);
     //    _tcscat(cdALL, ";");
     _tcscat(cdALL, theApp.CompilerDir());
     
     
-    _tcscpy(cdBIN, pCmd);
+    strcpy(cdBIN, pCmd);
     _tcscat(cdBIN, " ");
     _tcscat(cdBIN, cmdLine);
     BOOL b = ::CreateProcess(0, cdBIN, &sa, &sa, 1, 0, (void*)cdALL, cdCD, &tsi, &tpi);
@@ -243,7 +243,7 @@ DWORD CppCompiler::InvokeExternalApp(const char* pCmd,char* cmdLine)
     BOOL terminated =FALSE;
     if(b)
     {
-        DWORD to ;
+        size_t to ;
         START_WAIT("");
         for(int i=0;i<30;i++)
         {

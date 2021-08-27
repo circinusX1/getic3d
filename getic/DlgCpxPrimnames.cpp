@@ -106,8 +106,8 @@ void DlgCpxPrimnames::OnOk3()
     {
         Brush* pBrush = *ppCpxBrush;
         
-        _stprintf(prop,"Brush %d", iCount);
-        _tcscpy( pBrush->_name, _lbModels.GetProp( prop) );
+        sprintf(prop,"Brush %d", iCount);
+        strcpy( pBrush->_name, _lbModels.GetProp( prop) );
         iCount++;
     }
     _curPath = _dirtree.GetItemPath();

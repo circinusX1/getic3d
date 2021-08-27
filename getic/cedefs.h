@@ -17,7 +17,7 @@
 #ifndef CEDEFS_H__INCLUDED
 #define CEDEFS_H__INCLUDED
 
-#pragma warning (disable: 4786)
+//   #pragma warning (disable: 4786)
 #if defined(CE_DLL_BUILD) && defined(CE_FROM_DLL)
 #error Define CE_DLL_BUILD or CE_FROM_DLL, but not both
 #endif

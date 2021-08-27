@@ -6,7 +6,7 @@
 
 #include "stdafx.h"
 #include "z-edmap.h"
-#include "BoxItems.h"
+#include "Boxitems.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

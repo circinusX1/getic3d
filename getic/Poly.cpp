@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------------------
 #include "stdafx.h"
 #include "z-edmap.h"
-#include "poly.h"
+#include "Poly.h"
 #include "scene.h"
 #include "z_ed2Doc.h"
 
@@ -524,7 +524,7 @@ BOOL    Poly::IntersectsPoly(Poly& p2)
 
 void	Poly::ApplyNewTexCoord()
 {
-    UINT i;
+    size_t i;
     for( i=0; i < _vtci.size();i++)
     {
         UV& t   = _vtci[i]._uv[GUtex];
@@ -567,7 +567,7 @@ void    Poly::RotateTC(int step, int ti)
         UV prev = _vtci.back()._uv[ti];
         UV tmp;
 
-        for(UINT j=0; j < _vtci.size(); j++)
+        for(size_t j=0; j < _vtci.size(); j++)
         {
             UV& t1  = _vtci[j]._uv[ti];
             tmp = _vtci[j]._uv[ti];
@@ -726,7 +726,7 @@ BOOL Poly::IsInnerPoint(V3& pi)
 
 }
 
-void Poly::ReApplyTexture(DWORD crFlags)
+void Poly::ReApplyTexture(size_t crFlags)
 {
 /****
     const char* szt0 = _textures[GUtex].GetTexName();
@@ -734,7 +734,7 @@ void Poly::ReApplyTexture(DWORD crFlags)
         return;
     char   styn[64];
 
-    ::_tcscpy(styn,szt0);
+    ::strcpy(styn,szt0);
 
     if(_polyprops & FACE_BLACKMASK) 
     {
@@ -757,7 +757,7 @@ void Poly::ReApplyTexture(DWORD crFlags)
         // do the black mask alpha
         TexHandler th;
         if(styn[0]='&')
-            _tcscpy(styn,styn+1);
+            strcpy(styn,styn+1);
         if(th.LoadFile(MKSTR("res\\%s", styn),0))
         {
             
@@ -785,7 +785,7 @@ BOOL    Poly::IsDeplanetized()
     GCalcNormal(this, _vtci[0]._xyz, _vtci[1]._xyz, _vtci[2]._xyz);
 
     V3  v0 = _vtci[0]._xyz;
-    for(UINT i=1; i < _vtci.size()-1; i++)
+    for(size_t i=1; i < _vtci.size()-1; i++)
     {
         V3 n = GCalcNormal(_vtci[1+i]._xyz,_vtci[i]._xyz, v0);
         if(n == _n)
@@ -799,7 +799,7 @@ BOOL    Poly::IsDeplanetized()
 V3      Poly::GetCenter()
 {
     V3 ret;
-    for(UINT i=0; i < _vtci.size(); ++i)
+    for(size_t i=0; i < _vtci.size(); ++i)
     {
         ret+=_vtci[i]._xyz;
     }
@@ -813,7 +813,7 @@ REAL    Poly::GetAreea()
         return _area;
 	_area = 0.0;
     V3      a, b, c;
-	for (UINT i=2 ; i < _vtci.size() ; i++)
+	for (size_t i=2 ; i < _vtci.size() ; i++)
 	{
         a = _vtci[i-1]._xyz - _vtci[0]._xyz;
         b = _vtci[i  ]._xyz - _vtci[0]._xyz;
@@ -828,7 +828,7 @@ void    Poly::RotateTCRad(REAL grads, int ti)
 {
     M4  mrotate;
     V3  rotCenter;//
-    UINT i;
+    size_t i;
     // find texture coordinate center
     vvector<V3> relstoCenter(32);
     for ( i=0 ; i < _vtci.size() ; i++)

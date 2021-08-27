@@ -66,19 +66,19 @@ void CFrontView::Dump(CDumpContext& dc) const
 /////////////////////////////////////////////////////////////////////////////
 // CFrontView message handlers
 
-void CFrontView::OnLButtonDown(UINT nFlags, CPoint point) 
+void CFrontView::OnLButtonDown(size_t nFlags, CPoint point) 
 {
 	
 	CView::OnLButtonDown(nFlags, point);
 }
 
-void CFrontView::OnLButtonUp(UINT nFlags, CPoint point) 
+void CFrontView::OnLButtonUp(size_t nFlags, CPoint point) 
 {
 	
 	CView::OnLButtonUp(nFlags, point);
 }
 
-void CFrontView::OnMouseMove(UINT nFlags, CPoint point) 
+void CFrontView::OnMouseMove(size_t nFlags, CPoint point) 
 {
 	CZEDDoc* pDoc = (CZEDDoc*)GetDocument();
 	

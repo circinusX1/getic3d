@@ -24,7 +24,7 @@ TriggerItem::TriggerItem():SceItem(),_bSelEfect(0),_pBrush(0)
     _drawBrush.Recalc();
     _efectPoint = _t + VY * 100.0;
 
-    _stprintf(_name,"Trigger%d",_id);
+    sprintf(_name,"Trigger%d",_id);
 	_brIndex = -1;
 }
 

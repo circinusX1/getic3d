@@ -80,7 +80,7 @@ LRESULT CDlgCompProgress::HandleInitDialog2(WPARAM w, LPARAM l)
 }
 
 
-void CDlgCompProgress::OnSize(UINT nType, int cx, int cy) 
+void CDlgCompProgress::OnSize(size_t nType, int cx, int cy) 
 {
 	CBASEDLG::OnSize(nType, cx, cy);
 
@@ -154,7 +154,7 @@ void CDlgCompProgress::OnDestroy()
 }
 
 
-void    CDlgCompProgress::LogPos(DWORD flag, V3& pos, LPCTSTR lpszFormat,...)
+void    CDlgCompProgress::LogPos(size_t flag, V3& pos, const char* lpszFormat,...)
 {
    if(!_onScreen || !::IsWindow(m_hWnd))
         return;
@@ -163,8 +163,8 @@ void    CDlgCompProgress::LogPos(DWORD flag, V3& pos, LPCTSTR lpszFormat,...)
 	va_start(args, lpszFormat);
 
 	int  nBuf;
-	CHAR szBuffer[512];
-	nBuf = _vsnprintf(szBuffer, sizeof(szBuffer) / sizeof(CHAR), lpszFormat, args);
+	char szBuffer[512];
+	nBuf = _vsnprintf(szBuffer, sizeof(szBuffer) / sizeof(char), lpszFormat, args);
 	assert(nBuf < sizeof(szBuffer));
     int idx = 0;
     if(_onScreen)
@@ -189,7 +189,7 @@ void    CDlgCompProgress::LogPos(DWORD flag, V3& pos, LPCTSTR lpszFormat,...)
     va_end(args);
 }
 
-void    CDlgCompProgress::Log(DWORD flag, LPCTSTR lpszFormat,...)
+void    CDlgCompProgress::Log(size_t flag, const char* lpszFormat,...)
 {
     if(!_onScreen || !::IsWindow(m_hWnd))
         return;
@@ -198,8 +198,8 @@ void    CDlgCompProgress::Log(DWORD flag, LPCTSTR lpszFormat,...)
 	va_start(args, lpszFormat);
 
 	int  nBuf;
-	CHAR szBuffer[512];
-	nBuf = _vsnprintf(szBuffer, sizeof(szBuffer) / sizeof(CHAR), lpszFormat, args);
+	char szBuffer[512];
+	nBuf = _vsnprintf(szBuffer, sizeof(szBuffer) / sizeof(char), lpszFormat, args);
 	assert(nBuf < sizeof(szBuffer));
     
     int idx = GetDlgItem(IDC_LIST1)->SendMessage(LB_ADDSTRING, 0, (LPARAM)(szBuffer));

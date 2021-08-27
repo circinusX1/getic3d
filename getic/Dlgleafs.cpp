@@ -61,7 +61,7 @@ BOOL CDlgLeafs::OnInitDialog()
 
     if(compiler._bTrees.size())
     {
-        UINT      nparents = 0;
+        size_t      nparents = 0;
         CBspTree* pTree = compiler._bTrees[0];
 
         FOREACH(vvector<CLeaf*>, pTree->_leafs, ppl)
@@ -95,7 +95,7 @@ LRESULT CDlgLeafs::OnItemChanged(WPARAM w,LPARAM l)
 {
     _iSel = w;
 
-    UINT leafIdx = ::atoi(m_lv.GetItemText(_iSel,0));
+    size_t leafIdx = ::atoi(m_lv.GetItemText(_iSel,0));
         //mark branch
     
     Compiler& compiler = DOC()->_compiler;

@@ -38,7 +38,7 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(DlgMurrChs)
 	virtual void OnCancel();
-	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnChar(size_t nChar, size_t nRepCnt, size_t nFlags);
 	afx_msg void OnOk();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

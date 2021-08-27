@@ -8,7 +8,7 @@
 #define _GETIC_PLUGBSP_H__
 
 #include <windows.h>
-#include <tchar.h>
+//#include <tchar.h>
 #include "bspfilestr.h"
 
 typedef enum _SEEK_POS{
@@ -27,16 +27,16 @@ public:
     virtual ~IBSPFileHook(){}
 
 
-    virtual long   _stdcall read( void *buffer, size_t size, size_t count)=0;
-    virtual size_t _stdcall write( const void *buffer, size_t size, size_t count)=0;
-    virtual char*  _stdcall gets( char *string, int n)=0;
-    virtual int    _stdcall seek (long offset, SEEK_POS origin )=0;
-    virtual long   _stdcall tell ()=0;
-    virtual int    _stdcall close()=0;
-    virtual long   _stdcall wopen(const wchar_t *filename, const wchar_t *mode)=0;
-    virtual long   _stdcall aopen(const char *filename, const char *mode)=0;
-    virtual int    _stdcall eof( )=0;
-    virtual void   _stdcall start_section(const char* sectionName)=0;
+    virtual long    read( void *buffer, size_t size, size_t count)=0;
+    virtual size_t  write( const void *buffer, size_t size, size_t count)=0;
+    virtual char*   gets( char *string, int n)=0;
+    virtual int     seek (long offset, SEEK_POS origin )=0;
+    virtual long    tell ()=0;
+    virtual int     close()=0;
+    virtual long    wopen(const wchar_t *filename, const wchar_t *mode)=0;
+    virtual long    aopen(const char *filename, const char *mode)=0;
+    virtual int     eof( )=0;
+    virtual void    start_section(const char* sectionName)=0;
 
 };
 

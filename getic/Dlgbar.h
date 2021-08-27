@@ -3,17 +3,17 @@
 #ifndef __DLG_BAR_H__
 #define __DLG_BAR_H__
 
-#pragma warning (disable: 4786)
-#include "uienhancer.h"
+////   #pragma warning (disable: 4786)
+#include "UiEnhancer.h"
 #include "DlgFaceProp.h"
 #include "DlgBrshProp.h"
 #include "DlgTextures.h"    
 #include "TabDlgSel.h"
-#include "DlgItems.h"
+#include "Dlgitems.h"
 #include "DlgSoundItem.h"
 #include "DlgTriggerItem.h"
 #include "DlgStartPlayItem.h"
-#include "DlgScene.h"
+#include "Dlgscene.h"
 #include "DlgLightItem.h"
 #include "DlgGameItem.h"
 #include "DlgMaterial.h"
@@ -52,7 +52,7 @@ public:
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CDlgBar)
 	public:
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
+	virtual BOOL OnCmdMsg(size_t nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 	//}}AFX_VIRTUAL
 
     void    OnOK(){}
@@ -65,12 +65,12 @@ public:
     void    OnBrushesSelected();
     void    OnItemsSelected();
     void    OnFacesSelected();
-    DWORD   GettexGenFlag();
+    size_t   GettexGenFlag();
     void    ResetBrushes();
     void	BlockRetreive(BOOL blk){_blkRetreive = blk;}
 	BOOL	IsRetreiveBlocked(){return (_blkRetreive || _initDlg);}
 	void    RefreshItemsList();
-    void    ShowItemProps(DWORD itmtype);
+    void    ShowItemProps(size_t itmtype);
 	void	AddItem(SceItem* pItem);
 	void    DelItem(SceItem* pItem);
     void    OnItemPropsChanged(SceItem* pItem);
@@ -126,12 +126,12 @@ protected:
 	afx_msg void OnDestroy();
 	//}}AFX_MSG
     LRESULT OnPostInit(LPARAM, WPARAM) ;
-    afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+    afx_msg void OnVScroll(size_t nSBCode, size_t nPos, CScrollBar* pScrollBar);
     LRESULT OnKeyTab(WPARAM,LPARAM);
-	void OnSize(UINT nType, int cx, int cy);
+	void OnSize(size_t nType, int cx, int cy);
 	DECLARE_MESSAGE_MAP()
 
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, size_t nCtlColor);
 
     vvector<CBASEDLG*>   _pDlgs;
     BOOL            _dirty;

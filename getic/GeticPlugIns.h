@@ -31,7 +31,7 @@ struct PlTex
 interface IPlugIn;
 interface GeticEditor
 {
-    int     AddMenuItem(int , int , UINT , IPlugIn* ) = 0;
+    int     AddMenuItem(int , int , size_t , IPlugIn* ) = 0;
     void    SaveDocument()              = 0;
     void    StartNewDocument()          = 0;
     void    AddScene(PlBrush**, int )   = 0;
@@ -42,7 +42,7 @@ interface GeticEditor
 // allows to load different geometry file formats
 interface PlugIn
 {
-    void            FireCommand(UINT cmdID) = 0;
+    void            FireCommand(size_t cmdID) = 0;
     const THCAR*    GetMenuItemTexxt()      = 0;
 };
 

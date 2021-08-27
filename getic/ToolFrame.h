@@ -23,14 +23,14 @@ public:
 public:
 
 	BOOL	CreateTextView();//_textEdit
-    void    LoadSciptFile(LPCTSTR doc, LPCTSTR itm, LPCTSTR text);
+    void    LoadSciptFile(const char* doc, const char* itm, const char* text);
 	void    CanChangeItem();
-	void	SetTitle(LPCTSTR psz);
+	void	SetTitle(const char* psz);
 
 
-    void    AddScriptString(LPCTSTR );
-    void    SelectScriptString(LPCTSTR );
-    void    FindScriptFunction(LPCTSTR );
+    void    AddScriptString(const char* );
+    void    SelectScriptString(const char* );
+    void    FindScriptFunction(const char* );
 // Operations
 public:
 

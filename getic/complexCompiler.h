@@ -5,7 +5,7 @@
 #ifndef __COMPELX_COMPILER_H__
 #define __COMPELX_COMPILER_H__
 
-#include "brush.h"
+#include "Brush.h"
 
 class ComplexCompiler  
 {

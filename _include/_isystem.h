@@ -95,8 +95,8 @@ struct SystemData
     REAL         _curtime;
     REAL         _ticktime;     
     REAL         _pauseTime;    
-    DWORD        _physFrame;   
-    DWORD        _drawFrame;   
+    size_t        _physFrame;   
+    size_t        _drawFrame;   
     BYTE         *_pKeys;
     int          *_pMouse;
     ISystem*     _pSystem;
@@ -200,9 +200,9 @@ public:
     virtual void      Wait(long percent)=0;
 
 // texture functions
-    virtual Htex* GenTexGetBuff(const TCHAR* , DWORD, char**, int*, int*, int*)=0;
-    virtual Htex* GenTex(const TCHAR* name, int x, int y, int bpp, const char* buff, DWORD mip);
-    virtual Htex* GenTexFile(const TCHAR* , DWORD)=0;
+    virtual Htex* GenTexGetBuff(const TCHAR* , size_t, char**, int*, int*, int*)=0;
+    virtual Htex* GenTex(const TCHAR* name, int x, int y, int bpp, const char* buff, size_t mip);
+    virtual Htex* GenTexFile(const TCHAR* , size_t)=0;
     virtual Htex* GenTexFont(REAL x, REAL y, REAL scale, const TCHAR* fname) = 0;
     virtual void  DeleteTexFont(Htex*, BOOL allrefs=0)=0;
     virtual void  DeleteTex(Htex*, BOOL allrefs=0)=0;
@@ -213,9 +213,9 @@ public:
 	virtual void   RemoveSoundFile(const TCHAR* pFile)=0;
 	virtual void   RemoveSound(Itape* pt)=0;
 	virtual Itape* GetTape(const TCHAR* fname)=0;
-    virtual void   PlayPrimary(const Itape* pt, DWORD mode=1)=0;
+    virtual void   PlayPrimary(const Itape* pt, size_t mode=1)=0;
    	virtual void   StopPlay(const Itape* pt )=0;
-    virtual Itape* PlayPrimaryFile(const TCHAR* fname, DWORD mode=1)=0;
+    virtual Itape* PlayPrimaryFile(const TCHAR* fname, size_t mode=1)=0;
 	virtual void   StopPlayFile(const TCHAR* fname)=0;
 
 //input functions
@@ -273,7 +273,7 @@ public:
 #ifndef GUID_DEFINED
 #define GUID_DEFINED
 typedef struct _GUID {          // size is 16
-    DWORD Data1;
+    size_t Data1;
     WORD  Data2;
     WORD  Data3;
     BYTE  Data4[8];

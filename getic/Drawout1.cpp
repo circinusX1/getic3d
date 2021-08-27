@@ -39,20 +39,20 @@ void CDrawOut::PreSubclassWindow()
 	CWnd::PreSubclassWindow();
 }
 
-void CDrawOut::OnLButtonUp(UINT nFlags, CPoint point) 
+void CDrawOut::OnLButtonUp(size_t nFlags, CPoint point) 
 {
 	_mmove._ldown = 0;
 	CWnd::OnLButtonUp(nFlags, point);
 }
 
-void CDrawOut::OnLButtonDown(UINT nFlags, CPoint point) 
+void CDrawOut::OnLButtonDown(size_t nFlags, CPoint point) 
 {
     _mmove._ptd   = point;
     _mmove._ldown = 1;
 	CWnd::OnLButtonDown(nFlags, point);
 }
 
-void CDrawOut::OnMouseMove(UINT nFlags, CPoint point) 
+void CDrawOut::OnMouseMove(size_t nFlags, CPoint point) 
 {
     if(_mmove._ldown)
     {
@@ -182,7 +182,7 @@ void CDrawOut::Repaint(CDC* pDC)
 
 }
 
-BOOL CDrawOut::CreateWnd(CWnd* parent, UINT isctrl)
+BOOL CDrawOut::CreateWnd(CWnd* parent, size_t isctrl)
 {
     RECT rt={0,0,1,1};
     CWnd* hwPrev = 0;//
@@ -203,7 +203,7 @@ BOOL CDrawOut::CreateWnd(CWnd* parent, UINT isctrl)
 	return b;
 }
 
-void CDrawOut::OnLButtonDblClk(UINT nFlags, CPoint point) 
+void CDrawOut::OnLButtonDblClk(size_t nFlags, CPoint point) 
 {
     if(this == CDrawOut::p_DrawBig)
         return;

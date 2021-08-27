@@ -49,7 +49,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
 	afx_msg void OnDestroy();
-	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnHScroll(size_t nSBCode, size_t nPos, CScrollBar* pScrollBar);
 	afx_msg void OnBw();
 	afx_msg void OnBw2();
 	afx_msg void OnMask();
@@ -61,9 +61,9 @@ protected:
 	afx_msg void OnReload();
 	//}}AFX_MSG
     /**
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDown(size_t nFlags, CPoint point);
+	afx_msg void OnLButtonUp(size_t nFlags, CPoint point);
+	afx_msg void OnMouseMove(size_t nFlags, CPoint point);
     */
 
     DECLARE_MESSAGE_MAP()

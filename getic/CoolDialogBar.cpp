@@ -69,7 +69,7 @@ void CCoolDialogBar::OnUpdateCmdUI(class CFrameWnd *pTarget, int bDisableIfNoHnd
     UpdateDialogControls(pTarget, bDisableIfNoHndler);
 }
 
-BOOL CCoolDialogBar::Create(CWnd* pParentWnd, CDialog *pDialog, CString &pTitle, UINT nID, DWORD dwStyle) 
+BOOL CCoolDialogBar::Create(CWnd* pParentWnd, CDialog *pDialog, CString &pTitle, size_t nID, size_t dwStyle) 
 {
     ASSERT_VALID(pParentWnd);   // must have a parent
     ASSERT (!((dwStyle & CBRS_SIZE_FIXED) && (dwStyle & CBRS_SIZE_DYNAMIC)));
@@ -115,7 +115,7 @@ CSize CCoolDialogBar::CalcFixedLayout(BOOL bStretch, BOOL bHorz)
         return CSize(m_sizeVert.cx, nVertDockBarHeight);
 }
 
-CSize CCoolDialogBar::CalcDynamicLayout(int nLength, DWORD dwMode)
+CSize CCoolDialogBar::CalcDynamicLayout(int nLength, size_t dwMode)
 {
 	// Rob Wolpov 10/15/98 Added support for diagonal sizing
 	if (IsFloating())
@@ -216,7 +216,7 @@ void CCoolDialogBar::OnWindowPosChanged(WINDOWPOS FAR* lpwndpos)
 	}
 
     // Find on which side are we docked
-    UINT nDockBarID = GetParent()->GetDlgCtrlID();
+    size_t nDockBarID = GetParent()->GetDlgCtrlID();
 
     // Return if dropped at same location
     if (nDockBarID == m_nDockBarID // no docking side change
@@ -233,7 +233,7 @@ void CCoolDialogBar::OnWindowPosChanged(WINDOWPOS FAR* lpwndpos)
     m_bInRecalcNC = FALSE;
 }
 
-BOOL CCoolDialogBar::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) 
+BOOL CCoolDialogBar::OnSetCursor(CWnd* pWnd, size_t nHitTest, size_t message) 
 {
     if ((nHitTest != HTSIZE) || m_bTracking)
         return CControlBar::OnSetCursor(pWnd, nHitTest, message);
@@ -248,7 +248,7 @@ BOOL CCoolDialogBar::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 /////////////////////////////////////////////////////////////////////////
 // Mouse Handling
 //
-void CCoolDialogBar::OnLButtonUp(UINT nFlags, CPoint point) 
+void CCoolDialogBar::OnLButtonUp(size_t nFlags, CPoint point) 
 {
     if (!m_bTracking)
         CControlBar::OnLButtonUp(nFlags, point);
@@ -259,7 +259,7 @@ void CCoolDialogBar::OnLButtonUp(UINT nFlags, CPoint point)
     }
 }
 
-void CCoolDialogBar::OnMouseMove(UINT nFlags, CPoint point) 
+void CCoolDialogBar::OnMouseMove(size_t nFlags, CPoint point) 
 {
     if (IsFloating() || !m_bTracking)
     {
@@ -297,7 +297,7 @@ void CCoolDialogBar::OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS FAR* l
     GetWindowRect(m_rectBorder);
     m_rectBorder = CRect(0, 0, m_rectBorder.Width(), m_rectBorder.Height());
     
-    DWORD dwBorderStyle = m_dwStyle | CBRS_BORDER_ANY;
+    size_t dwBorderStyle = m_dwStyle | CBRS_BORDER_ANY;
 
     switch(m_nDockBarID)
     {
@@ -356,7 +356,7 @@ void CCoolDialogBar::OnNcPaint()
 	InvalidateRect( &pRect, TRUE );
 }
 
-void CCoolDialogBar::OnNcLButtonDown(UINT nHitTest, CPoint point) 
+void CCoolDialogBar::OnNcLButtonDown(size_t nHitTest, CPoint point) 
 {
     if (m_bTracking) return;
 
@@ -376,7 +376,7 @@ void CCoolDialogBar::OnNcLButtonDown(UINT nHitTest, CPoint point)
         CControlBar::OnNcLButtonDown(nHitTest, point);
 }
 
-UINT CCoolDialogBar::OnNcHitTest(CPoint point) 
+size_t CCoolDialogBar::OnNcHitTest(CPoint point) 
 {
     if (IsFloating())
         return CControlBar::OnNcHitTest(point);
@@ -396,7 +396,7 @@ UINT CCoolDialogBar::OnNcHitTest(CPoint point)
         return CControlBar::OnNcHitTest(point);
 }
 
-void CCoolDialogBar::OnLButtonDown(UINT nFlags, CPoint point) 
+void CCoolDialogBar::OnLButtonDown(size_t nFlags, CPoint point) 
 {
     // only start dragging if clicked in "void" space
     if (m_pDockBar != NULL)
@@ -412,7 +412,7 @@ void CCoolDialogBar::OnLButtonDown(UINT nFlags, CPoint point)
     }
 }
 
-void CCoolDialogBar::OnLButtonDblClk(UINT nFlags, CPoint point) 
+void CCoolDialogBar::OnLButtonDblClk(size_t nFlags, CPoint point) 
 {
     // only toggle docking if clicked in "void" space
     if (m_pDockBar != NULL)
@@ -617,7 +617,7 @@ void CCoolDialogBar::DrawGripper(CDC & dc)
 
 }
 
-void CCoolDialogBar::OnNcLButtonDblClk(UINT nHitTest, CPoint point) 
+void CCoolDialogBar::OnNcLButtonDblClk(size_t nHitTest, CPoint point) 
 {
 	// TODO: Add your message handler code here and/or call default
     if ((m_pDockBar != NULL) && (nHitTest == HTCAPTION))

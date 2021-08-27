@@ -292,7 +292,7 @@ void CCbFromLb::OnCloseup()
 	_pParent->_pParent->PostMessage(WM_DIRTY,0,0);
 }
 
-void CCbFromLb::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+void CCbFromLb::OnKeyDown(size_t nChar, size_t nRepCnt, size_t nFlags)
 {
     if(nChar == VK_RETURN && _pParent)
         _pParent->KillFOcus(0);
@@ -302,7 +302,7 @@ void CCbFromLb::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 }
 
 
-void CEditFromLb::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+void CEditFromLb::OnKeyDown(size_t nChar, size_t nRepCnt, size_t nFlags)
 {
     if(nChar == VK_RETURN && _pParent)
         _pParent->KillFOcus(0);
@@ -368,7 +368,7 @@ void    CLbEditable::LBSetProp(const char* prop, int sel)
 void    CLbEditable::LBSetProp(const char* prop, CLR& sel)
 {
     char s[32];
-    _stprintf(s,"%d,%d,%d",sel.r,sel.g,sel.b);
+    sprintf(s,"%d,%d,%d",sel.r,sel.g,sel.b);
     LBSetProp(prop, s);
 }
 

@@ -1,12 +1,12 @@
 #ifndef __DLGSCENE_H__
 #define __DLGSCENE_H__
-#pragma warning (disable: 4786)
-#include "..\\_include\\BspFIleStr.h"
+//   #pragma warning (disable: 4786)
+#include "bspfilestr.h"
 #include "zedtypes.h"
 #include "TreeScene.h"
 #include "ColorButon.h"
 #include "Drawout1.h"
-#include "vertdlgdlg.h"
+#include "VertDlgDlg.h"
 #include "PrpListCtrl.h"
 
 //---------------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(CDlgScene)
 	virtual BOOL OnInitDialog();
-	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+	afx_msg void OnShowWindow(BOOL bShow, size_t nStatus);
 	afx_msg void OnOk();
 	virtual void OnCancel();
 	afx_msg void OnKillFocus(CWnd* pNewWnd);

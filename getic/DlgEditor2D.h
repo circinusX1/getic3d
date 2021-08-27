@@ -69,13 +69,13 @@ public:
 	CColorButon	m_k;
 	CColorButon	m_c;
 	//}}AFX_DATA
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-    BOOL OnRButtonUp(UINT nFlags, CPoint& point, V3& wp);
-    BOOL OnRButtonDown(UINT nFlags, CPoint& point, V3& wp); 
-    BOOL OnMouseMove(UINT nFlags, CPoint& point, V3& wp);
-    BOOL OnSetCursor(UINT nFlags, CPoint& point, V3 wp);
-    BOOL OnLButtonUp(UINT nFlags, CPoint& point, V3& wp);
-    BOOL OnLButtonDown(UINT nFlags, CPoint& point, V3& wp);
+	afx_msg void OnSize(size_t nType, int cx, int cy);
+    BOOL OnRButtonUp(size_t nFlags, CPoint& point, V3& wp);
+    BOOL OnRButtonDown(size_t nFlags, CPoint& point, V3& wp); 
+    BOOL OnMouseMove(size_t nFlags, CPoint& point, V3& wp);
+    BOOL OnSetCursor(size_t nFlags, CPoint& point, V3 wp);
+    BOOL OnLButtonUp(size_t nFlags, CPoint& point, V3& wp);
+    BOOL OnLButtonDown(size_t nFlags, CPoint& point, V3& wp);
     void CreateBrush();
     void EvaluateStep();
 // Overrides
@@ -105,10 +105,10 @@ protected:
 	afx_msg void OnRect();
 	afx_msg void OnChangeCpcts();
 	afx_msg void OnChangeStpcts();
-	afx_msg void OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized);
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnActivate(size_t nState, CWnd* pWndOther, BOOL bMinimized);
+	afx_msg void OnKeyDown(size_t nChar, size_t nRepCnt, size_t nFlags);
+	afx_msg BOOL OnSetCursor(CWnd* pWnd, size_t nHitTest, size_t message);
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, size_t nCtlColor);
 	afx_msg void OnNurb();
 	afx_msg void OnChangeXYZ();
 	//}}AFX_MSG

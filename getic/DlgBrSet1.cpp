@@ -62,14 +62,14 @@ void DlgBrSet1::OnDestroy()
 	
 }
 
-BOOL DlgBrSet1::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
+BOOL DlgBrSet1::OnCmdMsg(size_t nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
 {
 	// TODO: Add your specialized code here and/or call the base class
 	
 	return CBASEDLG::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 }
 
-void DlgBrSet1::OnShowWindow(BOOL bShow, UINT nStatus) 
+void DlgBrSet1::OnShowWindow(BOOL bShow, size_t nStatus) 
 {
 	CBASEDLG::OnShowWindow(bShow, nStatus);
 	

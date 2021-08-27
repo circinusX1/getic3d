@@ -120,7 +120,7 @@ void CDlgTextures::OnButton1()
     
 	if(_showPick)
     {
-		LPCTSTR pStr = BrowseForFolder("Select texture Search Directory",  theApp.TexDir());
+		const char* pStr = BrowseForFolder("Select texture Search Directory",  theApp.TexDir());
         if(pStr)
         {
             theApp.TexDir(pStr);
@@ -210,7 +210,7 @@ void CDlgTextures::BuildFileList()
 	
 
     TexHandler      th;
-    DWORD           ct = GetTickCount();
+    size_t           ct = GetTickCount();
 	REDIR();
     tstring         fullpth = theApp.TexDir();
 	CDirChange	    cd(theApp.TexDir());//chdir
@@ -260,7 +260,7 @@ void CDlgTextures::BuildFileList()
 }
 
 
-void CDlgTextures::PopSubDirText(LPCTSTR subDir)
+void CDlgTextures::PopSubDirText(const char* subDir)
 {
     int             idx;
 	HANDLE			hfFind;
@@ -371,7 +371,7 @@ int CDlgTextures::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CVertDlgDlg::OnCreate(lpCreateStruct) == -1)
 		return -1;
-	GetCurrentDirectory(_MAX_PATH,_cwd);
+	GetCurrentDirectory(PATH_MAX,_cwd);
 	return 0;
 }
 
@@ -382,7 +382,7 @@ void CDlgTextures::OnDblclkList1()
     if(GUtex==1)
     {
         SBT(0, "Cannot set texture over Light Map stage");
-        MessageBeep((UINT)-1);
+        MessageBeep((size_t)-1);
         return ;
     }
 #endif //
@@ -405,14 +405,14 @@ void CDlgTextures::OnSelchangeList1()
 		char lbText[128];
 
 		m_lf.GetText(_texIter, lbText);
-        DWORD dwCreaTexMode = m_lf.GetItemData(_texIter);
+        size_t dwCreaTexMode = m_lf.GetItemData(_texIter);
 		Texture* ptex = GTexSys.GetTempTexture(lbText, dwCreaTexMode);
 		if(ptex)
 		{
 		    // se up the props in the second pane
-		    DWORD  creaMode  = TGET_TARGET(dwCreaTexMode);
-		    DWORD  filMode   = TGET_FILTER(dwCreaTexMode);
-            DWORD  fwrpMode  = TGET_WRAP(dwCreaTexMode);
+		    size_t  creaMode  = TGET_TARGET(dwCreaTexMode);
+		    size_t  filMode   = TGET_FILTER(dwCreaTexMode);
+            size_t  fwrpMode  = TGET_WRAP(dwCreaTexMode);
 
             switch(creaMode)
             {
@@ -444,7 +444,7 @@ void CDlgTextures::OnSelchangeList1()
     }
 }
 
-BOOL CDlgTextures::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
+BOOL CDlgTextures::OnCmdMsg(size_t nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
 {
     if(!_initalized)
         return CDialog::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
@@ -510,7 +510,7 @@ void CDlgTextures::OnOk()
     if(GUtex==1)
     {
         SBT(0, "Cannot set texture over Light Map stage");
-        MessageBeep((UINT)-1);
+        MessageBeep((size_t)-1);
         return ;
     }
 
@@ -522,13 +522,13 @@ void CDlgTextures::OnApllytex()
 	//OnApplytex();
 }
 
-UINT CDlgTextures::OnGetDlgCode() 
+size_t CDlgTextures::OnGetDlgCode() 
 {
 	return DLGC_WANTTAB ;
 	return CVertDlgDlg::OnGetDlgCode();
 }
 
-void CDlgTextures::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CDlgTextures::OnKeyDown(size_t nChar, size_t nRepCnt, size_t nFlags) 
 {
 	if(nChar==VK_TAB)
 	{
@@ -617,16 +617,16 @@ void CDlgTextures::OnDeltaposSpinScaleH(NMHDR* pNMHDR, LRESULT* pResult)
 
 void CDlgTextures::SelectFaceTexture(const char* psztexture)
 {
-    char loco[_MAX_PATH];
-    _tcscpy(loco, psztexture);
+    char loco[PATH_MAX];
+    strcpy(loco, psztexture);
     if(_tcschr(loco,'\\') || _tcschr(loco,'/') )
     {
-        char fn[_MAX_PATH];
-        char ext[_MAX_PATH];
-        char dc[_MAX_PATH];
+        char fn[PATH_MAX];
+        char ext[PATH_MAX];
+        char dc[PATH_MAX];
 
         _tsplitpath(psztexture,dc,dc,fn,ext);
-        _tcscpy(loco, fn);
+        strcpy(loco, fn);
         _tcscat(loco,ext);
     }
     GetDlgItem(ST_NAME)->SetWindowText(loco);
@@ -679,7 +679,7 @@ BOOL CDlgTextures::OnApplytex()
     if(GUtex==1)
     {
         SBT(0, "Cannot set texture over Light Map stage");
-        MessageBeep((UINT)-1);
+        MessageBeep((size_t)-1);
         return FALSE;
     }
 #endif //
@@ -789,7 +789,7 @@ BOOL CDlgTextures::DocOnApplytex()
 	_copyt = TRUE;
     _texwasSet=0;
 
-    DWORD gtf = GettexGenFlag();
+    size_t gtf = GettexGenFlag();
 
     if(TGET_TARGET(gtf) && (TGET_WRAP(gtf) == GEN_TEX_HAS_CUBE_T ||
                             TGET_WRAP(gtf) == GEN_TEX_HAS_CUBE_M))
@@ -1023,9 +1023,9 @@ void CDlgTextures::OnSelchangeTgen()
 {
 }
 
-DWORD CDlgTextures::GettexGenFlag()
+size_t CDlgTextures::GettexGenFlag()
 {
-    DWORD gm = 0 ;
+    size_t gm = 0 ;
     int tt  = ((CComboBox*)GetDlgItem(CB_TTARGET))->GetCurSel();
     int tf  = ((CComboBox*)GetDlgItem(CB_TF))->GetCurSel();
     int tg  = ((CComboBox*)GetDlgItem(CB_LAYOUT))->GetCurSel();
@@ -1049,7 +1049,7 @@ void CDlgTextures::OnDeltex()
     if(GUtex==1)
     {
         SBT(0, "Cannot delete texture over Light Map stage");
-        MessageBeep((UINT)-1);
+        MessageBeep((size_t)-1);
         return ;
     }
 #endif //

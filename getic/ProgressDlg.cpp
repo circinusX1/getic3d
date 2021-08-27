@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 // ProgressDlg 
 
 ProgressDlg	ProgressDlg::GWaitDlg;
-UINT		ThreadProc(LPVOID pVoid);
+size_t		ThreadProc(LPVOID pVoid);
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -25,10 +25,10 @@ HICON   __icos[4]={0};
 HANDLE	ProgressDlg ::event;
 HWND	ProgressDlg ::hDialog;
 BOOL	ProgressDlg::_visible;
-DWORD	ProgressDlg::timeStart;
-UINT	DlgID;
+size_t	ProgressDlg::timeStart;
+size_t	DlgID;
 
-BOOL DialogProc(HWND hw,UINT msg,WPARAM w,LPARAM l)
+BOOL DialogProc(HWND hw,size_t msg,WPARAM w,LPARAM l)
 {
     static HWND hEdit;
 	static int	msgs = 0;
@@ -76,7 +76,7 @@ BOOL DialogProc(HWND hw,UINT msg,WPARAM w,LPARAM l)
 	return FALSE;
 }
 
-void ProgressDlg::Show(int action, LPCSTR text, UINT nDlgID)
+void ProgressDlg::Show(int action, LPCSTR text, size_t nDlgID)
 {
 	
 	if(action == -1 && hDialog)
@@ -89,10 +89,10 @@ void ProgressDlg::Show(int action, LPCSTR text, UINT nDlgID)
 
 	if(action == 1)
 	{
-		DWORD dw;
+		size_t dw;
 		if(hDialog == 0)
 		{
-			_tcscpy(tstring,text);	
+			strcpy(tstring,text);	
 			DlgID = nDlgID;
 			CloseHandle(::CreateThread(0,0,
 						(LPTHREAD_START_ROUTINE)ThreadProc,
@@ -124,7 +124,7 @@ void ProgressDlg::Show(int action, LPCSTR text, UINT nDlgID)
 
 	if(action == 2) //only text comes
 	{
-		_tcscpy(tstring,text);	
+		strcpy(tstring,text);	
 	}
 	if(hDialog)
 	{
@@ -135,7 +135,7 @@ void ProgressDlg::Show(int action, LPCSTR text, UINT nDlgID)
 }
 
 
-UINT	ThreadProc(LPVOID pVoid)
+size_t	ThreadProc(LPVOID pVoid)
 {
 
     if(ProgressDlg::hDialog == NULL)

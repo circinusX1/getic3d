@@ -412,7 +412,7 @@ void DlgGameItem::OnCancel()
 {
 }
 
-void DlgGameItem::OnShowWindow(BOOL bShow, UINT nStatus) 
+void DlgGameItem::OnShowWindow(BOOL bShow, size_t nStatus) 
 {
 	if(!bShow)
 		BARDLG()->OnApply();

@@ -132,7 +132,7 @@ void CZ_ed2Doc::ApplyFlags(Brush* pBrush)
             pBrush->_brushflags &= ~BRSH_DETACHED;
         }
 
-        if(pBrush->_polys.size() > (UINT)GMinDetPolys)
+        if(pBrush->_polys.size() > (size_t)GMinDetPolys)
         {
             pBrush->_brushflags |= BRSH_DETAIL;    
         }
@@ -647,7 +647,7 @@ void     CZ_ed2Doc::InvokePlugIn(const char* dllname, int ncmd)
         {
             char   menuName[128];
         
-            DWORD   typo;
+            size_t   typo;
             plDll->GetMenuStringAndType(menuName,&typo);
             if(_tcschr(menuName,_T(',')))
             {
@@ -660,7 +660,7 @@ void     CZ_ed2Doc::InvokePlugIn(const char* dllname, int ncmd)
                         AfxGetMainWnd()->SendMessage(WM_COMMAND,ID_FILE_NEW,0);
                 }
 
-	            _stprintf(szFilters, _T("%s (*.%s)|*.%s|All Files (*.*)|*.*||"),pFName,pExt,pExt);
+	            sprintf(szFilters, _T("%s (*.%s)|*.%s|All Files (*.*)|*.*||"),pFName,pExt,pExt);
                 CFileDialog dlg(((ncmd & 0x1)==0) ? TRUE : FALSE, MKSTR(".%s",pExt), 0, OFN_HIDEREADONLY, szFilters);
                 dlg.m_ofn.lpstrInitialDir = theApp.DocsDir();
 		        if (theApp.DoFileDialog(dlg) != IDOK) 
@@ -754,7 +754,7 @@ void      CZ_ed2Doc::ExportFile(PlugInDll<IGeticPlug>& plgDll, const char* pszNa
         
         texids[(int)tex.hTex] = cntTex;         // map index with texid
         
-        ::_tcscpy(scene.pTextures[cntTex].filename, tex.filename);
+        ::strcpy(scene.pTextures[cntTex].filename, tex.filename);
         scene.pTextures[cntTex].target = tex.hTex.glTarget;
         ++cntTex;
     }
@@ -841,7 +841,7 @@ void      CZ_ed2Doc::ExportFile(PlugInDll<IGeticPlug>& plgDll, const char* pszNa
     
 }
 
-static void __CalcTexCoord(Poly& p, V3 tax[2], UV& shift, UV& scale, SIZE& bmpSz, int layer)
+static void __CalcTexCoord(Poly& p, V3 tax[2], UV& shift, UV& scale, size_t& bmpSz, int layer)
 {
     V3  texO = (shift.u * tax[0]) / tax[0].len();
         texO -= (shift.u * tax[1]) / tax[1].len();
@@ -857,7 +857,7 @@ static void __CalcTexCoord(Poly& p, V3 tax[2], UV& shift, UV& scale, SIZE& bmpSz
     ss /= scaleS;
     tt /= scaleT;
     
-    for(UINT i=0; i < p._vtci.size() ;i++)
+    for(size_t i=0; i < p._vtci.size() ;i++)
     {
         V3& v  = p._vtci[i]._xyz;
         UV& t  = p._vtci[i]._uv[layer];
@@ -871,7 +871,7 @@ void      CZ_ed2Doc::ImportFile(PlugInDll<IGeticPlug>& plgDll, const char* pszdl
 {
 
 	Plg_Scene* pScene = 0;
-	char	   texture[_MAX_PATH];
+	char	   texture[PATH_MAX];
     int         k;
 
     CString resDir = theApp.HomeDir();
@@ -943,14 +943,14 @@ void      CZ_ed2Doc::ImportFile(PlugInDll<IGeticPlug>& plgDll, const char* pszdl
                         continue;
 
 
-                    DWORD tmpVal = pBrush->pPolys[i].texapply[t];
+                    size_t tmpVal = pBrush->pPolys[i].texapply[t];
 
                     p.SetApply(tmpVal,ito);
                     p.SetCombine(pBrush->pPolys[i].combine);
 
                     if(pBrush->pPolys[i].texIdx[t] >= 0 && pScene->nTextures > pBrush->pPolys[i].texIdx[t])
                     {
-						DWORD target = pScene->pTextures[pBrush->pPolys[i].texIdx[t]].target;
+						size_t target = pScene->pTextures[pBrush->pPolys[i].texIdx[t]].target;
                         
 
                         char* pFileName = (char*)pScene->pTextures[pBrush->pPolys[i].texIdx[t]].filename;

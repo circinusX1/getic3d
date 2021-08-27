@@ -21,7 +21,7 @@
 #if _MSC_VER >= 1000
 #pragma once
 #endif // _MSC_VER >= 1000
-#pragma warning (disable: 4786)
+//   #pragma warning (disable: 4786)
 #include "cedefs.h"
 #include "CCrystalTextView.h"
 
@@ -85,11 +85,11 @@ public:
 	void DoDragScroll(const CPoint &point);
 
 	virtual BOOL QueryEditable();
-	virtual void UpdateView(CCrystalTextView *pSource, CUpdateContext *pContext, DWORD dwFlags, int nLineIndex = -1);
+	virtual void UpdateView(CCrystalTextView *pSource, CUpdateContext *pContext, size_t dwFlags, int nLineIndex = -1);
 
-	BOOL ReplaceSelection(LPCTSTR pszNewText);
+	BOOL ReplaceSelection(const char* pszNewText);
 
-	virtual void OnEditOperation(int nAction, LPCTSTR pszText);
+	virtual void OnEditOperation(int nAction, const char* pszText);
 
 // Overrides
 	// ClassWizard generated virtual function overrides
@@ -107,7 +107,7 @@ protected:
 	afx_msg void OnEditCut();
 	afx_msg void OnUpdateEditPaste(CCmdUI* pCmdUI);
 	afx_msg void OnEditDelete();
-	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnChar(size_t nChar, size_t nRepCnt, size_t nFlags);
 	afx_msg void OnEditDeleteBack();
 	afx_msg void OnEditUntab();
 	afx_msg void OnEditTab();
@@ -120,7 +120,7 @@ protected:
 	afx_msg void OnEditUndo();
 	afx_msg void OnUpdateEditRedo(CCmdUI* pCmdUI);
 	afx_msg void OnEditRedo();
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnKeyDown(size_t nChar, size_t nRepCnt, size_t nFlags);
 	//}}AFX_MSG
 	afx_msg void OnUpdateIndicatorCol(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateIndicatorOvr(CCmdUI* pCmdUI);

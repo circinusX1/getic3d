@@ -4,16 +4,15 @@
 #include "baseutils.h"
 #include "basethread.h"
 #include "Brush.h"
-#include "BspTree.h"
-#include "PortalPRC.h"
-#include "PVSPrc.h"
-#include "FlowPath.h"
+#include "Bsptree.h"
+#include "PortalPrc.h"
+#include "Pvsprc.h"
+#include "Flowpath.h"
 #include "basethread.h"
-#include "LMProc.h"
-#include "LMProc2.h"
+#include "Lmproc.h"
+#include "Lmproc2.h"
 #include "bsphook.h"
-#include "TerTree.h"
-using namespace getae_thread;
+#include "Tertree.h"
 
 //---------------------------------------------------------------------------------------
 #define REND_BSP        0x1
@@ -40,7 +39,7 @@ struct SBytes
 class z_ed3View;
 class Scene;
 class CDlgCompProgress;
-class Compiler  : public Cthread
+class Compiler  : public OsThread
 {
 public:
     Compiler();
@@ -48,18 +47,18 @@ public:
     
     BOOL     Compile(Scene& scene);
     void     CommitChanges();
-    BOOL     Save(LPCTSTR pFIleName);
-    BOOL     ExportBSP(LPCTSTR pFIleName);
+    BOOL     Save(const char* pFIleName);
+    BOOL     ExportBSP(const char* pFIleName);
     BOOL     PerformHSR(PBrushes* pBrushes );
     void     Clear();
     BOOL     Done(){return _done;}    
-    void     Render(z_ed3View* pV, DWORD what);    
+    void     Render(z_ed3View* pV, size_t what);    
     static   BOOL Union(PBrushes& pPrimitives, Brush& brush, BOOL sgow=0);
     void     Break(long st=1){_break=st;};
     long     HasBreaked(){return _break;}
     void     FromRegistry(BOOL bRead);
     void     Export(const char* bspFile);
-	DWORD	 DoLightMaps();
+	size_t	 DoLightMaps();
     BOOL     CompileTerrain();
     Brush   *GetZone(Box& box, int* pindex=0);
     Brush   *GetZone(V3& vx);
@@ -96,13 +95,13 @@ private:    //saving
     void    WriteImages(FlStream& fw);
     void    WriteSounds(FlStream& fw);
     void    WriteZones(FlStream& fw);
-    void    KeepSecttions(DWORD cs, DWORD cend, BTF_Section& s, FlStream& fw);
+    void    KeepSecttions(size_t cs, size_t cend, BTF_Section& s, FlStream& fw);
     void    UpdateServerIndex();
 	void	WriteXML(const char *xmlFname, 
                      const char* bspNameFinalZ, 
                      const char* subDir, 
                      vvector<tstring>& dependencies,
-                     const vvector<DWORD>& lengths);
+                     const vvector<size_t>& lengths);
     void    WriteGameInit(FlStream& fw);
     void    WriteLMInfoAndData(FlStream& fw);
     void    WriteVertexes(vvector<V3>& vp, FlStream& fw);
@@ -112,14 +111,14 @@ private:    //saving
 	void	WriteTexInfo(map<int,int>& texids, FlStream& fw);
 	void    WriteSndInfo(map<int,int>& sndInfo, FlStream& fw);    
 	void    WriteItemsInfo(map<int,int>& sndidx, map<int,int>& texids, FlStream& fw);
-	void    WriteV3s(vvector<V3>& vertexPool,FlStream& fw, DWORD sect);
-	void    WritePlanes(vvector<Plane>& allPlanes, FlStream& fw, DWORD sect);
-	void    WriteNodes(vvector<CMiniNode*>& allNodes, FlStream& fw, DWORD sect);
-	void    WriteLeafs(vvector<CLeaf*>& allLeafs,   FlStream& fw, DWORD sect);
-	void    WriteModels(FlStream& fw, DWORD sect);
+	void    WriteV3s(vvector<V3>& vertexPool,FlStream& fw, size_t sect);
+	void    WritePlanes(vvector<Plane>& allPlanes, FlStream& fw, size_t sect);
+	void    WriteNodes(vvector<CMiniNode*>& allNodes, FlStream& fw, size_t sect);
+	void    WriteLeafs(vvector<CLeaf*>& allLeafs,   FlStream& fw, size_t sect);
+	void    WriteModels(FlStream& fw, size_t sect);
 	void    WritePolys(vvector<Poly*>& allPolys,
                              map<int,int>& texids,
-                             FlStream& fw, DWORD sect);
+                             FlStream& fw, size_t sect);
     void    WriteMotions(FlStream& fw);
 	void    WritItemsCathegory(FlStream& fw);
     void    WriteTerrain(FlStream& fw, map<int,int>& texids);
@@ -189,14 +188,14 @@ public:
     BOOL                _errDetected;
     Brush*              _zones[32];
     int                 _zonecount;
-    DWORD               _timeStart;
+    size_t               _timeStart;
     
 public:
     static Compiler* PCompiler;
 };
 
 //---------------------------------------------------------------------------------------
-inline void NOTIFY_FRAME(UINT m, WPARAM a, LPARAM b)    
+inline void NOTIFY_FRAME(size_t m, WPARAM a, LPARAM b)    
 {
     extern HWND            _Hmain;// = m_hWNd;
     for(int i=0;i < 8;i++)

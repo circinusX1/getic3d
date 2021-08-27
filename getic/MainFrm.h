@@ -6,15 +6,15 @@
 #define __MAINFRAME_G_H__
 
 //---------------------------------------------------------------------------------------
-#include "DlgBar.h"
-#include "StaticGL.h"
+#include "Dlgbar.h"
+#include "Staticgl.h"
 #include "FixSplitter.h"
 #include "DlgCompProgress.h"
 #include "bTbarCombo.h"
 #include "DlgConsole.h"
 #include "UiEnhancer.h"
 #include "MyStatusBar.h"
-#include "DlgLeafs.h"
+#include "Dlgleafs.h"
 
 //---------------------------------------------------------------------------------------
 #define WM_COMPILEDONE  WM_USER+1001
@@ -51,7 +51,7 @@ public:
 	public:
 	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
+	virtual BOOL OnCmdMsg(size_t nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 	virtual void RecalcLayout(BOOL bNotify = TRUE);
 	protected:
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
@@ -60,7 +60,7 @@ public:
 // Implementation
 public:
 	virtual ~CMainFrame();
-    CStaticGL*  GetGLWidnow(CWnd* pNewParent, UINT CtlId);
+    CStaticGL*  GetGLWidnow(CWnd* pNewParent, size_t CtlId);
 
 
 #ifdef _DEBUG
@@ -113,12 +113,12 @@ protected:
     LRESULT OnSbarNoty(WPARAM kc, LPARAM down);
 	//{{AFX_MSG(CMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnTimer(size_t nIDEvent);
 	afx_msg void OnDestroy();
 	afx_msg void OnGlobals();
 	afx_msg void OnClose();
 	afx_msg void OnSettingsPreferences();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnSize(size_t nType, int cx, int cy);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg void OnConsole();
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
@@ -128,7 +128,7 @@ protected:
 	//}}AFX_MSG
     virtual HACCEL GetDefaultAccelerator();
 	afx_msg void OnUpdateControlBarMenu(CCmdUI* pCmdUI);
-	afx_msg BOOL OnBarCheck(UINT nID);
+	afx_msg BOOL OnBarCheck(size_t nID);
     afx_msg LRESULT OnViewDestroy(WPARAM, LPARAM);
     afx_msg LRESULT OnZalsoft(WPARAM, LPARAM);
 
@@ -175,9 +175,9 @@ extern  HWND            _Hmain;
 
 
 #define FRM()   CMainFrame::PFrame
-extern UINT     ThrID;
+extern size_t     ThrID;
 
-void  SBT(int nPane, LPCTSTR pTxt);
+void  SBT(int nPane, const char* pTxt);
 #define SBAR()  CMainFrame::PFrame->m_wndStatusBar
 
 #define CLRLOG() CMainFrame::PFrame->_dlgProgress.Clear()

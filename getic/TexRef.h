@@ -1,8 +1,9 @@
 #ifndef __TEXREF2_H__
 #define __TEXREF2_H__
 
-#include "texSys.h"
-#pragma warning (disable: 4786)
+#include "baselib.h"
+#include "texsys.h"
+//#pragma warning (disable: 4786)
 
 //---------------------------------------------------------------------------------------
 #define TEX_CAPACITY    32768
@@ -13,8 +14,8 @@ class TexRef  : public TexSys
 {
 public:
     TexRef():TexSys(TexRef::GlGenTex, TexRef::RemoveTex){
-		_texmap = new UINT[TEX_CAPACITY+1];
-        ::memset(_texmap,0,sizeof(UINT)*(TEX_CAPACITY));
+		_texmap = new size_t[TEX_CAPACITY+1];
+        ::memset(_texmap,0,sizeof(size_t)*(TEX_CAPACITY));
     };
     ~TexRef(){
 		TexSys::Clean();
@@ -23,20 +24,20 @@ public:
 public:
 	static void  Clear(BOOL b=0);
     static void	 _RemoveTex(Htex& it);
-    static Htex  _GlGenTex(int x, int y, int bpp, BYTE* pBuff, DWORD flags);
-    static Htex	 GlGenTex(int x, int y, int bpp, BYTE* pBuff, DWORD flags);
+    static Htex  _GlGenTex(int x, int y, int bpp, BYTE* pBuff, size_t flags);
+    static Htex	 GlGenTex(int x, int y, int bpp, BYTE* pBuff, size_t flags);
     static void	 RemoveTex(Htex* it, int);
     static Htex  LoadRCTexture(const char* id,int,int,BYTE* pwantbuff=0);
     static BYTE* LoadRCTextureBuffer(const char* id,int,int);
-    static Htex  LoadFile(char* pszFileName, DWORD flags);
-    static Htex  LoadThisFile(const char* pszFileName, DWORD flags);
+    static Htex  LoadFile(char* pszFileName, size_t flags);
+    static Htex  LoadThisFile(const char* pszFileName, size_t flags);
     static void  GlLmapMode(BOOL start);
     static void  GlDecalMode(BOOL start);
     static void  GlHalloMode(BOOL start);
     static void  GlDetailMode(BOOL start);
 	static Htex	_defTex;
     static BOOL _MakeCurrent;
-    UINT*       _texmap;    
+    size_t*       _texmap;    
 };
 
 
@@ -51,12 +52,12 @@ public:
     virtual  ~SmartTex();
     SmartTex& operator=(const SmartTex& r);
     SmartTex& operator=(const Htex& ht);
-    operator    UINT(){return _hTex;}
+    operator    size_t(){return _hTex;}
     bool operator==(const SmartTex& r){return (r._hTex.hTex == _hTex.hTex);};
     void        operator--();
     const       char* GetTexName();
 	void        AddRef();
-	SmartTex&   Assign(const char* p, DWORD flags);
+	SmartTex&   Assign(const char* p, size_t flags);
 	void        Reset();
     BOOL        Valid(){return _hTex.hTex > 0;};
     operator    Htex&(){return _hTex;};
@@ -65,7 +66,7 @@ private:
     void Clear();
 private:
     Htex     _hTex;
-    UINT*    _pRefs;
+    size_t*    _pRefs;
 };
 
 
@@ -100,13 +101,13 @@ struct Texs
         }
         return *this;
     }
-    SmartTex& operator[](UINT i){return _texts[i];}
-    void     GetTextureInts(WORD *texts, DWORD* applyes){
-        for(int i=0;i<4;i++)*(texts+i) = (WORD)(UINT)_texts[i];
-        memcpy(applyes, _texApply, sizeof(DWORD)*4);
+    SmartTex& operator[](size_t i){return _texts[i];}
+    void     GetTextureInts(WORD *texts, size_t* applyes){
+        for(int i=0;i<4;i++)*(texts+i) = (WORD)(size_t)_texts[i];
+        memcpy(applyes, _texApply, sizeof(size_t)*4);
     }
     SmartTex    _texts[5];
-    DWORD       _texApply[5];		// target, genST, envMode
+    size_t       _texApply[5];		// target, genST, envMode
 };
 
 //---------------------------------------------------------------------------------------

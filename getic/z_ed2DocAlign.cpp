@@ -709,7 +709,7 @@ if(!n_xtiles || 0==p_dummyBrush) return;
     V3              vWalk1,vWalk2, vmin = b_box._min;
     BYTE            lc[4];
     UV              tc0,tc1;
-    DWORD           texAstage = 1<<GUtex;
+    size_t           texAstage = 1<<GUtex;
     BOOL            untt[4] = {Flags()&TERR_UTT0,
                                Flags()&TERR_UTT1,
                                Flags()&TERR_UTT2,

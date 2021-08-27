@@ -142,7 +142,7 @@ void    DlgItems::Activate(int ia)
 {
 }
 
-void DlgItems::OnShowWindow(BOOL bShow, UINT nStatus) 
+void DlgItems::OnShowWindow(BOOL bShow, size_t nStatus) 
 {
 	CBASEDLG::OnShowWindow(bShow, nStatus);
 	Activate(bShow);
@@ -300,7 +300,7 @@ void    DlgItems::AddItem(SceItem* pItem)
 
 void    DlgItems::UpdateItem(SceItem* pItem, int idx)
 {
-      _lbItems.SetItemData(idx, (DWORD)pItem);
+      _lbItems.SetItemData(idx, (size_t)pItem);
 }
 
 void DlgItems::OnSelchangeList1() 
@@ -383,7 +383,7 @@ BOOL    DlgItems::IsNotSameTypeItemsSelected()
 {
     SceItem* pItem;
     int      cbCnt  = _lbItems.GetCount();
-    DWORD    t = 0;
+    size_t    t = 0;
 
     for(int  i=0; i < cbCnt; i++)
     {

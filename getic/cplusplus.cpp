@@ -118,7 +118,7 @@ static char THIS_FILE[] = __FILE__;
 };
 
 //--| BOOL IsCppKeyword|------------------------------------------------------------------
-static BOOL IsCppKeyword(LPCTSTR pszChars, int nLength)
+static BOOL IsCppKeyword(const char* pszChars, int nLength)
 {
     for (int L = 0; s_apszCppKeywordList[L] != NULL; L ++)
     {
@@ -130,7 +130,7 @@ static BOOL IsCppKeyword(LPCTSTR pszChars, int nLength)
 }
 
 //--| BOOL IsCppNumber|-------------------------------------------------------------------
-static BOOL IsCppNumber(LPCTSTR pszChars, int nLength)
+static BOOL IsCppNumber(const char* pszChars, int nLength)
 {
     int I;
     if (nLength > 2 && pszChars[0] == '0' && pszChars[1] == 'x')
@@ -174,13 +174,13 @@ if (pBuf != NULL)\
 #define COOKIE_CHAR    0x0010
 
 //--| CSampleView::ParseLine|-------------------------------------------------------------
-DWORD CSampleView::ParseLine(DWORD dwCookie, int nLineIndex, TEXTBLOCK *pBuf, int &nActualItems)
+size_t CSampleView::ParseLine(size_t dwCookie, int nLineIndex, TEXTBLOCK *pBuf, int &nActualItems)
 {
     int nLength = GetLineLength(nLineIndex);
     if (nLength <= 0)
        return dwCookie & COOKIE_EXT_COMMENT;
     
-    LPCTSTR pszChars    = GetLineChars(nLineIndex);
+    const char* pszChars    = GetLineChars(nLineIndex);
     BOOL bFirstChar     = (dwCookie & ~COOKIE_EXT_COMMENT) == 0;
     BOOL bRedefineBlock = TRUE;
     BOOL bDecIndex  = FALSE;

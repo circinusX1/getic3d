@@ -55,7 +55,7 @@ void CFindTextDlg::OnOK()
     if (UpdateData())
     {
         ASSERT(m_pBuddy != NULL);
-        DWORD dwSearchFlags = 0;
+        size_t dwSearchFlags = 0;
         if (m_bMatchCase)
            dwSearchFlags |= FIND_MATCH_CASE;
         if (m_bWholeWord)

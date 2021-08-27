@@ -24,8 +24,8 @@ public: // create from serialization only
 
 // Attributes
 public:
-	void ReportSaveLoadException(LPCTSTR lpszPathName,
-				CException* e, BOOL bSaving, UINT nIDPDefault);
+	void ReportSaveLoadException(const char* lpszPathName,
+				CException* e, BOOL bSaving, size_t nIDPDefault);
 
 	class CSampleTextBuffer : public CCrystalTextBuffer
 	{
@@ -38,11 +38,11 @@ public:
 			m_pOwnerDoc->SetModifiedFlag(bModified); 
 		};
 	};
-	void InsertLine(LPCTSTR pszLine, BOOL ro=FALSE);
+	void InsertLine(const char* pszLine, BOOL ro=FALSE);
 
 	CSampleTextBuffer	m_xTextBuffer;
 	LOGFONT				m_lf;
-	DWORD				m_scrCookie;
+	size_t				m_scrCookie;
 // Operations
 public:
 	static			CSampleDoc*	PDoc;
@@ -54,8 +54,8 @@ public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
 	virtual void DeleteContents();
-	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
-	virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
+	virtual BOOL OnOpenDocument(const char* lpszPathName);
+	virtual BOOL OnSaveDocument(const char* lpszPathName);
 	virtual void OnCloseDocument();
 	virtual BOOL SaveModified();
 	//}}AFX_VIRTUAL
@@ -71,7 +71,7 @@ public:
 #endif
 
 protected:
-    BOOL DoSaveFile(LPCTSTR fileName);
+    BOOL DoSaveFile(const char* fileName);
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CSampleDoc)

@@ -19,14 +19,14 @@ struct ip_mreq {
 #define IP_DEFAULT_MULTICAST_TTL   1
 #define IP_DEFAULT_MULTICAST_LOOP  1
 #define IP_MAX_MEMBERSHIPS         20
-#define IP_MULTICAST_TTL    3
-#define IP_MULTICAST_LOOP   4
-#define IP_ADD_MEMBERSHIP   5
-#define IP_DROP_MEMBERSHIP  6
+//#define IP_MULTICAST_TTL    3
+//#define IP_MULTICAST_LOOP   4
+//#define IP_ADD_MEMBERSHIP   5
+//#define IP_DROP_MEMBERSHIP  6
 
 #endif //
 //---------------------------------------------------------------------------------------
-typedef BOOL (*CancelCB)(void* pVoid, DWORD time);
+typedef BOOL (*CancelCB)(void* pVoid, size_t time);
 
 #ifndef WSABASEERR
     #define WSABASEERR              10000
@@ -44,12 +44,12 @@ typedef BOOL (*CancelCB)(void* pVoid, DWORD time);
 class sock
 {
 public:
-    static       BOOL DefCBCall(void*,DWORD);
+    static       BOOL DefCBCall(void*,size_t);
     static void Init();
     static void Uninit();
     static int  GetLocalIP(char* pRetLocalAddr);
-    static int  GetLocalIP(DWORD* dw);
-    static BOOL CTime(void* pT, DWORD time);
+    static int  GetLocalIP(size_t* dw);
+    static BOOL CTime(void* pT, size_t time);
 
     sock();
     virtual ~sock();
@@ -60,7 +60,7 @@ public:
     virtual int     receive(BYTE* buff, int length, int port=0, const char* ip=0  )=0;
     virtual int     receive(BYTE* buff, int length, struct sockaddr_in& rsin)=0;
     virtual int     select_receive(BYTE* buff, int length, struct sockaddr_in& rsin, int toutms);
-    int             setblocking(DWORD block);
+    int             setblocking(size_t block);
     int             setoption(int option, int optionsize);
     int             getoption(int option);
     const int&      socket()const {return _sock;}
@@ -70,7 +70,7 @@ protected:
     int             _sock;
     int             _error;
     BOOL            _bClose;
-    static  DWORD   _tout;
+    static  size_t   _tout;
     int             _blocking;
 };
 
@@ -110,7 +110,7 @@ public:
 //---------------------------------------------------------------------------------------
 class tcp_cli_sock : public tcp_sock
 {
-    int          pconnect(DWORD ip, int port);
+    int          pconnect(size_t ip, int port);
     int          pconnect(const char* sip, int port, CancelCB cbCall=sock::DefCBCall, void* pUser=0);
 public:
     explicit tcp_cli_sock(){}
@@ -135,7 +135,7 @@ public:
     }
     virtual int  create(int opt=0);
     int          connect(const char* sip, int port, CancelCB cbCall=sock::DefCBCall, void* pUser=0);
-    DWORD        getremoteip(){return (DWORD)_remote_sin.sin_addr.s_addr;}
+    size_t        getremoteip(){return (size_t)_remote_sin.sin_addr.s_addr;}
 
 };
 

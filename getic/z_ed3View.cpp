@@ -256,7 +256,7 @@ void z_ed3View::OnMove(int x, int y)
 }
 
 //---------------------------------------------------------------------------------------
-void z_ed3View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void z_ed3View::OnKeyDown(size_t nChar, size_t nRepCnt, size_t nFlags) 
 {
     if(_downKey == nChar)
         return;
@@ -309,7 +309,7 @@ void z_ed3View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 }
 
 //---------------------------------------------------------------------------------------
-void z_ed3View::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void z_ed3View::OnKeyUp(size_t nChar, size_t nRepCnt, size_t nFlags) 
 {
     if(nChar == ('i') || nChar == ('I'))
     {
@@ -356,7 +356,7 @@ void z_ed3View::RedrawDC(BOOL update)
 }
 
 //---------------------------------------------------------------------------------------
-void z_ed3View::OnMouseMove(UINT nFlags, CPoint point) 
+void z_ed3View::OnMouseMove(size_t nFlags, CPoint point) 
 {
     V3      scrPt;
     CPoint  pt = _mm._pt - point;
@@ -486,7 +486,7 @@ void z_ed3View::OnMouseMove(UINT nFlags, CPoint point)
 }
 
 //---------------------------------------------------------------------------------------
-void z_ed3View::OnLButtonDblClk(UINT nFlags, CPoint point) 
+void z_ed3View::OnLButtonDblClk(size_t nFlags, CPoint point) 
 {
     if(AKEY(VK_SPACE))
     {
@@ -516,7 +516,7 @@ void z_ed3View::OnLButtonDblClk(UINT nFlags, CPoint point)
 }
 
 //---------------------------------------------------------------------------------------
-void z_ed3View::OnLButtonUp(UINT nFlags, CPoint point) 
+void z_ed3View::OnLButtonUp(size_t nFlags, CPoint point) 
 {
 	_mm._ldown = 0;
 
@@ -543,7 +543,7 @@ void z_ed3View::OnLButtonUp(UINT nFlags, CPoint point)
 }
 
 //---------------------------------------------------------------------------------------
-void z_ed3View::OnSize(UINT nType, int cx, int cy) 
+void z_ed3View::OnSize(size_t nType, int cx, int cy) 
 {
 	CView::OnSize(nType, cx, cy);
     MakeCurrent(_hdc, m_hRC); 
@@ -553,7 +553,7 @@ void z_ed3View::OnSize(UINT nType, int cx, int cy)
 }
 
 //---------------------------------------------------------------------------------------
-void z_ed3View::OnLButtonDown(UINT nFlags, CPoint point) 
+void z_ed3View::OnLButtonDown(size_t nFlags, CPoint point) 
 {
     GetCursorPos(&_scrPoint);
     if(GetCapture()!= this)
@@ -574,7 +574,7 @@ void z_ed3View::OnLButtonDown(UINT nFlags, CPoint point)
 
 
 //---------------------------------------------------------------------------------------
-void z_ed3View::OnRButtonDown(UINT nFlags, CPoint point) 
+void z_ed3View::OnRButtonDown(size_t nFlags, CPoint point) 
 {
     GetCursorPos(&_scrPoint);
     if(GetCapture()!= this)
@@ -592,7 +592,7 @@ void z_ed3View::OnRButtonDown(UINT nFlags, CPoint point)
 }
 
 //---------------------------------------------------------------------------------------
-void z_ed3View::OnRButtonUp(UINT nFlags, CPoint point) 
+void z_ed3View::OnRButtonUp(size_t nFlags, CPoint point) 
 {
 	if(_mm._ldown==0)
 	{
@@ -611,7 +611,7 @@ void z_ed3View::OnRButtonUp(UINT nFlags, CPoint point)
 }
 
 //---------------------------------------------------------------------------------------
-BOOL z_ed3View::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt) 
+BOOL z_ed3View::OnMouseWheel(size_t nFlags, short zDelta, CPoint pt) 
 {
 	/*
     if(AKEY(VK_SPACE) )

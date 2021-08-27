@@ -15,13 +15,13 @@ static char THIS_FILE[]=__FILE__;
 
 
 //--| poly|------------------------------------------------------------------------
-CCrc::CCrc(DWORD poly):polynomial(poly)
+CCrc::CCrc(size_t poly):polynomial(poly)
 {
     int i, j;
-    DWORD crc_accum;
+    size_t crc_accum;
     for ( i = 0;  i < 256;  i++ )
     {
-        crc_accum = ( (DWORD) i << 24 );
+        crc_accum = ( (size_t) i << 24 );
         for ( j = 0;  j < 8;  j++ )
         {
             if ( crc_accum & 0x80000000 )
@@ -41,7 +41,7 @@ CCrc::~CCrc()
 
 
 //--| CCrc::update_crc|-------------------------------------------------------------------
-DWORD CCrc::update_crc(DWORD crc_accum, BYTE *data_blk_ptr, int data_blk_size)
+size_t CCrc::update_crc(size_t crc_accum, BYTE *data_blk_ptr, int data_blk_size)
 {
     int i, j;
     for ( j = 0;  j < data_blk_size;  j++ )

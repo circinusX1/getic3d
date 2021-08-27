@@ -108,7 +108,7 @@ BOOL __stdcall DllMain (HANDLE hInst,
 	}
     return TRUE;
 };
-// void (AFX_MSG_CALL CCmdTarget::*)(UINT)
+// void (AFX_MSG_CALL CCmdTarget::*)(size_t)
 
 //--------------------------------------------------------------------------------
 #define BEGIN_EVENTS(cName_)   MAP_TYP _CmdMap[]={ 

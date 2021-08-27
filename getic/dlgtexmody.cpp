@@ -192,7 +192,7 @@ void DlgTexMody::OnRadio4()
     _comp=-1;
 }
 
-void DlgTexMody::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void DlgTexMody::OnHScroll(size_t nSBCode, size_t nPos, CScrollBar* pScrollBar) 
 {
 
     

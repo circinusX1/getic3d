@@ -168,7 +168,7 @@ void CColorButon::OnDestroy()
 	CButton::OnDestroy();
 }
 
-BOOL CColorButon::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) 
+BOOL CColorButon::OnSetCursor(CWnd* pWnd, size_t nHitTest, size_t message) 
 {
     if(m_tip)
         SBT(0,m_tip);

@@ -59,7 +59,7 @@ void CFixSplitter::OnPaint()
 	CSplitterWnd::OnPaint();
 }
 
-void CFixSplitter::OnLButtonDown(UINT nFlags, CPoint point) 
+void CFixSplitter::OnLButtonDown(size_t nFlags, CPoint point) 
 {
     /*
     if(GetDlgCtrlID() == AFX_IDW_PANE_FIRST)
@@ -71,7 +71,7 @@ void CFixSplitter::OnLButtonDown(UINT nFlags, CPoint point)
     CSplitterWnd::OnLButtonDown(nFlags, point);
 }
 
-void CFixSplitter::OnLButtonDblClk(UINT nFlags, CPoint point) 
+void CFixSplitter::OnLButtonDblClk(size_t nFlags, CPoint point) 
 {
 	CSplitterWnd::OnLButtonDblClk(nFlags, point);
 
@@ -130,7 +130,7 @@ void CFixSplitter::OnLButtonDblClk(UINT nFlags, CPoint point)
 
 }
 
-BOOL CFixSplitter::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) 
+BOOL CFixSplitter::OnSetCursor(CWnd* pWnd, size_t nHitTest, size_t message) 
 {
 	return CSplitterWnd::OnSetCursor(pWnd, nHitTest, message);
 }
@@ -145,7 +145,7 @@ int CFixSplitter::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-void CFixSplitter::OnMouseMove(UINT nFlags, CPoint point) 
+void CFixSplitter::OnMouseMove(size_t nFlags, CPoint point) 
 {
     if(GetDlgCtrlID() == AFX_IDW_PANE_FIRST )
     {

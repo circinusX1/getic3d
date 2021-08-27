@@ -50,8 +50,8 @@ BOOL	CToolFrame::CreateTextView()//CView
 {
 
 
-    DWORD defStyle = TBSTYLE_FLAT;
-    DWORD styl  = WS_CHILD | WS_VISIBLE | CBRS_ALIGN_TOP;
+    size_t defStyle = TBSTYLE_FLAT;
+    size_t styl  = WS_CHILD | WS_VISIBLE | CBRS_ALIGN_TOP;
 
 	//SetTimer(SPASH_TIMER, 4000,0);
 
@@ -60,7 +60,7 @@ BOOL	CToolFrame::CreateTextView()//CView
 	{
 		return -1;      // fail to create
 	}
-    DWORD tbAttr = CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC | CBRS_TOOLTIPS | CBRS_FLYBY;
+    size_t tbAttr = CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC | CBRS_TOOLTIPS | CBRS_FLYBY;
 	m_Editbar.SetBarStyle(m_Editbar.GetBarStyle() |tbAttr);    
 
 	_pDoc = new  CSampleDoc();
@@ -139,7 +139,7 @@ void CToolFrame::OnScOpen()
     CFileDialog dlg(1, _T("cg+"), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilters);
     dlg.m_ofn.lpstrTitle      = _T("Select Script File");
     dlg.m_ofn.lpstrInitialDir = theApp.ScriptsDir();
-    dlg.m_ofn.lpstrFile       = newName.GetBuffer(_MAX_PATH);
+    dlg.m_ofn.lpstrFile       = newName.GetBuffer(PATH_MAX);
     int res = theApp.DoFileDialog(dlg); 
     newName.ReleaseBuffer();
     if(res!=IDOK)
@@ -155,7 +155,7 @@ void CToolFrame::OnScOpen()
     REDIR(); 
     
 	char title[255];
-	_tcscpy(title,_pDoc->GetTitle());
+	strcpy(title,_pDoc->GetTitle());
     SendMessage(WM_SETTEXT,0,(long)title);
 }
 
@@ -211,18 +211,18 @@ void    CToolFrame::CanChangeItem()
 	}
 }
 
-void    CToolFrame::LoadSciptFile(LPCTSTR doc, 
-								  LPCTSTR itm, 
-								  LPCTSTR szScriptFname)
+void    CToolFrame::LoadSciptFile(const char* doc, 
+								  const char* itm, 
+								  const char* szScriptFname)
 {
 	REDIR();
 	if(szScriptFname[0]==0)
 	{
 		OnScNew();
-		char newDoc[_MAX_PATH];
+		char newDoc[PATH_MAX];
 		PathHandler ph(doc);
 		
-		_stprintf(newDoc,"scripts\\%s_%s",ph.File(),itm);
+		sprintf(newDoc,"scripts\\%s_%s",ph.File(),itm);
 		StripSpaces(newDoc);
 		_tcscat(newDoc,".cg+");
 
@@ -244,23 +244,23 @@ void    CToolFrame::LoadSciptFile(LPCTSTR doc,
 }
 
 
-void	CToolFrame::SetTitle(LPCTSTR psz)
+void	CToolFrame::SetTitle(const char* psz)
 {
 	SendMessage(WM_SETTEXT,0,(long)psz);
 	_pDoc->SetTitle(psz);
 
 }
 
-void	CToolFrame::AddScriptString(LPCTSTR psz)
+void	CToolFrame::AddScriptString(const char* psz)
 {
 }
 
 
-void	CToolFrame::SelectScriptString(LPCTSTR psz)
+void	CToolFrame::SelectScriptString(const char* psz)
 {
 }
 
-void	CToolFrame::FindScriptFunction(LPCTSTR psz)
+void	CToolFrame::FindScriptFunction(const char* psz)
 {
 }
 

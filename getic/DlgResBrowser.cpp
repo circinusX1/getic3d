@@ -78,7 +78,7 @@ LRESULT DlgResBrowser::OnSelchangedDirs(WPARAM pNMHDR, LPARAM pResult)
 }
 
 
-void DlgResBrowser::PopSubDirText(LPCTSTR subDir)
+void DlgResBrowser::PopSubDirText(const char* subDir)
 {
     int             idx;
 	HANDLE			hfFind;

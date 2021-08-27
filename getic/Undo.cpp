@@ -13,7 +13,7 @@
 
 static long Gdelindex = 0;
 
-void  CUndo::Add(Brush* pB, DWORD action, int sequence)
+void  CUndo::Add(Brush* pB, size_t action, int sequence)
 {
     if(_fromHere || pB->_brushflags & BRSH_NEW)
         return;
@@ -37,7 +37,7 @@ void  CUndo::Add(Brush* pB, DWORD action, int sequence)
     GNewUID = 1;
 }
 
-void  CUndo::Add(SceItem* pB, DWORD action, int sequence)
+void  CUndo::Add(SceItem* pB, size_t action, int sequence)
 {
     if(_fromHere || pB->_flags & BRSH_NEW)
         return;
@@ -108,7 +108,7 @@ void  CUndo::Clear()
     _records.clear();
 }
 
-void  CUndo::Undo(CZ_ed2Doc* pDoc,  DWORD action)
+void  CUndo::Undo(CZ_ed2Doc* pDoc,  size_t action)
 {
     _fromHere = 1;
     if(_records.size())

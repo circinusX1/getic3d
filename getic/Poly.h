@@ -3,12 +3,14 @@
 
 //---------------------------------------------------------------------------------------
 
-
+#include <set>
 #include "basecont.h"
 #include "TexAdapter.h"
 #include "BaseEntity.h"
-#include "..\\_include\\BspFIleStr.h"
+#include "bspfilestr.h"
 
+
+using namespace std;
 // Structures passed between plugins and main application
 //---------------------------------------------------------------------------------------
 // internals
@@ -118,7 +120,7 @@ public:
     int		_index;		// just for final save is kept here
     UV		_tcCrea;
 	Poly*	_pPoly;		// !=0 whenb vertex is selected
-	DWORD	_extra1;
+	size_t	_extra1;
 };
 typedef vvector<Vtx2>             Vertexes;
 typedef vvector<Vtx2*>            PVertexes;
@@ -127,7 +129,7 @@ typedef vvector<Vtx2*>::iterator  PPVertex;
 
 //---------------------------------------------------------------------------------------
 class Brush;
-class __declspec (novtable) Poly : public Plane, public TexCarrier, public CanProps
+class  Poly : public Plane, public TexCarrier, public CanProps
 {
 public:
     int             _idxSplitter;   // temp durring CSG
@@ -152,9 +154,9 @@ public:
     V3              _texV1;     // not used
     V3              _texV2;     // not used
 
-    DWORD           _polyflags;     // polygon flags (in editor)
-    DWORD           _polyflags2;    // extra flags
-    DWORD           _polyprops;     // polygon properties in BspFIleStr.h
+    size_t           _polyflags;     // polygon flags (in editor)
+    size_t           _polyflags2;    // extra flags
+    size_t           _polyprops;     // polygon properties in bspfilestr.h
     
     CLR             _colorS;   // spec color MATERIAL
     CLR             _colorD;   // diffuse color MATERIAL
@@ -193,7 +195,7 @@ public:
     void    CopyTc0InAll();
 
 	void	RescaleTexCoord(BOOL bNew, int ti=0);
-    void    ReApplyTexture(DWORD creaFlags);
+	void    ReApplyTexture(size_t creaFlags);
     BOOL    IsSelected(){return _selected;}
     void    CopyProps(Poly& p);
     BOOL    IntersectsPoly(Poly& p2);

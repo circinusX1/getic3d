@@ -37,7 +37,7 @@ FILE* texture_fopen(const char *filename ,const char *mode)
         bool found = false;
         if(TexHandler::_extrapath[0])
         {
-            _stprintf(loco,_T("%s\\%s"),TexHandler::_extrapath,filename);
+            sprintf(loco,_T("%s\\%s"),TexHandler::_extrapath,filename);
             hFile    = _tfindfirst( loco, &c_file );
             if(hFile!=-1)
             {
@@ -52,7 +52,7 @@ FILE* texture_fopen(const char *filename ,const char *mode)
             {
                 if(tex_includes[i][0])
                 {
-                    _stprintf(loco,_T("%s\\%s%s"),szHome, tex_includes[i],filename);
+                    sprintf(loco,_T("%s\\%s%s"),szHome, tex_includes[i],filename);
 
                     hFile    = _tfindfirst( loco, &c_file );
                     if(hFile!=-1)
@@ -69,7 +69,7 @@ FILE* texture_fopen(const char *filename ,const char *mode)
     }
     else
     {
-        _tcscpy(loco, filename);
+        strcpy(loco, filename);
         _findclose( hFile );
     }
 	return _tfopen(loco,mode);
@@ -192,10 +192,10 @@ void  TexHandler::SwapRB()
     }
 }
 
-BOOL TexHandler::LoadThisFile(const char *sFileName, DWORD flags)
+BOOL TexHandler::LoadThisFile(const char *sFileName, size_t flags)
 {
     char sExt[16] = {0};
-    char sDummy[_MAX_PATH];
+    char sDummy[PATH_MAX];
     BOOL     br =0;
 
     _tsplitpath(sFileName,sDummy,sDummy,sDummy,sExt);
@@ -213,7 +213,7 @@ BOOL TexHandler::LoadThisFile(const char *sFileName, DWORD flags)
 }
 
 //--------[dispatches the load to the private implementations]----------------------------
-BOOL TexHandler::LoadFile(const char *sFileName, DWORD flags)
+BOOL TexHandler::LoadFile(const char *sFileName, size_t flags)
 {
 	if(!VALID_FILENAME(sFileName))
 		return 0;
@@ -222,19 +222,19 @@ BOOL TexHandler::LoadFile(const char *sFileName, DWORD flags)
     char newname[128]={0};
     if(!_tcschr(sFileName,_T('.')))
     {
-        _tcscpy(newname, sFileName);
+        strcpy(newname, sFileName);
         _tcscat(newname,_T(".jpg")); 
         iret = LoadFile2(newname,flags);
 
 		if(iret==0)
 		{
-			_tcscpy(newname, sFileName);
+			strcpy(newname, sFileName);
 			_tcscat(newname,_T(".tga"));
 			iret =LoadFile2(newname,flags);
 
 			if(iret==0)
 			{
-				_tcscpy(newname, sFileName);
+				strcpy(newname, sFileName);
 				_tcscat(newname,_T(".bmp"));
 				iret =LoadFile2(newname,flags);
 			}
@@ -256,7 +256,7 @@ BOOL TexHandler::LoadFile(const char *sFileName, DWORD flags)
 
 
 //----------------------------------------------------------------------------------------
-int TexHandler::LoadFile2(const char *sFileName, DWORD flags)
+int TexHandler::LoadFile2(const char *sFileName, size_t flags)
 {
 	const   char* phassl  = _tcschr(sFileName,_T('\\'));
 	const   char* phassl2 = _tcschr(sFileName,_T('/'));
@@ -271,7 +271,7 @@ int TexHandler::LoadFile2(const char *sFileName, DWORD flags)
     return FALSE;
 }
 //--------------------------------------------------------------------------------------
-BOOL TexHandler::LoadJpegFile(const char *sFileName, DWORD flags)
+BOOL TexHandler::LoadJpegFile(const char *sFileName, size_t flags)
 {
     // open the file name and see if the jpeg has 3 rgb components
     FILE *f = texture_fopen(sFileName,_T("rb"));
@@ -306,7 +306,7 @@ BOOL TexHandler::LoadJpegFile(const char *sFileName, DWORD flags)
 }
 
 //--------------------------------------------------------------------------------------
-BOOL TexHandler::LoadTgaFile(const char *sFileName, DWORD flags)
+BOOL TexHandler::LoadTgaFile(const char *sFileName, size_t flags)
 {
     Deallocate();
     FILE* fp = texture_fopen(sFileName,_T("rb"));
@@ -589,7 +589,7 @@ BYTE** TexHandler::Allocate(int lines, int rgbasz)
 }
 
 //--------------[:)]--------------------------------------------------------------
-BOOL TexHandler::LoadBmpFile(const char *sFileName, DWORD flags)
+BOOL TexHandler::LoadBmpFile(const char *sFileName, size_t flags)
 {
 	BITMAPFILEHEADER bmfh;
 	BITMAPINFOHEADER bmih;
@@ -602,7 +602,7 @@ BOOL TexHandler::LoadBmpFile(const char *sFileName, DWORD flags)
 	FILE* f=texture_fopen(sFileName,_T("rb"));
 	if (!f) 
 	{
-		DWORD dw = GetLastError();
+		size_t dw = GetLastError();
 		char p[266];
 		_getcwd(p,255);
 
@@ -853,7 +853,7 @@ BOOL TexHandler::LoadBMP8bit(FILE *f, BITMAPFILEHEADER &fileheader, BITMAPINFOHE
 
 //--------------[]-----------------------------------------------------------------------
 // Generates a texture from passed in RGB values
-Htex& TexSys::GenTexture(const char* locn, int x, int y, int bpp, BYTE* buff, DWORD flags)
+Htex& TexSys::GenTexture(const char* locn, int x, int y, int bpp, BYTE* buff, size_t flags)
 {
     Texture          tex;
     TexSys::iterator fi = GTexSys.find(locn); 
@@ -864,7 +864,7 @@ Htex& TexSys::GenTexture(const char* locn, int x, int y, int bpp, BYTE* buff, DW
         tex.cx  =   x;
         tex.cy  =   y;
         tex.bpp =   bpp;
-        ::_tcscpy(tex.filename, locn);
+        ::strcpy(tex.filename, locn);
         GTexSys[locn] =  tex;
         
         fi = GTexSys.find(locn); 
@@ -880,7 +880,7 @@ Htex& TexSys::GenTexture(const char* locn, int x, int y, int bpp, BYTE* buff, DW
 //--------------[adds a texture file and returns a copy of bitmap]-------------------
 Htex&  TexSys::AddTextureFileGetImage(const char* szFileName, 
                                       BYTE** pb, int* dx, 
-                                      int* dy, int* bpp,DWORD flags)
+                                      int* dy, int* bpp,size_t flags)
 {
     char    locn[255];
 
@@ -898,7 +898,7 @@ Htex&  TexSys::AddTextureFileGetImage(const char* szFileName,
         {
 
             tex.hTex = (_stx)(t.n_x, t.n_y, t.n_bpp, t.Buffer(), flags);
-            ::_tcscpy(tex.filename, szFileName);
+            ::strcpy(tex.filename, szFileName);
             tex.hTex.glTarget = flags;
 
             *dx  = tex.cx  = t.n_x;
@@ -925,7 +925,7 @@ Htex&  TexSys::AddTextureFileGetImage(const char* szFileName,
 }
 
 //--------------[adds a texture file/ render wrapper]-------------------------------
-Htex& TexSys::AddTextureFile(const char* szFileName, DWORD flags)
+Htex& TexSys::AddTextureFile(const char* szFileName, size_t flags)
 {
     char    locn[255];
 
@@ -942,7 +942,7 @@ Htex& TexSys::AddTextureFile(const char* szFileName, DWORD flags)
         {
             tex.hTex = (_stx)(t.n_x, t.n_y, t.n_bpp, t.Buffer(), flags);
 
-            ::_tcscpy(tex.filename, szFileName);
+            ::strcpy(tex.filename, szFileName);
 
             tex.hTex.glTarget = flags;
             tex.cx      = t.n_x;
@@ -986,7 +986,7 @@ void TexSys::RemoveTextureFile(const char* szFileName)
 */
 
 
-Htex& TexSys::Assign(const char* psz, DWORD flags)
+Htex& TexSys::Assign(const char* psz, size_t flags)
 {
     return AddTextureFile(psz, flags);
 }
@@ -1057,7 +1057,7 @@ void TexSys::Clean()
 
 //----------------------------------------------------------------------------------
 // temp pointer not to be stored
-Texture* TexSys::GetTempTexture(const char* ptName, DWORD flags)
+Texture* TexSys::GetTempTexture(const char* ptName, size_t flags)
 {
 	TexSys::iterator it = find(MKSTR("%s-%x",ptName,flags));
 	if(it != end())

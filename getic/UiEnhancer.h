@@ -196,7 +196,7 @@ public:
 	// Generated message map functions
 protected:
 	//{{AFX_MSG(C_Static)
-	afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+	afx_msg HBRUSH CtlColor(CDC* pDC, size_t nCtlColor);
 	afx_msg void OnPaint();
 	//}}AFX_MSG
 
@@ -218,8 +218,8 @@ public:
     friend class     CDlgCompilerPath;
 
 
-    CBaseDlg(LPCTSTR lpszTemplateName, CWnd* pParentWnd = NULL):CDialog(lpszTemplateName, pParentWnd),_dirty(0),_updatingCtrls(1),_itmType(0),_pCurItem(0){};
-	CBaseDlg(UINT nIDTemplate, CWnd* pParentWnd = NULL):CDialog(nIDTemplate, pParentWnd ),_dirty(0),_updatingCtrls(0),_itmType(0),_pCurItem(0){};
+    CBaseDlg(const char* lpszTemplateName, CWnd* pParentWnd = NULL):CDialog(lpszTemplateName, pParentWnd),_dirty(0),_updatingCtrls(1),_itmType(0),_pCurItem(0){};
+	CBaseDlg(size_t nIDTemplate, CWnd* pParentWnd = NULL):CDialog(nIDTemplate, pParentWnd ),_dirty(0),_updatingCtrls(0),_itmType(0),_pCurItem(0){};
     void    DisableAllCtrls();
 
 // Dialog Data
@@ -242,19 +242,19 @@ public:
 
 	// Generated message map functions
 	//{{AFX_MSG(CBaseDlg)
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, size_t nCtlColor);
 	afx_msg void OnNcPaint();
-    afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+    afx_msg void OnShowWindow(BOOL bShow, size_t nStatus);
 	//}}AFX_MSG
     LRESULT OnRedraw(WPARAM, LPARAM);
     LRESULT OnPostInitDialog(WPARAM, LPARAM);
     virtual void    Dirty();
     virtual void    OnAction(){};
     virtual BOOL    IsRetreiveBlocked();
-    BOOL            OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
+    BOOL            OnCmdMsg(size_t nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 
-    void            SetItmType(DWORD iType){_itmType=iType;}
-    DWORD           ItemType(){return _itmType;}
+    void            SetItmType(size_t iType){_itmType=iType;}
+    size_t           ItemType(){return _itmType;}
     virtual void    Update(SceItem* pItem,int selCount=1){
     };
     virtual void    Retreive(SceItem* pItem,int selCount=1){
@@ -270,9 +270,9 @@ public:
 	DECLARE_MESSAGE_MAP()
 
     C_Static        _allstats;
-    set<UINT>       _touchedIDs;  
+    set<size_t>       _touchedIDs;  
     BOOL            _updatingCtrls;
-    DWORD           _itmType;
+    size_t           _itmType;
     SceItem*        _pCurItem;
 
 };

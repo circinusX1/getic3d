@@ -49,7 +49,7 @@ void DlgMurrChs::OnCancel()
 }
 
 
-void DlgMurrChs::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void DlgMurrChs::OnChar(size_t nChar, size_t nRepCnt, size_t nFlags) 
 {
 	EndDialog(nChar);
 }

@@ -32,9 +32,9 @@ public:
 	public:
 	virtual BOOL InitInstance();
 	virtual int ExitInstance();
-	virtual int DoMessageBox(LPCTSTR lpszPrompt, UINT nType, UINT nIDPrompt);
+	virtual int DoMessageBox(const char* lpszPrompt, size_t nType, size_t nIDPrompt);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
+	virtual BOOL OnCmdMsg(size_t nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 	virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 	//}}AFX_VIRTUAL
 

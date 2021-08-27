@@ -23,7 +23,7 @@ public:
 	{
 		char    fooProto[128];
         char    msgNName[32];
-        DWORD   msg;
+        size_t   msg;
 	};
 
 
@@ -31,7 +31,7 @@ public:
 // Construction
 public:
 	DlgBarScript(CWnd* pParent = NULL);   // standard constructor
-    void        AttachItemScriptFile(LPCTSTR fName);
+    void        AttachItemScriptFile(const char* fName);
 
 
     CToolFrame*     _pToolFrame;

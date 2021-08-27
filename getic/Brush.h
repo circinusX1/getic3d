@@ -1,14 +1,14 @@
 //---------------------------------------------------------------------------------------
 
-#ifndef __BRUSH_H__
-#define __BRUSH_H__
+#ifndef __BRUSHX_H__
+#define __BRUSHX_H__
 
 //---------------------------------------------------------------------------------------
-#pragma warning (disable: 4786)
-#include "poly.h"
-#include "minibsp.h"
+#include "basecont.h"
+#include "Poly.h"
+#include "Minibsp.h"
 #include "BaseEntity.h"
-#include "..\\_include\\BspFIleStr.h"
+#include "bspfilestr.h"
 
 
 //--------------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ typedef enum _P_TYPE{
 struct  CreaFlags
 {
     REAL    _thick;
-    DWORD   _brushflags;
+    size_t   _brushflags;
     int     _vstrips;
     int     _hstrips;
     TEX_MAP _tm;
@@ -66,8 +66,8 @@ public:
 	Box      _box;
     BOOL     _selected;
 	BOOL	 _copyed;
-    DWORD    _brushflags;
-    DWORD    _brushprops;   
+	size_t    _brushflags;
+	size_t    _brushprops;
     V3       _physicsA;         // stickness, rejection etc...
     V3       _rotSteps;         // rotation 
     V3       _physicsD;
@@ -76,7 +76,7 @@ public:
     PBrushes  _pCutBrshes;
 	PBrushes  _pSldBrushes;
     PBrushes  _pProjBrushes;
-	DWORD	  _polySec;
+    size_t	  _polySec;
     int       _group;            // group them by user design time
 	REAL	  _thikness;         
     TEX_MAP   _texmap;    	
@@ -157,13 +157,13 @@ public:
 	void	Rotate(V3& v, BOOL aroundOrigin=FALSE);
 	void	SetPos(V3& center);
 	void	SetSize(Box& extends);
-	void    FlagFaces(DWORD f);
+	void    FlagFaces(size_t f);
 	void	Deleteface(Poly* p);
     BOOL    HasPolys(){return _polys.size()>0;}
 	BOOL    IsSolid(){return _brushflags & BRSH_SOLID;}
     BOOL    IsTouched(){return this != _pResult;}
 	void	DeletePolys();
-    BOOL    HasFlag(DWORD f);
+	BOOL    HasFlag(size_t f);
     BOOL    IsCut();
     BOOL    IsProjector();
     BOOL    IsSplitter();
@@ -187,9 +187,9 @@ public:
     BOOL    IsConvex();
     int     SPlitByPlane(Plane& p0, Brush* pNewA, Brush* pNewB);
     int    &ZoneIdx(){return _nZoneNo;} // fo zone hold here this index
-    DWORD  &VisData(){return _polySec;} // fo zone hold here this index
+    size_t  &VisData(){return _polySec;} // fo zone hold here this index
     BOOL    RecalcBoxAndNormals(BOOL withnormals);
-    int     GetPolyCount(DWORD flags, DWORD props = (DWORD)-1);
+    int     GetPolyCount(size_t flags, size_t props = (size_t)-1);
     Poly *  GetNextPoly(class Poly *);
     Poly *  GetPrevPoly(class Poly *);
 private:

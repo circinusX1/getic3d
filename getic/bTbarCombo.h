@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 // bTbarCombo.h : header file
 //
-#pragma warning (disable: 4786)
+//   #pragma warning (disable: 4786)
 /////////////////////////////////////////////////////////////////////////////
 // CbTbarCombo window
 

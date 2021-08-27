@@ -3,7 +3,7 @@
 //----------------------------------------------------------------------------------------
 // DlgNewBrush.h : header file
 #include "UiEnhancer.h"
-#include "brush.h"
+#include "Brush.h"
 #include "resource.h"
 
 

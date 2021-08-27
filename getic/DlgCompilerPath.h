@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 // DlgCompilerPath.h : header file
 //
-#include "uienhancer.h"
+#include "UiEnhancer.h"
 #include "ColorButon.h"
 /////////////////////////////////////////////////////////////////////////////
 // CDlgCompilerPath dialog

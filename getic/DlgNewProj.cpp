@@ -53,9 +53,9 @@ BOOL DlgNewProj::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	
-    TCHAR cd[_MAX_PATH]={0} ;
+    TCHAR cd[PATH_MAX]={0} ;
 
-    GetCurrentDirectory(_MAX_PATH, cd);
+    GetCurrentDirectory(PATH_MAX, cd);
     m_location = cd;
     m_prjName = "";
     GetDlgItem(IDOK)->EnableWindow(0);
@@ -123,7 +123,7 @@ void DlgNewProj::OnOk()
 {
     UpdateData(1);
     TCHAR prjName[128] = {0};
-    _tcscpy(prjName, LPCTSTR(m_prjName));
+    strcpy(prjName, const char*(m_prjName));
     TCHAR* pDot = _tcschr(prjName,',');
     if(pDot)
         *pDot = _T('\0');
@@ -135,7 +135,7 @@ void DlgNewProj::OnOk()
 
 void DlgNewProj::OnBrowse() 
 {
-    LPCTSTR pscDest = BrowseForFolder("Select Output Directory",theApp.DocsDir());
+    const char* pscDest = BrowseForFolder("Select Output Directory",theApp.DocsDir());
     if(pscDest)
     {
         m_location = pscDest; 

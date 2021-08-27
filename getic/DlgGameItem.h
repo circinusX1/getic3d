@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 // DlgGameItem.h : header file
 // For item Game items Catheory and Game Item Props
-#include "PrpLb.h"
+#include "Prplb.h"
 #include "UiEnhancer.h"
 /////////////////////////////////////////////////////////////////////////////
 // DlgGameItem dialog
@@ -51,7 +51,7 @@ protected:
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
 	afx_msg void OnOk();
 	virtual void OnCancel();
-	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+	afx_msg void OnShowWindow(BOOL bShow, size_t nStatus);
 	//}}AFX_MSG
 	LRESULT OnRepaint(WPARAM,LPARAM);
 	DECLARE_MESSAGE_MAP()

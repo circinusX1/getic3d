@@ -12,13 +12,13 @@
 #include "z_ed2Doc.h"
 #include "ToolFrame.h"
 
-BOOL GetOpenCommand(LPCTSTR regPath, CString& command);
+BOOL GetOpenCommand(const char* regPath, CString& command);
 
 BOOL            BbautoClose = 0;
 static int      BARWIDTH  =  260;
 static char     Sbt[255];
 //---------------------------------------------------------------------------------------
-UINT            UTimer;
+size_t            UTimer;
 Htex		    _selTex;
 Htex		    _dumptex;
 Htex			_lbulbtex;
@@ -40,7 +40,7 @@ CZ_ed2View* Pty;
 z_ed3View*  PT3;
 
 void	MakeToolbarImageList(int			inBitmapID,
-							 UINT			nButtons,
+							 size_t			nButtons,
 							 CImageList&	outImageList,
 							 CToolBarCtrl& barCtrl, int what);
 
@@ -92,7 +92,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
     ON_MESSAGE(WM_GOTOZALSOFT,OnZalsoft)
 END_MESSAGE_MAP()
 
-static UINT indicators[] =
+static size_t indicators[] =
 {
 	ID_SEPARATOR,           
     SB_CAMPOS,
@@ -125,8 +125,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     _Hmain = m_hWnd;
     CenterWindow();
 
-    DWORD defStyle = TBSTYLE_FLAT|TBSTYLE_TRANSPARENT;
-    DWORD styl  = WS_CHILD | WS_VISIBLE | CBRS_ALIGN_BOTTOM;
+    size_t defStyle = TBSTYLE_FLAT|TBSTYLE_TRANSPARENT;
+    size_t styl  = WS_CHILD | WS_VISIBLE | CBRS_ALIGN_BOTTOM;
 
 	//UTimer = SetTimer(SPASH_TIMER, 60*1000*10, 0);
 
@@ -222,12 +222,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     _menu.Attach(GetMenu()->m_hMenu);
 	m_wndReBar.Create(this);
 
-    DWORD sbs = WS_CHILD|WS_VISIBLE|CBRS_BOTTOM;
+    size_t sbs = WS_CHILD|WS_VISIBLE|CBRS_BOTTOM;
     sbs &= ~SBARS_SIZEGRIP;
 
 	if (!m_wndStatusBar.Create(this,sbs)  ||
 		!m_wndStatusBar.SetIndicators(indicators,
-		  sizeof(indicators)/sizeof(UINT)))
+		  sizeof(indicators)/sizeof(size_t)))
 	{
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
@@ -245,7 +245,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     m_wndStatusBar.SetFont(&_cfont);
 
 
-    DWORD tbAttr = CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC | CBRS_TOOLTIPS | CBRS_FLYBY;
+    size_t tbAttr = CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC | CBRS_TOOLTIPS | CBRS_FLYBY;
 
     m_TolTipBar.SetBarStyle(m_TolTipBar.GetBarStyle() |tbAttr);
 	m_MakeTbar.SetBarStyle(m_MakeTbar.GetBarStyle() |tbAttr);
@@ -268,7 +268,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     m_MakeTbar.GetItemRect(index, &rc);
     rc.top		+= 2;
     rc.bottom	+= 200;
-    DWORD dwStyle = WS_VISIBLE | WS_CHILD | CBS_AUTOHSCROLL |CBS_DROPDOWNLIST | CBS_HASSTRINGS;
+    size_t dwStyle = WS_VISIBLE | WS_CHILD | CBS_AUTOHSCROLL |CBS_DROPDOWNLIST | CBS_HASSTRINGS;
     if (!m_combobox.Create(dwStyle, rc, &m_MakeTbar, 1011))
     {
         TRACE0("Failed to create combo-box\n");
@@ -464,8 +464,8 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/,
 	CZ_ed2View* pty = (CZ_ed2View *)m_wndSplitter.GetPane(0,1);
 	CZ_ed2View* ptz = (CZ_ed2View *)m_wndSplitter.GetPane(1,1);
 
-    DWORD defStyle = TBSTYLE_FLAT;
-    DWORD styl  = WS_CHILD | WS_VISIBLE | CBRS_ALIGN_BOTTOM;
+    size_t defStyle = TBSTYLE_FLAT;
+    size_t styl  = WS_CHILD | WS_VISIBLE | CBRS_ALIGN_BOTTOM;
 	
 
     ptx->_vt = 'x';
@@ -658,7 +658,7 @@ void CMainFrame::Dump(CDumpContext& dc) const
 // CMainFrame message handlers
 
 
-void CMainFrame::OnTimer(UINT nIDEvent) 
+void CMainFrame::OnTimer(size_t nIDEvent) 
 {
 #ifdef _FREE
     if((UTimer+1)== nIDEvent)
@@ -739,7 +739,7 @@ CDlgCompProgress* CMainFrame::ShowProgressDlg(BOOL bShow)
 	{
 		if(_dlgProgress.m_hWnd)
 		{
-            UINT id = GetDlgCtrlID();
+            size_t id = GetDlgCtrlID();
 			_dlgProgress.DestroyWindow();
 			_dlgProgress.m_hWnd=0;
             //if(id == DLG_COMPILERPROG)
@@ -767,7 +767,7 @@ LRESULT CMainFrame::OnCompileDone(WPARAM w,LPARAM l)
     return DOC()->OnCompileDone(w,l);
 }
 
-BOOL CMainFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
+BOOL CMainFrame::OnCmdMsg(size_t nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
 {
 	if(m_bshutdown==0 && CZ_ed2Doc::PDoc)
 	{
@@ -827,7 +827,7 @@ void CMainFrame::OnSettingsPreferences()
 }
 
 void	MakeToolbarImageList(int			inBitmapID,
-							 UINT			nButtons,
+							 size_t			nButtons,
 							 CImageList&	outImageList,
 							 CToolBarCtrl& barCtrl, int what)
 {
@@ -865,7 +865,7 @@ void	MakeToolbarImageList(int			inBitmapID,
 
 
 
-void CMainFrame::OnSize(UINT nType, int cx, int cy) 
+void CMainFrame::OnSize(size_t nType, int cx, int cy) 
 {
     // geep propportion on splitters
 	CFrameWnd::OnSize(nType, cx, cy);
@@ -941,7 +941,7 @@ void CMainFrame::OnUpdateControlBarMenu(CCmdUI* pCmdUI)
 }
 
 
-BOOL CMainFrame::OnBarCheck(UINT nID)
+BOOL CMainFrame::OnBarCheck(size_t nID)
 {
 	ASSERT(ID_VIEW_STATUS_BAR == AFX_IDW_STATUS_BAR);
 	ASSERT(ID_VIEW_TOOLBAR == AFX_IDW_TOOLBAR);
@@ -979,7 +979,7 @@ void CMainFrame::OnConsole()
 */
 }
 
-CStaticGL*    CMainFrame::GetGLWidnow(CWnd* pNewParent, UINT CtlId)
+CStaticGL*    CMainFrame::GetGLWidnow(CWnd* pNewParent, size_t CtlId)
 {
     if(pNewParent==0)
     {
@@ -1144,9 +1144,9 @@ LRESULT CMainFrame::OnTSBTMsg(WPARAM w,LPARAM l)
     return 0;
 }
 
-void  SBT(int nPane, LPCTSTR pTxt)
+void  SBT(int nPane, const char* pTxt)
 {   
-    static DWORD lastTime = GetTickCount();;
+    static size_t lastTime = GetTickCount();;
 	if(ThrID == GetCurrentThreadId() || pTxt[0]=='+' )
     {
         if(ThrID != GetCurrentThreadId())
@@ -1179,7 +1179,7 @@ LRESULT CMainFrame::OnZalsoft(WPARAM w,LPARAM l)
         HINSTANCE hi = ::ShellExecute(NULL, NULL, openCmd, csLink, NULL, SW_SHOWNORMAL);
         if(hi <  HINSTANCE(32))
         {
-            DWORD dwErr = GetLastError();
+            size_t dwErr = GetLastError();
         }
     }
     return 1;

@@ -244,14 +244,14 @@ protected:
 	CImageList* SetImageList(CImageList* pImageList, int nImageListType){return NULL;}
 	BOOL GetItem(LV_ITEM* pItem) const{return TRUE;}
 	BOOL SetItem(const LV_ITEM* pItem){return TRUE;}
-	BOOL SetItem(int nItem, int nSubItem, UINT nMask, LPCTSTR lpszItem,
-		int nImage, UINT nState, UINT nStateMask, LPARAM lParam){return TRUE;}
-	UINT GetCallbackMask() const{return 1;}
-	BOOL SetCallbackMask(UINT nMask){return TRUE;}
+	BOOL SetItem(int nItem, int nSubItem, size_t nMask, const char* lpszItem,
+		int nImage, size_t nState, size_t nStateMask, LPARAM lParam){return TRUE;}
+	size_t GetCallbackMask() const{return 1;}
+	BOOL SetCallbackMask(size_t nMask){return TRUE;}
 	int GetNextItem(int nItem, int nFlags) const{return TRUE;}
 	BOOL SetItemPosition(int nItem, POINT pt){return TRUE;}
 	BOOL GetItemPosition(int nItem, LPPOINT lpPoint) const{return TRUE;}
-	int GetStringWidth(LPCTSTR lpsz) const{return 1;}
+	int GetStringWidth(const char* lpsz) const{return 1;}
 	CEdit* GetEditControl() const{return NULL;}
 	BOOL GetColumn(int nCol, LV_COLUMN* pColumn) const{return TRUE;}
 	BOOL SetColumn(int nCol, const LV_COLUMN* pColumn){return TRUE;}
@@ -262,36 +262,36 @@ protected:
 	int GetCountPerPage() const{return 1;}
 	BOOL GetOrigin(LPPOINT lpPoint) const{return TRUE;}
 	BOOL SetItemState(int nItem, LV_ITEM* pItem){return TRUE;}
-	BOOL SetItemState(int nItem, UINT nState, UINT nMask){return TRUE;}
-	UINT GetItemState(int nItem, UINT nMask) const{return 1;}
+	BOOL SetItemState(int nItem, size_t nState, size_t nMask){return TRUE;}
+	size_t GetItemState(int nItem, size_t nMask) const{return 1;}
 	CString GetItemText(int nItem, int nSubItem) const{return "";}
 	int GetItemText(int nItem, int nSubItem, LPTSTR lpszText, int nLen) const{return 1;}
-	BOOL SetItemText(int nItem, int nSubItem, LPCTSTR lpszText){return TRUE;}
+	BOOL SetItemText(int nItem, int nSubItem, const char* lpszText){return TRUE;}
 	void SetItemCount(int nItems);
-	BOOL SetItemData(int nItem, DWORD dwData){return TRUE;}
-	DWORD GetItemData(int nItem) const;
-	UINT GetSelectedCount() const{return 1;}
+	BOOL SetItemData(int nItem, size_t dwData){return TRUE;}
+	size_t GetItemData(int nItem) const;
+	size_t GetSelectedCount() const{return 1;}
 
 // Operations
 	int InsertItem(const LV_ITEM* pItem){return 1;}
-	int InsertItem(int nItem, LPCTSTR lpszItem){return 1;}
-	int InsertItem(int nItem, LPCTSTR lpszItem, int nImage){return 1;}
+	int InsertItem(int nItem, const char* lpszItem){return 1;}
+	int InsertItem(int nItem, const char* lpszItem, int nImage){return 1;}
 	int FindItem(LV_FINDINFO* pFindInfo, int nStart = -1) const{return 1;}
 	int HitTest(LV_HITTESTINFO* pHitTestInfo) const{return 1;}
-	int HitTest(CPoint pt, UINT* pFlags = NULL) const{return 1;}
+	int HitTest(CPoint pt, size_t* pFlags = NULL) const{return 1;}
 	BOOL EnsureVisible(int nItem, BOOL bPartialOK){return TRUE;}
 	BOOL Scroll(CSize size){return TRUE;}
 	BOOL RedrawItems(int nFirst, int nLast){return TRUE;}
-	BOOL Arrange(UINT nCode){return TRUE;}
+	BOOL Arrange(size_t nCode){return TRUE;}
 	CEdit* EditLabel(int nItem){return NULL;}
 	int InsertColumn(int nCol, const LV_COLUMN* pColumn){return 1;}
-	int InsertColumn(int nCol, LPCTSTR lpszColumnHeading,
+	int InsertColumn(int nCol, const char* lpszColumnHeading,
 		int nFormat = LVCFMT_LEFT, int nWidth = -1, int nSubItem = -1){return 1;}
 	BOOL DeleteColumn(int nCol){return TRUE;}
 	CImageList* CreateDragImage(int nItem, LPPOINT lpPoint){return NULL;}
 	BOOL Update(int nItem){return TRUE;}
-	BOOL SortItems(PFNLVCOMPARE pfnCompare, DWORD dwData){return TRUE;}
-	BOOL GetItemRect(int nItem, LPRECT lpRect, UINT nCode) const{return TRUE;}
+	BOOL SortItems(PFNLVCOMPARE pfnCompare, size_t dwData){return TRUE;}
+	BOOL GetItemRect(int nItem, LPRECT lpRect, size_t nCode) const{return TRUE;}
 
 
 /*	// Functions do not override

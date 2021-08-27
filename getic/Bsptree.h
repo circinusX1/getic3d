@@ -2,13 +2,13 @@
 //---------------------------------------------------------------------------------------
 #ifndef __BSPTREE_H__
 #define __BSPTREE_H__
-#pragma warning (disable: 4786)
+//   #pragma warning (disable: 4786)
 //---------------------------------------------------------------------------------------
 
 
-#include "poly.h"
+#include "Poly.h"
 #include "basecont.h"
-#include "MiniBsp.h"
+#include "Minibsp.h"
 
 
 //---------------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ class SceItem;
 class CLeaf : public CMiniNode
 {
 public:
-    CLeaf(MiniBsp* pBsp, DWORD dw=0):CMiniNode(pBsp, dw),
+    CLeaf(MiniBsp* pBsp, size_t dw=0):CMiniNode(pBsp, dw),
             _pNext(0),
             _pvsIdx(-1),
             _portIdxes(8),
@@ -73,10 +73,10 @@ public:
 	CBspTree();
 	virtual ~CBspTree();
     virtual void Clear();                       // virtual from base 
-	virtual BOOL Compile(vvector<Poly>& polys, DWORD brFlags, BOOL bremES=FALSE, BOOL bTextCvx=FALSE); // virtual from base
-    CLeaf*  GetLeaf(UINT idx){ASSERT(idx < _leafs.size()); return _leafs[idx];}
-    void    Draw3DBSPTree(z_ed3View* pV, int& leaf,int curLeaf, DWORD mode);
-	void    Draw2GlTree(CZ_ed2View*,DWORD,int,BOOL);
+	virtual BOOL Compile(vvector<Poly>& polys, size_t brFlags, BOOL bremES=FALSE, BOOL bTextCvx=FALSE); // virtual from base
+    CLeaf*  GetLeaf(size_t idx){ASSERT(idx < _leafs.size()); return _leafs[idx];}
+    void    Draw3DBSPTree(z_ed3View* pV, int& leaf,int curLeaf, size_t mode);
+	void    Draw2GlTree(CZ_ed2View*,size_t,int,BOOL);
     void    LinkDetailModel(CBspTree* pModelTree, BOOL bAtLeaf=TRUE);
 	int		R_FindLeaf(int nodeIdx,V3& pos);
     int     GetLeafsCount(){return _leafs.size();}
@@ -93,14 +93,14 @@ public:
 protected:
     // drawing
     void    Draw_Graph(z_ed3View* pV);
-    void    DrawPolys(Poly* pLeaf,int ncount, DWORD mode,  CLR* lfc=0,
+    void    DrawPolys(Poly* pLeaf,int ncount, size_t mode,  CLR* lfc=0,
                                                                vvector<Poly*>* transPolys=0,
                                                                vvector <Poly*>* backDraw=0,
                                                                vvector <Poly*>* mirrors=0,
                                                                vvector <Poly*>* masked=0,
                                                                vvector <Poly*>* guround=0);
-    void    Draw_BSP_WithLmapsAndTextures(z_ed3View* pV, int& leaf, int curLeaf, DWORD mode);
-    void    Draw_SelectedLeafByLeaf(z_ed3View* pV, int& leaf, int curLeaf,DWORD mode);
+    void    Draw_BSP_WithLmapsAndTextures(z_ed3View* pV, int& leaf, int curLeaf, size_t mode);
+    void    Draw_SelectedLeafByLeaf(z_ed3View* pV, int& leaf, int curLeaf,size_t mode);
     void    DoVisByLeafs();
     void    PatchPolys(vvector<Poly>&, vvector<Poly>&);
     BOOL    SegmentIntersectPolygons(Poly* pStart, int nCount, V3& a, V3& b, CollPack& col,BOOL faces=1);
@@ -112,7 +112,7 @@ protected:
     void    R_LinkDetailModel(int node, CBspTree* pModelTree);
 	void    R_LinkItem(int node, SceItem* pItem);
     void    R_DrawGraph(int node, V3 pos, int prevDir, z_ed3View* pV);
-    CMiniNode*  CreateNode(DWORD dw){
+    CMiniNode*  CreateNode(size_t dw){
         if(dw & NODE_SOLID)
             return MiniBsp::CreateNode(dw);
         return new CLeaf(this, dw);
@@ -136,7 +136,7 @@ public:
 	int				    _itemStartIdx;
     int                 _motionsIdx;
     BOOL                _patchPolys;
-    DWORD               _zoneareea;
+    size_t               _zoneareea;
 private:
     BOOL                _userFlag;
     int                 _clusterCnt;

@@ -2,11 +2,11 @@
 #define AFX_DLGTEXTURES_H__539C1423_A878_43F7_90B3_335CA9C88729__INCLUDED_
 
 
-#include "uienhancer.h"
-#include "scene.h"
+#include "UiEnhancer.h"
+#include "Scene.h"
 #include "VertDlgDlg.h"
 #include "SceItem.h"
-#include "TexLbox.h"
+#include "Texlbox.h"
 #include <string>
 #include <vector>
 using namespace std;
@@ -18,7 +18,7 @@ class CDlgTextures : public CVertDlgDlg, public CarryTex
 // Construction
 public:
 	CDlgTextures(CWnd* pParent = NULL);   // standard constructor
-    DWORD GettexGenFlag();
+    size_t GettexGenFlag();
 	int	 GetCurSel(char* pTex);
     BOOL SetTexture(Poly& poly, int& pV);
     void SetTexCoords(TexCoords& texCoord);
@@ -73,7 +73,7 @@ public:
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CDlgTextures)
 	public:
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
+	virtual BOOL OnCmdMsg(size_t nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
@@ -86,7 +86,7 @@ protected:
     void ShowPicture(int index);
     void Fliptexture(char cd);
 	void Dirty();
-	void PopSubDirText(LPCTSTR subDir);
+	void PopSubDirText(const char* subDir);
     BOOL DocSetTexture(SceItem& item, int& pV);
     BOOL DocSetTexture(Poly& poly, int& pV);
     BOOL DocOnApplytex() ;
@@ -113,8 +113,8 @@ protected:
 	afx_msg void OnDblclkList1();
 	afx_msg void OnSelchangeList1();
 	afx_msg void OnApllytex();
-	afx_msg UINT OnGetDlgCode();
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg size_t OnGetDlgCode();
+	afx_msg void OnKeyDown(size_t nChar, size_t nRepCnt, size_t nFlags);
 	afx_msg void OnChangeEdit2();
 	afx_msg void OnChangeEdit3();
 	afx_msg void OnChangeEdit4();
@@ -145,7 +145,7 @@ private:
     TexCoords       _texCoord;
 	BOOL			_copyt;
 	BOOL			_edChanged;
-	char			_cwd[_MAX_PATH];
+	char			_cwd[PATH_MAX];
 	BOOL			_showPick;
     int             _paneNo;
     BOOL            _resetTex;

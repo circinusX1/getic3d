@@ -1,8 +1,7 @@
 #if !defined(AFX_DLGTRIGGERITEM_H__ECB9F7CF_12CC_4F87_B9E9_F12B0280A083__INCLUDED_)
 #define AFX_DLGTRIGGERITEM_H__ECB9F7CF_12CC_4F87_B9E9_F12B0280A083__INCLUDED_
-#pragma warning (disable: 4786)
 
-#include "uienhancer.h"
+#include "UiEnhancer.h"
 #include "ColorButon.h"
 
 // DlgTriggerItem dialog
@@ -43,7 +42,7 @@ protected:
 	afx_msg void OnOk();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnDblclkTarget();
-	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+	afx_msg void OnShowWindow(BOOL bShow, size_t nStatus);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 	TriggerItem*	_pCurTrigger;

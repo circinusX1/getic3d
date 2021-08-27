@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "TexAdapter.h"
 #include "MainFrm.h"
-#include "poly.h"
+#include "Poly.h"
 #include "SceItem.h"
 #include "ScriptItem.h"
 #include "StartPlayItem.h"
@@ -80,7 +80,7 @@ SceItem::SceItem():_item(ITM_NONE),_props(0),_flags(0),_colorD(ZWHITE)
     _s        = V1;
     _euler    = V0;
     _zonearea= -1;
-    _stprintf(_name,"%s",MKSTR("Item%d",_id));
+    sprintf(_name,"%s",MKSTR("Item%d",_id));
 }
 
 SceItem::SceItem(const SceItem& r)
@@ -89,18 +89,18 @@ SceItem::SceItem(const SceItem& r)
     {
         _id    = _GItemID++;
          char name[64];
-        _tcscpy(name,r._name);
+        strcpy(name,r._name);
         StripDigits(name);
         if(strlen(name))
-            _stprintf(_name, "%s%d", name, _id);
+            sprintf(_name, "%s%d", name, _id);
         else
-            _stprintf(_name, "%d", _id);
+            sprintf(_name, "%d", _id);
 
     }
     else
     {
         _id    = r._id;
-        _tcscpy(_name,r._name);
+        strcpy(_name,r._name);
     }
     strcpy(_catname,r._catname);
     _item       = r._item    ;
@@ -130,18 +130,18 @@ SceItem& SceItem::operator=(const SceItem& r)
         {
             _id    = _GItemID++;
              char name[64];
-            _tcscpy(name,r._name);
+            strcpy(name,r._name);
             StripDigits(name);
             if(strlen(name))
-                _stprintf(_name, "%s%d", name, _id);
+                sprintf(_name, "%s%d", name, _id);
             else
-                _stprintf(_name, "%d", _id);
+                sprintf(_name, "%d", _id);
 
         }
         else
         {
             _id    = r._id;
-            _tcscpy(_name,r._name);
+            strcpy(_name,r._name);
         }
         strcpy(_catname,r._catname);
         _item       = r._item    ;
@@ -192,7 +192,7 @@ void    SceItem::GlDraw2D(CZ_ed2View* pV)
     }
     else
     {
-        _tcscpy(s, IS[_item].text);
+        strcpy(s, IS[_item].text);
     }
 
     
@@ -384,7 +384,7 @@ void SceItem::Serialize(FileWrap* pfw,
 
     if(pfw->_store)
     {
-        DWORD dwTmp;
+        size_t dwTmp;
         for(int k=0;k<4;k++)
         {
             map<int, int>::iterator fi = texassoc.find((int)this->GetHtex(k));
@@ -406,14 +406,14 @@ void SceItem::Serialize(FileWrap* pfw,
     else
     {
         int      tmpVal;
-        DWORD    dwTmpVal;
+        size_t    dwTmpVal;
     
         for(int k=0; k<4; k++)
         {
             pfw->Read(tmpVal);
             pfw->Read(dwTmpVal);
 
-            if(tmpVal >=0 && (UINT)tmpVal < texNames.size())
+            if(tmpVal >=0 && (size_t)tmpVal < texNames.size())
             {
                 this->SetApply(dwTmpVal,k);
                 this->SetTex((char*)texNames[tmpVal].filename, k, texNames[tmpVal].hTex.glTarget);
@@ -424,7 +424,7 @@ void SceItem::Serialize(FileWrap* pfw,
                 }
             }
         }
-        DWORD combine;
+        size_t combine;
         pfw->Read(combine);//this->_combine);
         this->SetCombine(combine);
         SetPos(_t);

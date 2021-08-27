@@ -35,7 +35,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CSampleDoc construction/destruction
 
-#pragma warning(disable:4355)
+//   #pragma warning(disable:4355)
 CSampleDoc::CSampleDoc() : m_xTextBuffer(this),_compileErr(-1)
 {
 	// TODO: add one-time construction code here
@@ -48,7 +48,7 @@ CSampleDoc::CSampleDoc() : m_xTextBuffer(this),_compileErr(-1)
 	m_lf.lfClipPrecision = CLIP_DEFAULT_PRECIS;
 	m_lf.lfQuality = DEFAULT_QUALITY;
 	m_lf.lfPitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
-	_tcscpy(m_lf.lfFaceName, "FixedSys");
+	strcpy(m_lf.lfFaceName, "FixedSys");
 
 	CSampleDoc::PDoc = this;
 }
@@ -106,7 +106,7 @@ void CSampleDoc::DeleteContents()
     CDocument::DeleteContents();
 }
 
-BOOL CSampleDoc::OnOpenDocument(LPCTSTR lpszPathName) 
+BOOL CSampleDoc::OnOpenDocument(const char* lpszPathName) 
 {
 	if (!CDocument::OnOpenDocument(lpszPathName))
 		return FALSE;
@@ -115,7 +115,7 @@ BOOL CSampleDoc::OnOpenDocument(LPCTSTR lpszPathName)
     return TRUE;
 }
 
-BOOL CSampleDoc::OnSaveDocument(LPCTSTR lpszPathName) 
+BOOL CSampleDoc::OnSaveDocument(const char* lpszPathName) 
 {
 	m_xTextBuffer.SaveToFile(lpszPathName,CRLF_STYLE_AUTOMATIC, TRUE,FALSE);
 	SetModifiedFlag(FALSE); 
@@ -174,7 +174,7 @@ BOOL CSampleDoc::SaveModified()
 }
 
 
-BOOL CSampleDoc::DoSaveFile(LPCTSTR fileName)
+BOOL CSampleDoc::DoSaveFile(const char* fileName)
 {
     return 0;
 }
@@ -185,15 +185,15 @@ void CSampleDoc::UpdateAllViews()
         _pView->Invalidate();
 }
 
-void CSampleDoc::InsertLine(LPCTSTR pszLine, BOOL ro)
+void CSampleDoc::InsertLine(const char* pszLine, BOOL ro)
 {
 	m_xTextBuffer.InsertLine(pszLine);
 	_pView->UpdateTokens();
 };
 
 
-void CSampleDoc::ReportSaveLoadException(LPCTSTR lpszPathName,
-	CException* e, BOOL bSaving, UINT nIDPDefault)
+void CSampleDoc::ReportSaveLoadException(const char* lpszPathName,
+	CException* e, BOOL bSaving, size_t nIDPDefault)
 {
 	AfxMessageBox("Error opening document. Please check the path", MB_ICONEXCLAMATION);
 }

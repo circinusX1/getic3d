@@ -102,7 +102,7 @@ void CCrystalTextView::MoveWordLeft(BOOL bSelect)
         m_ptCursorPos.x = GetLineLength(m_ptCursorPos.y);
     }
     
-    LPCTSTR pszChars = GetLineChars(m_ptCursorPos.y);
+    const char* pszChars = GetLineChars(m_ptCursorPos.y);
     int nPos = m_ptCursorPos.x;
     while (nPos > 0 && isspace(pszChars[nPos - 1]))
           nPos --;
@@ -157,7 +157,7 @@ void CCrystalTextView::MoveWordRight(BOOL bSelect)
         return;
     }
     
-    LPCTSTR pszChars = GetLineChars(m_ptCursorPos.y);
+    const char* pszChars = GetLineChars(m_ptCursorPos.y);
     int nPos = m_ptCursorPos.x;
     if (isalnum(pszChars[nPos]) || pszChars[nPos] == _T('_'))
     {
@@ -233,7 +233,7 @@ void CCrystalTextView::MoveDown(BOOL bSelect)
 void CCrystalTextView::MoveHome(BOOL bSelect)
 {
     int nLength = GetLineLength(m_ptCursorPos.y);
-    LPCTSTR pszChars = GetLineChars(m_ptCursorPos.y);
+    const char* pszChars = GetLineChars(m_ptCursorPos.y);
     int nHomePos = 0;
     while (nHomePos < nLength && isspace(pszChars[nHomePos]))
           nHomePos ++;
@@ -382,7 +382,7 @@ CPoint CCrystalTextView::WordToRight(CPoint pt)
 {
     ASSERT_VALIDTEXTPOS(pt);
     int nLength = GetLineLength(pt.y);
-    LPCTSTR pszChars = GetLineChars(pt.y);
+    const char* pszChars = GetLineChars(pt.y);
     while (pt.x < nLength)
     {
         if (! isalnum(pszChars[pt.x]) && pszChars[pt.x] != _T('_'))
@@ -397,7 +397,7 @@ CPoint CCrystalTextView::WordToRight(CPoint pt)
 CPoint CCrystalTextView::WordToLeft(CPoint pt)
 {
     ASSERT_VALIDTEXTPOS(pt);
-    LPCTSTR pszChars = GetLineChars(pt.y);
+    const char* pszChars = GetLineChars(pt.y);
     while (pt.x > 0)
     {
         if (! isalnum(pszChars[pt.x - 1]) && pszChars[pt.x - 1] != _T('_'))
@@ -419,7 +419,7 @@ void CCrystalTextView::SelectAll()
 }
 
 //--| CCrystalTextView::OnLButtonDown|----------------------------------------------------
-void CCrystalTextView::OnLButtonDown(UINT nFlags, CPoint point)
+void CCrystalTextView::OnLButtonDown(size_t nFlags, CPoint point)
 {
     CView::OnLButtonDown(nFlags, point);
     
@@ -522,7 +522,7 @@ void CCrystalTextView::OnLButtonDown(UINT nFlags, CPoint point)
 }
 
 //--| CCrystalTextView::OnMouseMove|------------------------------------------------------
-void CCrystalTextView::OnMouseMove(UINT nFlags, CPoint point)
+void CCrystalTextView::OnMouseMove(size_t nFlags, CPoint point)
 {
     CView::OnMouseMove(nFlags, point);
     
@@ -633,7 +633,7 @@ void CCrystalTextView::OnMouseMove(UINT nFlags, CPoint point)
 }
 
 //--| CCrystalTextView::OnLButtonUp|------------------------------------------------------
-void CCrystalTextView::OnLButtonUp(UINT nFlags, CPoint point)
+void CCrystalTextView::OnLButtonUp(size_t nFlags, CPoint point)
 {
     CView::OnLButtonUp(nFlags, point);
     
@@ -729,7 +729,7 @@ void CCrystalTextView::OnLButtonUp(UINT nFlags, CPoint point)
 }
 
 //--| CCrystalTextView::OnTimer|----------------------------------------------------------
-void CCrystalTextView::OnTimer(UINT nIDEvent)
+void CCrystalTextView::OnTimer(size_t nIDEvent)
 {
     CView::OnTimer(nIDEvent);
     
@@ -811,7 +811,7 @@ void CCrystalTextView::OnTimer(UINT nIDEvent)
 }
 
 //--| CCrystalTextView::OnLButtonDblClk|--------------------------------------------------
-void CCrystalTextView::OnLButtonDblClk(UINT nFlags, CPoint point)
+void CCrystalTextView::OnLButtonDblClk(size_t nFlags, CPoint point)
 {
     CView::OnLButtonDblClk(nFlags, point);
     
@@ -903,7 +903,7 @@ void CCrystalTextView::OnUpdateEditSelectAll(CCmdUI* pCmdUI)
 }
 
 //--| CCrystalTextView::OnRButtonDown|----------------------------------------------------
-void CCrystalTextView::OnRButtonDown(UINT nFlags, CPoint point)
+void CCrystalTextView::OnRButtonDown(size_t nFlags, CPoint point)
 {
     CPoint pt = point;
     AdjustTextPoint(pt);
@@ -944,7 +944,7 @@ BOOL CCrystalTextView::TextInClipboard()
 }
 
 //--| CCrystalTextView::PutToClipboard|---------------------------------------------------
-BOOL CCrystalTextView::PutToClipboard(LPCTSTR pszText)
+BOOL CCrystalTextView::PutToClipboard(const char* pszText)
 {
     if (pszText == NULL || lstrlen(pszText) == 0)
        return FALSE;
@@ -959,7 +959,7 @@ BOOL CCrystalTextView::PutToClipboard(LPCTSTR pszText)
         {
             LPSTR pszData = (LPSTR) ::GlobalLock(hData);
             USES_CONVERSION;
-            _tcscpy(pszData, T2A((LPTSTR) pszText));
+            strcpy(pszData, T2A((LPTSTR) pszText));
             GlobalUnlock(hData);
             bOK = SetClipboardData(CF_TEXT, hData) != NULL;
         }

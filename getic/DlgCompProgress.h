@@ -2,7 +2,7 @@
 #define __DLG_PROG_H__
 
 #include "resource.h"
-#include "RepLBox.h"
+#include "Replbox.h"
 #include "ColorButon.h"
 #include "UiEnhancer.h"
 //----------------------------------------------------------------------------
@@ -21,8 +21,8 @@ public:
 
 
     void    Progress(int pos=-1);
-    void    LogPos(DWORD flag, V3& pos, LPCTSTR lpszFormat,...);
-    void    Log(DWORD flag, LPCTSTR,...);
+    void    LogPos(size_t flag, V3& pos, const char* lpszFormat,...);
+    void    Log(size_t flag, const char*,...);
     void    Clear()
     {
        if(!_onScreen)
@@ -54,7 +54,7 @@ public:
     virtual void OnUpdateCmdUI( CFrameWnd* pTarget, BOOL bDisableIfNoHndler ){};
 	// Generated message map functions
 	//{{AFX_MSG(CDlgCompProgress)
-	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnSize(size_t nType, int cx, int cy);
 	afx_msg void OnCancel();
     afx_msg void OnClear();
 	afx_msg void OnCloseBTN();

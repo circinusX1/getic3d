@@ -39,7 +39,7 @@ CLightBulb::CLightBulb():SceItem()
     _item           = ITM_LIGTBULB;
     strcpy(_catname ,       "ITM_LIGTBULB") ;
 	GetTexs()[0]    = _lbulbtex;
-    _stprintf(_name,"Light%d",_id);
+    sprintf(_name,"Light%d",_id);
 }
 
 CLightBulb::CLightBulb(const CLightBulb& r):SceItem((const SceItem&)r)

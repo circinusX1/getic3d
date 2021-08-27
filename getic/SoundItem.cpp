@@ -28,7 +28,7 @@ CSoundItem::CSoundItem():SceItem()
     _radius         = 1000;                 // in cm 
     _item           = ITM_SNDSOURCE;
     strcpy(_catname , "ITM_SNDSOURCE") ;
-    _stprintf(_name,"Sound%d",_id);
+    sprintf(_name,"Sound%d",_id);
 }
 
 CSoundItem::CSoundItem(const CSoundItem& r):SceItem((const SceItem&)r)

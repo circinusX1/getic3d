@@ -6,10 +6,12 @@
 #include "baselib.h"
 #include "basecont.h"
 
+#define _PLATFORM_ "LINUX"
+
 #ifndef _PLATFORM_
-#pragma message("Error:  Please define platform: _CFG_WIN32_WIN, GNU_WIN or GNU_LINUX")
+#error("Error:  Please define platform: _CFG_WIN32_WIN, GNU_WIN or GNU_LINUX")
 #else
-#pragma message(_PLATFORM_)
+#warning(_PLATFORM_)
 #endif //
 
 

@@ -395,7 +395,7 @@ void    DlgFaceProp::Update(Poly* pPoly, int selCont)
     }
     m_lbprops.Enable(i-1,0); //light  map is informative
 
-    DWORD anims = pPoly->_polyprops>>16;
+    size_t anims = pPoly->_polyprops>>16;
     m_cnanims.SetCurSel(0);
     if(anims)
     {
@@ -566,7 +566,7 @@ void    DlgFaceProp::Retreive(Poly* pPoly, int selCont)
     if(IS_TID(CB_EFFECTS) || IS_TID(EF_SPEEDU) || IS_TID(EF_SPEEDV))
     {
         int anims = m_cnanims.GetCurSel();
-        DWORD props = 0;
+        size_t props = 0;
         pPoly->_polyprops &= 0x0000FFFF;
 
         pchanged =1;
@@ -850,7 +850,7 @@ void DlgFaceProp::OnDestroy()
     gluDeleteQuadric(GluObj);	
 }
 
-void DlgFaceProp::OnShowWindow(BOOL bShow, UINT nStatus) 
+void DlgFaceProp::OnShowWindow(BOOL bShow, size_t nStatus) 
 {
 	CVertDlgDlg::OnShowWindow(bShow, nStatus);
 	

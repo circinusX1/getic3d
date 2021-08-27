@@ -168,12 +168,12 @@ void CDlgGs::OnOk()
     GAutoSave = 0;
 #endif //
 
-    char psth[_MAX_PATH];
-    GetDlgItemText(IDC_EDIT4,psth, _MAX_PATH);
+    char psth[PATH_MAX];
+    GetDlgItemText(IDC_EDIT4,psth, PATH_MAX);
     theApp.HomeDir(psth);
 
     _chdir(psth);
-    _getcwd(psth, _MAX_PATH);
+    _getcwd(psth, PATH_MAX);
 
     if(psth[strlen(psth)-1]=='\\'||psth[strlen(psth)-1]=='/')
         psth[strlen(psth)-1]=0;
@@ -287,7 +287,7 @@ void CDlgGs::OnCarve()
 void CDlgGs::OnHomedir() 
 {
     
-    LPCTSTR pfld = BrowseForFolder("Home Path",  theApp.HomeDir());    	
+    const char* pfld = BrowseForFolder("Home Path",  theApp.HomeDir());    	
     if(pfld)
     {
         theApp.HomeDir(pfld);

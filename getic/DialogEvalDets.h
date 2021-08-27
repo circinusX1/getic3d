@@ -53,8 +53,8 @@ protected:
 
     vvector<Poly*>   _polys;
     vvector<Brush*>  _brushes;
-    vvector<DWORD>   _flags;
-    UINT             _rbchecked;
+    vvector<size_t>   _flags;
+    size_t             _rbchecked;
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -78,7 +78,7 @@ void TabDlgSel::OnSelchangingDlgs(NMHDR* pNMHDR, LRESULT* pResult)
 }
 
 
-void TabDlgSel::AddDialog(CBASEDLG * pDlg,LPCSTR pTitle,int iMage, UINT placeID)
+void TabDlgSel::AddDialog(CBASEDLG * pDlg,LPCSTR pTitle,int iMage, size_t placeID)
 {
     if(pDlg && pDlg->m_hWnd)
     {

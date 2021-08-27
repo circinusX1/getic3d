@@ -8,24 +8,20 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
-#endif
 
 
 #include "resource.h"       // main symbols
 #include <deque>
 #include "geticplugbsp.h"
-#include "maskedit.h"       // main symbols
+#include "Maskedit.h"       // main symbols
 #include "basecont.h"
 #include "basethread.h"
-#include "atlbase.h"       // main symbols
 #ifdef COM_WAY
 #include "Z_edmap.h"
 #endif //COM_WAY
-#include "..\\_include\\geticplug.h"
+#include "geticplug.h"
 #include "tasks.h"
-#include "brush.h"
+#include "Brush.h"
 
 #define WM_REDRAW   (WM_USER+1000)
 #define WM_DIRTY    (WM_USER+1001)
@@ -36,7 +32,7 @@
 class GeticEditor : public IGeticEditor
 {
 public:
-    long _stdcall GetTextureInfo(_Plg_Texture* pt);
+    long  GetTextureInfo(_Plg_Texture* pt);
     void  Clear();
     map<string, _Plg_Texture>  _gc;
 };
@@ -112,7 +108,7 @@ public:
     }
     int DoFileDialog(CFileDialog& d);
     void StampDll(int runs);
-	void PumpMessage(UINT msg, UINT tout=-1);
+	void PumpMessage(size_t msg, size_t tout=-1);
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CZ_ed2App)
@@ -137,9 +133,9 @@ public:
     void CreatePaths();
     BOOL Dbg_ResolveCurDir();
     void FindPlugIns();
-	int DoMessageBox(LPCTSTR lpszPrompt, UINT nType, UINT nIDPrompt);
-    BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo); 
-    void OnPlugInsCmd(UINT cMd);
+	int DoMessageBox(const char* lpszPrompt, size_t nType, size_t nIDPrompt);
+    BOOL OnCmdMsg(size_t nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo); 
+    void OnPlugInsCmd(size_t cMd);
 private:
     void TestKey();
     BOOL RegisterGLWindows();
@@ -171,14 +167,14 @@ public:
     string      _cNameViews; //class window name
 
     // toolbar values
-    DWORD       _bShowMakeTbar;
-    DWORD       _bShowSelectTbar;
-    DWORD       _bShowMoveTbar;
-    DWORD       _bShowAlignTbar;
-    DWORD       _bShowViewsTbar;
-    DWORD       _bShowCsgTbar;
-    DWORD       _bShowBuildTbar;
-    DWORD       _bShowCurvesbar;
+    size_t       _bShowMakeTbar;
+    size_t       _bShowSelectTbar;
+    size_t       _bShowMoveTbar;
+    size_t       _bShowAlignTbar;
+    size_t       _bShowViewsTbar;
+    size_t       _bShowCsgTbar;
+    size_t       _bShowBuildTbar;
+    size_t       _bShowCurvesbar;
 	CBitmap		_msgBoxBitmap;
 
     CBrush      _slpEditBrush;
@@ -196,19 +192,19 @@ public:
     RECT        _rtBuildTbar;
     RECT        _rtCurvesTbar;
 
-    DWORD       _dwpMakeTbar;
-    DWORD       _dwpSelectTbar;
-    DWORD       _dwpMoveTbar;
-    DWORD       _dwpAlignTbar;
-    DWORD       _dwpViewsTbar;
-    DWORD       _dwpCsgTbar;
-    DWORD       _dwpBuildTbar;
+    size_t       _dwpMakeTbar;
+    size_t       _dwpSelectTbar;
+    size_t       _dwpMoveTbar;
+    size_t       _dwpAlignTbar;
+    size_t       _dwpViewsTbar;
+    size_t       _dwpCsgTbar;
+    size_t       _dwpBuildTbar;
 	CToolFrame*	_pToolFrame;
     BOOL        _bToolOn;
     CRect        _rectMiniTool;	
     HACCEL      _h3dEditAccel;
     HACCEL      _hScriptEditAccel;
-    UINT        _cmdPlugIn;
+    size_t        _cmdPlugIn;
 	BOOL		_returnVal;
     int         _runs;
     HICON       _colexpic[2];
@@ -231,9 +227,9 @@ private:
 
     struct SPlugIn
     {
-        SPlugIn(const TCHAR* mnname, UINT cmd):menuname(mnname),cmdid(cmd){}
+        SPlugIn(const TCHAR* mnname, size_t cmd):menuname(mnname),cmdid(cmd){}
         tstring menuname;
-        UINT    cmdid;
+        size_t    cmdid;
     };
     vvector<SPlugIn> _plugins;
     BOOL        _msgBoxOn;

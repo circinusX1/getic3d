@@ -1,7 +1,6 @@
 #ifndef _ZT___
 #define _ZT___
 
-#pragma warning (disable: 4786)
 #include "baselib.h"
 
 

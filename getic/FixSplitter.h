@@ -30,11 +30,11 @@ public:
 protected:
 	//{{AFX_MSG(CFixSplitter)
 	afx_msg void OnPaint();
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
-	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+	afx_msg void OnLButtonDown(size_t nFlags, CPoint point);
+	afx_msg void OnLButtonDblClk(size_t nFlags, CPoint point);
+	afx_msg BOOL OnSetCursor(CWnd* pWnd, size_t nHitTest, size_t message);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnMouseMove(size_t nFlags, CPoint point);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
     HCURSOR _hlr[2];

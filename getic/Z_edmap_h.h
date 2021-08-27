@@ -1,5 +1,5 @@
 
-#pragma warning( disable: 4049 )  /* more than 64k source lines */
+//   #pragma warning( disable: 4049 )  /* more than 64k source lines */
 
 /* this ALWAYS GENERATED file contains the definitions for the interfaces */
 
@@ -83,7 +83,7 @@ typedef struct _Plg_Vertex
 
 typedef struct _Plg_Poly
     {
-    DWORD flags;
+    size_t flags;
     BYTE color[ 4 ];
     Plg_Vertex *vXes;
     int nCnt;
@@ -91,7 +91,7 @@ typedef struct _Plg_Poly
 
 typedef struct _Plg_Brush
     {
-    DWORD flags;
+    size_t flags;
     Plg_Poly *pPolys;
     int nCnt;
     short name[ 32 ];
@@ -162,11 +162,11 @@ EXTERN_C const IID IID_IIGetic;
         
         HRESULT ( STDMETHODCALLTYPE *GetTypeInfoCount )( 
             IIGetic * This,
-            /* [out] */ UINT *pctinfo);
+            /* [out] */ size_t *pctinfo);
         
         HRESULT ( STDMETHODCALLTYPE *GetTypeInfo )( 
             IIGetic * This,
-            /* [in] */ UINT iTInfo,
+            /* [in] */ size_t iTInfo,
             /* [in] */ LCID lcid,
             /* [out] */ ITypeInfo **ppTInfo);
         
@@ -174,7 +174,7 @@ EXTERN_C const IID IID_IIGetic;
             IIGetic * This,
             /* [in] */ REFIID riid,
             /* [size_is][in] */ LPOLESTR *rgszNames,
-            /* [in] */ UINT cNames,
+            /* [in] */ size_t cNames,
             /* [in] */ LCID lcid,
             /* [size_is][out] */ DISPID *rgDispId);
         
@@ -187,7 +187,7 @@ EXTERN_C const IID IID_IIGetic;
             /* [out][in] */ DISPPARAMS *pDispParams,
             /* [out] */ VARIANT *pVarResult,
             /* [out] */ EXCEPINFO *pExcepInfo,
-            /* [out] */ UINT *puArgErr);
+            /* [out] */ size_t *puArgErr);
         
         /* [helpstring][id] */ HRESULT ( STDMETHODCALLTYPE *Test )( 
             IIGetic * This);
@@ -246,7 +246,7 @@ void __RPC_STUB IIGetic_Test_Stub(
     IRpcStubBuffer *This,
     IRpcChannelBuffer *_pRpcChannelBuffer,
     PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    size_t *_pdwStubPhase);
 
 
 
@@ -301,11 +301,11 @@ EXTERN_C const IID IID_IGeticPlug;
         
         HRESULT ( STDMETHODCALLTYPE *GetTypeInfoCount )( 
             IGeticPlug * This,
-            /* [out] */ UINT *pctinfo);
+            /* [out] */ size_t *pctinfo);
         
         HRESULT ( STDMETHODCALLTYPE *GetTypeInfo )( 
             IGeticPlug * This,
-            /* [in] */ UINT iTInfo,
+            /* [in] */ size_t iTInfo,
             /* [in] */ LCID lcid,
             /* [out] */ ITypeInfo **ppTInfo);
         
@@ -313,7 +313,7 @@ EXTERN_C const IID IID_IGeticPlug;
             IGeticPlug * This,
             /* [in] */ REFIID riid,
             /* [size_is][in] */ LPOLESTR *rgszNames,
-            /* [in] */ UINT cNames,
+            /* [in] */ size_t cNames,
             /* [in] */ LCID lcid,
             /* [size_is][out] */ DISPID *rgDispId);
         
@@ -326,7 +326,7 @@ EXTERN_C const IID IID_IGeticPlug;
             /* [out][in] */ DISPPARAMS *pDispParams,
             /* [out] */ VARIANT *pVarResult,
             /* [out] */ EXCEPINFO *pExcepInfo,
-            /* [out] */ UINT *puArgErr);
+            /* [out] */ size_t *puArgErr);
         
         /* [helpstring][id] */ HRESULT ( STDMETHODCALLTYPE *ImportFile )( 
             IGeticPlug * This,
@@ -405,7 +405,7 @@ void __RPC_STUB IGeticPlug_ImportFile_Stub(
     IRpcStubBuffer *This,
     IRpcChannelBuffer *_pRpcChannelBuffer,
     PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    size_t *_pdwStubPhase);
 
 
 /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE IGeticPlug_ExportFile_Proxy( 
@@ -418,7 +418,7 @@ void __RPC_STUB IGeticPlug_ExportFile_Stub(
     IRpcStubBuffer *This,
     IRpcChannelBuffer *_pRpcChannelBuffer,
     PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    size_t *_pdwStubPhase);
 
 
 /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE IGeticPlug_GetMenuStringAndType_Proxy( 
@@ -431,7 +431,7 @@ void __RPC_STUB IGeticPlug_GetMenuStringAndType_Stub(
     IRpcStubBuffer *This,
     IRpcChannelBuffer *_pRpcChannelBuffer,
     PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    size_t *_pdwStubPhase);
 
 
 

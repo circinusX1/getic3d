@@ -36,16 +36,16 @@ const char crlf[] = _T("\r\n");
 
 
 //--| CCrystalTextBuffer::SUndoRecord::SetText|-------------------------------------------
-void CCrystalTextBuffer::SUndoRecord::SetText(LPCTSTR pszText)
+void CCrystalTextBuffer::SUndoRecord::SetText(const char* pszText)
 {
     m_pszText = NULL;
     if (pszText != NULL && pszText[0] != _T('\0'))
     {
-        int nLength = _tcslen(pszText);
+        int nLength = strlen(pszText);
         if (nLength > 1)
         {
             m_pszText = new char[(nLength + 1) * sizeof(char)];
-            _tcscpy(m_pszText, pszText);
+            strcpy(m_pszText, pszText);
         }
         else
         {
@@ -57,7 +57,7 @@ void CCrystalTextBuffer::SUndoRecord::SetText(LPCTSTR pszText)
 //--| CCrystalTextBuffer::SUndoRecord::FreeText|------------------------------------------
 void CCrystalTextBuffer::SUndoRecord::FreeText()
 {
-    if (HIWORD((DWORD) m_pszText) != 0)
+    if (HIWORD((size_t) m_pszText) != 0)
        delete m_pszText;
 }
 
@@ -137,7 +137,7 @@ END_MESSAGE_MAP()
 
 
 //--| CCrystalTextBuffer::InsertLine|-----------------------------------------------------
-void CCrystalTextBuffer::InsertLine(LPCTSTR pszLine, int nLength /*= -1*/, int nPosition /*= -1*/)
+void CCrystalTextBuffer::InsertLine(const char* pszLine, int nLength /*= -1*/, int nPosition /*= -1*/)
 {
     if (nLength == -1)
     {
@@ -160,7 +160,7 @@ void CCrystalTextBuffer::InsertLine(LPCTSTR pszLine, int nLength /*= -1*/, int n
     }
     if (li.m_nLength > 0)
     {
-        ASSERT((sizeof(char) * li.m_nLength) < (UINT)li.m_nMax);
+        ASSERT((sizeof(char) * li.m_nLength) < (size_t)li.m_nMax);
         memcpy(li.m_pcLine, pszLine, sizeof(char) * li.m_nLength);
     }
     
@@ -172,7 +172,7 @@ void CCrystalTextBuffer::InsertLine(LPCTSTR pszLine, int nLength /*= -1*/, int n
 }
 
 //--| CCrystalTextBuffer::AppendLine|-----------------------------------------------------
-void CCrystalTextBuffer::AppendLine(LPCTSTR pszChars)
+void CCrystalTextBuffer::AppendLine(const char* pszChars)
 {
     int nLineCount = m_aLines.GetSize();
     AppendLine(nLineCount, pszChars);
@@ -180,7 +180,7 @@ void CCrystalTextBuffer::AppendLine(LPCTSTR pszChars)
 
 
 //--| CCrystalTextBuffer::AppendLine|-----------------------------------------------------
-void CCrystalTextBuffer::AppendLine(int nLineIndex, LPCTSTR pszChars, int nLength /*= -1*/)
+void CCrystalTextBuffer::AppendLine(int nLineIndex, const char* pszChars, int nLength /*= -1*/)
 {
     if (nLength == -1)
     {
@@ -202,7 +202,7 @@ void CCrystalTextBuffer::AppendLine(int nLineIndex, LPCTSTR pszChars, int nLengt
         
         if (li.m_nLength > 0)
         {
-            ASSERT(sizeof(char) * li.m_nLength < (UINT)li.m_nMax);
+            ASSERT(sizeof(char) * li.m_nLength < (size_t)li.m_nMax);
             memcpy(pcNewBuf, li.m_pcLine, sizeof(char) * li.m_nLength);
         }
         delete[] li.m_pcLine;
@@ -287,7 +287,7 @@ static const char *crlfs[] =
 };
 
 //--| CCrystalTextBuffer::LoadFromFile|---------------------------------------------------
-BOOL CCrystalTextBuffer::LoadFromFile(LPCTSTR pszFileName, int nCrlfStyle /*= CRLF_STYLE_AUTOMATIC*/)
+BOOL CCrystalTextBuffer::LoadFromFile(const char* pszFileName, int nCrlfStyle /*= CRLF_STYLE_AUTOMATIC*/)
 {
     ASSERT(! m_bInit);
     ASSERT(m_aLines.GetSize() == 0);
@@ -295,13 +295,13 @@ BOOL CCrystalTextBuffer::LoadFromFile(LPCTSTR pszFileName, int nCrlfStyle /*= CR
     HANDLE hFile = NULL;
     int nCurrentMax = 256;
     char *pcLineBuf = new char[nCurrentMax];
-    DWORD I;
+    size_t I;
     
     BOOL bSuccess = FALSE;
     __try
     {
-        DWORD dwFileAttributes = ::GetFileAttributes(pszFileName);
-        if (dwFileAttributes == (DWORD) -1)
+        size_t dwFileAttributes = ::GetFileAttributes(pszFileName);
+        if (dwFileAttributes == (size_t) -1)
            __leave;
         
         hFile = ::CreateFile(pszFileName, GENERIC_READ, FILE_SHARE_READ, NULL,
@@ -311,9 +311,9 @@ BOOL CCrystalTextBuffer::LoadFromFile(LPCTSTR pszFileName, int nCrlfStyle /*= CR
         
         int nCurrentLength = 0;
         
-        const DWORD dwBufSize = 32768;
+        const size_t dwBufSize = 32768;
         char *pcBuf = (char *) _alloca(dwBufSize);
-        DWORD dwCurSize;
+        size_t dwCurSize;
         if (! ::ReadFile(hFile, pcBuf, dwBufSize, &dwCurSize, NULL))
            __leave;
         
@@ -353,7 +353,7 @@ BOOL CCrystalTextBuffer::LoadFromFile(LPCTSTR pszFileName, int nCrlfStyle /*= CR
         
         m_aLines.SetSize(0, 4096);
         
-        DWORD dwBufPtr = 0;
+        size_t dwBufPtr = 0;
         int nCrlfPtr = 0;
         USES_CONVERSION;
         while (dwBufPtr < dwCurSize)
@@ -421,7 +421,7 @@ BOOL CCrystalTextBuffer::LoadFromFile(LPCTSTR pszFileName, int nCrlfStyle /*= CR
 }
 
 //--| CCrystalTextBuffer::SaveToFile|-----------------------------------------------------
-BOOL CCrystalTextBuffer::SaveToFile(LPCTSTR pszFileName,
+BOOL CCrystalTextBuffer::SaveToFile(const char* pszFileName,
                                    int nCrlfStyle ,
                                    BOOL bClearModifiedFlag ,
                                    BOOL bIncludeMap,
@@ -433,7 +433,7 @@ BOOL CCrystalTextBuffer::SaveToFile(LPCTSTR pszFileName,
     HANDLE hTempFile = INVALID_HANDLE_VALUE;
     HANDLE hSearch = INVALID_HANDLE_VALUE;
     BOOL bSuccess = FALSE;
-    DWORD dwWrittenBytes;
+    size_t dwWrittenBytes;
     
     char cdsz[]="";
     CDirChange cd(cdsz);
@@ -530,7 +530,7 @@ LPTSTR CCrystalTextBuffer::GetLineChars(int nLine)
 }
 
 //--| CCrystalTextBuffer::GetLineFlags|---------------------------------------------------
-DWORD CCrystalTextBuffer::GetLineFlags(int nLine)
+size_t CCrystalTextBuffer::GetLineFlags(int nLine)
 {
     ASSERT(m_bInit); // Text buffer not yet initialized.
     // You must call InitNew() or LoadFromFile() first!
@@ -538,7 +538,7 @@ DWORD CCrystalTextBuffer::GetLineFlags(int nLine)
 }
 
 //--| int FlagToIndex|--------------------------------------------------------------------
-static int FlagToIndex(DWORD dwFlag)
+static int FlagToIndex(size_t dwFlag)
 {
     int nIndex = 0;
     while ((dwFlag & 1) == 0)
@@ -556,7 +556,7 @@ static int FlagToIndex(DWORD dwFlag)
 }
 
 //--| CCrystalTextBuffer::FindLineWithFlag|-----------------------------------------------
-int CCrystalTextBuffer::FindLineWithFlag(DWORD dwFlag)
+int CCrystalTextBuffer::FindLineWithFlag(size_t dwFlag)
 {
     int nSize = m_aLines.GetSize();
     for (int L = 0; L < nSize; L ++)
@@ -568,7 +568,7 @@ int CCrystalTextBuffer::FindLineWithFlag(DWORD dwFlag)
 }
 
 //--| CCrystalTextBuffer::GetLineWithFlag|------------------------------------------------
-int CCrystalTextBuffer::GetLineWithFlag(DWORD dwFlag)
+int CCrystalTextBuffer::GetLineWithFlag(size_t dwFlag)
 {
     int nFlagIndex = ::FlagToIndex(dwFlag);
     if (nFlagIndex < 0)
@@ -580,7 +580,7 @@ int CCrystalTextBuffer::GetLineWithFlag(DWORD dwFlag)
 }
 
 //--| CCrystalTextBuffer::RemoveAllFlags|-------------------------------------------------
-void CCrystalTextBuffer::RemoveAllFlags(DWORD dwFlag)
+void CCrystalTextBuffer::RemoveAllFlags(size_t dwFlag)
 {
     int lfce;
     while((lfce = FindLineWithFlag(LF_COMPILATION_ERROR)) >=0)
@@ -592,7 +592,7 @@ void CCrystalTextBuffer::RemoveAllFlags(DWORD dwFlag)
 }
 
 //--| CCrystalTextBuffer::SetLineFlag|----------------------------------------------------
-void CCrystalTextBuffer::SetLineFlag(int nLine, DWORD dwFlag, BOOL bSet, BOOL bRemoveFromPreviousLine /*= TRUE*/)
+void CCrystalTextBuffer::SetLineFlag(int nLine, size_t dwFlag, BOOL bSet, BOOL bRemoveFromPreviousLine /*= TRUE*/)
 {
     ASSERT(m_bInit); // Text buffer not yet initialized.
     // You must call InitNew() or LoadFromFile() first!
@@ -613,7 +613,7 @@ void CCrystalTextBuffer::SetLineFlag(int nLine, DWORD dwFlag, BOOL bSet, BOOL bR
         bRemoveFromPreviousLine = FALSE;
     }
     
-    DWORD dwNewFlags = m_aLines[nLine].m_dwFlags;
+    size_t dwNewFlags = m_aLines[nLine].m_dwFlags;
     if (bSet)
        dwNewFlags = dwNewFlags | dwFlag;
     else
@@ -647,7 +647,7 @@ void CCrystalTextBuffer::SetLineFlag(int nLine, DWORD dwFlag, BOOL bSet, BOOL bR
 //--| CCrystalTextBuffer::GetText|--------------------------------------------------------
 void CCrystalTextBuffer::GetText(int nStartLine, int nStartChar,
                                 int nEndLine, int nEndChar,
-                                CString &text, LPCTSTR pszCRLF /*= NULL*/)
+                                CString &text, const char* pszCRLF /*= NULL*/)
 {
     ASSERT(m_bInit); // Text buffer not yet initialized.
     // You must call InitNew() or LoadFromFile() first!
@@ -743,7 +743,7 @@ void CCrystalTextBuffer::RemoveView(CCrystalTextView *pView)
 }
 
 //--| CCrystalTextBuffer::UpdateViews|----------------------------------------------------
-void CCrystalTextBuffer::UpdateViews(CCrystalTextView *pSource, CUpdateContext *pContext, DWORD dwUpdateFlags, int nLineIndex /*= -1*/)
+void CCrystalTextBuffer::UpdateViews(CCrystalTextView *pSource, CUpdateContext *pContext, size_t dwUpdateFlags, int nLineIndex /*= -1*/)
 {
     
     POSITION pos = m_lpViews.GetHeadPosition();
@@ -777,7 +777,7 @@ BOOL CCrystalTextBuffer::InternalDeleteText(CCrystalTextView *pSource, int nStar
         SLineInfo &li = m_aLines[nStartLine];
         if (nEndChar < li.m_nLength)
         {
-            ASSERT(sizeof(char) * (li.m_nLength - nEndChar) < (UINT)li.m_nMax);
+            ASSERT(sizeof(char) * (li.m_nLength - nEndChar) < (size_t)li.m_nMax);
             
             memcpy(li.m_pcLine + nStartChar, li.m_pcLine + nEndChar,
                   sizeof(char) * (li.m_nLength - nEndChar));
@@ -822,7 +822,7 @@ BOOL CCrystalTextBuffer::InternalDeleteText(CCrystalTextView *pSource, int nStar
 }
 
 //--| CCrystalTextBuffer::InternalInsertText|---------------------------------------------
-BOOL CCrystalTextBuffer::InternalInsertText(CCrystalTextView *pSource, int nLine, int nPos, LPCTSTR pszText, int &nEndLine, int &nEndChar)
+BOOL CCrystalTextBuffer::InternalInsertText(CCrystalTextView *pSource, int nLine, int nPos, const char* pszText, int &nEndLine, int &nEndChar)
 {
     ASSERT(m_bInit); // Text buffer not yet initialized.
     // You must call InitNew() or LoadFromFile() first!
@@ -1068,7 +1068,7 @@ BOOL CCrystalTextBuffer::Redo(CPoint &ptCursorPos)
 }
 
 //--| CCrystalTextBuffer::AddUndoRecord|--------------------------------------------------
-void CCrystalTextBuffer::AddUndoRecord(BOOL bInsert, const CPoint &ptStartPos, const CPoint &ptEndPos, LPCTSTR pszText, int nActionType)
+void CCrystalTextBuffer::AddUndoRecord(BOOL bInsert, const CPoint &ptStartPos, const CPoint &ptEndPos, const char* pszText, int nActionType)
 {
     // Forgot to call BeginUndoGroup()?
     ASSERT(m_bUndoGroup);
@@ -1120,7 +1120,7 @@ void CCrystalTextBuffer::AddUndoRecord(BOOL bInsert, const CPoint &ptStartPos, c
 }
 
 //--| CCrystalTextBuffer::InsertText|-----------------------------------------------------
-BOOL CCrystalTextBuffer::InsertText(CCrystalTextView *pSource, int nLine, int nPos, LPCTSTR pszText,
+BOOL CCrystalTextBuffer::InsertText(CCrystalTextView *pSource, int nLine, int nPos, const char* pszText,
                                    int &nEndLine, int &nEndChar, int nAction)
 {
     if (! InternalInsertText(pSource, nLine, nPos, pszText, nEndLine, nEndChar))
@@ -1245,7 +1245,7 @@ void CCrystalTextBuffer::FlushUndoGroup(CCrystalTextView *pSource)
 int CCrystalTextBuffer::FindNextBookmarkLine(int nCurrentLine)
 {
     BOOL bWrapIt = TRUE;
-    DWORD dwFlags = GetLineFlags(nCurrentLine);
+    size_t dwFlags = GetLineFlags(nCurrentLine);
     if ((dwFlags & LF_BOOKMARKS) != 0)
        nCurrentLine++;
     
@@ -1274,7 +1274,7 @@ int CCrystalTextBuffer::FindNextBookmarkLine(int nCurrentLine)
 int CCrystalTextBuffer::FindPrevBookmarkLine(int nCurrentLine)
 {
     BOOL bWrapIt = TRUE;
-    DWORD dwFlags = GetLineFlags(nCurrentLine);
+    size_t dwFlags = GetLineFlags(nCurrentLine);
     if ((dwFlags & LF_BOOKMARKS) != 0)
        nCurrentLine--;
     

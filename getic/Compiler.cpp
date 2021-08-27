@@ -34,7 +34,7 @@ class Cwc
 public:
     Cwc(){}
     ~Cwc(){}
-    void Step(LPCTSTR stp){
+    void Step(const char* stp){
         if(ThrID != GetCurrentThreadId())
         {
             if(stp[0]!='-')
@@ -119,8 +119,8 @@ BOOL Compiler::Compile(Scene& scene)
         return FALSE;
     }
 
-    char   docName[_MAX_PATH];
-    ::_tcscpy(docName, DOC()->GetTitle());
+    char   docName[PATH_MAX];
+    ::strcpy(docName, DOC()->GetTitle());
     PathHandler ph(docName);
 	Break(0);
 
@@ -204,7 +204,7 @@ void Compiler::_RecutSelectedBrushes()
     Brush** ppBrushes = DOC()->GetSelBrushes(nCount);
     if(nCount)
     {
-        UINT res = AfxMessageBox(MKSTR("There are '%d' Brushe(s) disabled (Greyed). \r\n"
+        size_t res = AfxMessageBox(MKSTR("There are '%d' Brushe(s) disabled (Greyed). \r\n"
             "Do you like to enable them for the Compilation ?",nCount), MB_ICONQUESTION|MB_YESNOCANCEL);
         if(res == IDYES)
         {
@@ -221,7 +221,7 @@ void Compiler::_RecutSelectedBrushes()
 }
 
 //---------------------------------------------------------------------------------------
-UINT Compiler::MainFoo(HANDLE hStop)
+size_t Compiler::MainFoo(HANDLE hStop)
 {
     int Gtask = BrushTask;
     //save lmpatch do not aplly it for ESR just for last BSP
@@ -352,7 +352,7 @@ UINT Compiler::MainFoo(HANDLE hStop)
 
             #pragma message ("copy brush props into tree props")
             
-            _tcscpy(pTree->_name, pBrush->_name);
+            strcpy(pTree->_name, pBrush->_name);
 
             pTree->_balance     = _balance;
             pTree->_treeflags   = pBrush->_brushflags;
@@ -494,7 +494,7 @@ UINT Compiler::MainFoo(HANDLE hStop)
 #endif //
     NOTIFY_FRAME(WM_USR_REPAINT,0,0);
     BrushTask=Gtask;
-    DWORD tsecs = (GetTickCount()-_timeStart)/1000;
+    size_t tsecs = (GetTickCount()-_timeStart)/1000;
     int   tmin = tsecs/60;
     int   secs = tsecs%60; 
     LOG(E_BSP,"BSP: Compilation Time: %d tmin %d sec", tmin, secs);
@@ -785,7 +785,7 @@ BOOL    Compiler::Union(PBrushes& pPrimitives, Brush& brush, BOOL sgow)
 
 
 //---------------------------------------------------------------------------------------
-void  Compiler::Render(z_ed3View* pV, DWORD what)
+void  Compiler::Render(z_ed3View* pV, size_t what)
 {
     if(!_done)
     {
@@ -859,7 +859,7 @@ BOOL  Compiler::PerformESR(PBrushes* pbrushes)
         return TRUE;
     }
     
-    ::_tcscpy(tmpTree._name, pBrush->_name);
+    ::strcpy(tmpTree._name, pBrush->_name);
     if(0==tmpTree.Compile(pBrush->_polys, pBrush->_brushflags, FALSE))
         return 0;
     
@@ -1376,7 +1376,7 @@ void Compiler::CommitChanges()
 }
 
 //---------------------------------------------------------------------------------------
-DWORD Compiler::DoLightMaps()
+size_t Compiler::DoLightMaps()
 {
     if(_bTrees.size() )
     {

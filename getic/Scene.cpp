@@ -90,7 +90,7 @@ BOOL ExtractEquals(char* slineprp,
     bool leftdone = false;
     bool rightdone = false;
     int  quote     = 0;
-    UINT    i;
+    size_t    i;
 
     //test line
     if(0==strlen(slineprp))

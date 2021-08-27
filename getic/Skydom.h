@@ -4,7 +4,7 @@
 #if !defined(AFX_SKYDOM_H__2EBBE3CC_8BC6_4764_8FEC_C6E48723B361__INCLUDED_)
 #define AFX_SKYDOM_H__2EBBE3CC_8BC6_4764_8FEC_C6E48723B361__INCLUDED_
 
-#include    "brush.h"
+#include    "Brush.h"
 
 class SkyDom  
 {
@@ -19,8 +19,8 @@ public:
 
 private:
 
-    DWORD       _shape;          // see enum section
-    DWORD       _flags;
+    size_t       _shape;          // see enum section
+    size_t       _flags;
     V3          _rotSpeed;
     UV          _cloudSpeed;
     UV          _lavaSpeed;

@@ -1,6 +1,6 @@
 // DlgNewBrush.cpp : implementation file
 //
-#pragma warning (disable: 4786)
+//   #pragma warning (disable: 4786)
 #include "stdafx.h"
 #include "geticgui.h"
 #include "z-edmap.h"

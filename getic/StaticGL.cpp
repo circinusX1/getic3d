@@ -6,8 +6,8 @@
 #include "stdafx.h"
 #include "texadapter.h"
 #include "z-edmap.h"
-#include "TexRef.h"
-#include "StaticGL.h" 
+#include "Texref.h"
+#include "Staticgl.h" 
 #include "z_ed2Doc.h"
 #include "dlgbar.h"
 #include "z_ed3View.h"
@@ -61,7 +61,7 @@ void CStaticGL::OnDblclkPrefs()
 	
 }
 
-BOOL CStaticGL::CreateWnd(CWnd* parent, UINT isctrl)
+BOOL CStaticGL::CreateWnd(CWnd* parent, size_t isctrl)
 {
     BOnCreate = TRUE;
     RECT rt={0,0,1,1};
@@ -204,7 +204,7 @@ void CStaticGL::OnPaint()
 }
 
 
-void CStaticGL::OnMouseMove(UINT nFlags, CPoint pt) 
+void CStaticGL::OnMouseMove(size_t nFlags, CPoint pt) 
 {
     REAL mxw = Wnd2World(pt.x, 'h');
     REAL myw = Wnd2World(pt.y, 'v');
@@ -335,7 +335,7 @@ void CStaticGL::OnMouseMove(UINT nFlags, CPoint pt)
 	CWnd::OnMouseMove(nFlags, pt);
 }
 
-void CStaticGL::OnLButtonDown(UINT nFlags, CPoint pt) 
+void CStaticGL::OnLButtonDown(size_t nFlags, CPoint pt) 
 {
     if(GetCapture()!=this)
         SetCapture();
@@ -356,7 +356,7 @@ void CStaticGL::OnLButtonDown(UINT nFlags, CPoint pt)
     GetParent()->SetFocus();
 }
 
-void CStaticGL::OnLButtonUp(UINT nFlags, CPoint pt) 
+void CStaticGL::OnLButtonUp(size_t nFlags, CPoint pt) 
 {
     if(GetCapture()==this)
         ReleaseCapture();
@@ -376,7 +376,7 @@ void CStaticGL::OnLButtonUp(UINT nFlags, CPoint pt)
 	CWnd::OnLButtonUp(nFlags, pt);
 }
 
-void CStaticGL::OnRButtonDown(UINT nFlags, CPoint pt) 
+void CStaticGL::OnRButtonDown(size_t nFlags, CPoint pt) 
 {
     if(GetCapture()!=this)
         SetCapture();
@@ -392,7 +392,7 @@ void CStaticGL::OnRButtonDown(UINT nFlags, CPoint pt)
     GetParent()->SetFocus();
 }
 
-void CStaticGL::OnRButtonUp(UINT nFlags, CPoint pt) 
+void CStaticGL::OnRButtonUp(size_t nFlags, CPoint pt) 
 {
     if(GetCapture()==this)
         ReleaseCapture();
@@ -405,7 +405,7 @@ void CStaticGL::OnRButtonUp(UINT nFlags, CPoint pt)
 	CWnd::OnRButtonUp(nFlags, pt);
 }
 
-void CStaticGL::OnShowWindow(BOOL bShow, UINT nStatus) 
+void CStaticGL::OnShowWindow(BOOL bShow, size_t nStatus) 
 {
 	CWnd::OnShowWindow(bShow, nStatus);
 }
@@ -422,13 +422,13 @@ BOOL CStaticGL::PreTranslateMessage(MSG* pMsg)
 	return CWnd::PreTranslateMessage(pMsg);
 }
 
-void CStaticGL::OnMButtonDown(UINT nFlags, CPoint pt) 
+void CStaticGL::OnMButtonDown(size_t nFlags, CPoint pt) 
 {
 	
 	CWnd::OnMButtonDown(nFlags, pt);
 }
 
-void CStaticGL::OnMButtonUp(UINT nFlags, CPoint pt) 
+void CStaticGL::OnMButtonUp(size_t nFlags, CPoint pt) 
 {
 	CWnd::OnMButtonUp(nFlags, pt);
 }
@@ -564,13 +564,13 @@ void    CStaticGL::GLPaint()
 }
 
 /*
-void CStaticGL::OnTimer(UINT nIDEvent) 
+void CStaticGL::OnTimer(size_t nIDEvent) 
 {
     CWnd::OnTimer(nIDEvent);
 }
 */
 
-BOOL CStaticGL::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
+BOOL CStaticGL::OnSetCursor(CWnd* pWnd, size_t nHitTest, size_t message)
 {
     if(_pcbsetcursor)
     {
@@ -585,7 +585,7 @@ BOOL CStaticGL::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
     return CWnd::OnSetCursor(pWnd, nHitTest, message);
 }
 
-void CStaticGL::OnSize(UINT nType, int iWidth, int iHeight) 
+void CStaticGL::OnSize(size_t nType, int iWidth, int iHeight) 
 {
 	CWnd::OnSize(nType, iWidth, iHeight);
     MakeCurrent(_hdc, m_hRC); 

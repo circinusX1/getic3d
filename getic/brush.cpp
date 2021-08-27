@@ -9,7 +9,7 @@
 #include <gl/gl.h>
 #include <gl/glu.h>
 #include <gl/glaux.h>
-#include "brush.h"
+#include "Brush.h"
 #include "basecont.h"
 #include "compiler.h"
 #include "Motion.h"
@@ -56,7 +56,7 @@ Brush::Brush()
     _intask   = 0;
     _unicID   = GID++;
     _pUsrData = 0;
-    _stprintf(_name, "%d",_unicID);
+    sprintf(_name, "%d",_unicID);
 };
 
 //--|Brush::~Brush|-----------------------------------------------------------------------
@@ -137,18 +137,18 @@ void  Brush::Equal(const Brush& b, BOOL polys)
     {
         _unicID    = GID++;
         char name[64];
-        _tcscpy(name, b._name);
+        strcpy(name, b._name);
         StripDigits(name);
         if(strlen(name))
-            _stprintf(_name, "%s%d", name, _unicID);
+            sprintf(_name, "%s%d", name, _unicID);
         else
-            _stprintf(_name, "%d", _unicID);
+            sprintf(_name, "%d", _unicID);
 
     }
     else
     {
         _unicID    = b._unicID;
-        _tcscpy(_name, b._name);
+        strcpy(_name, b._name);
     }
     _t         = b._t;
     _r         = b._r;
@@ -369,7 +369,7 @@ DELAG:
 }
 
 //--|    Brush::FlagFaces|----------------------------------------------------------------
-void    Brush::FlagFaces(DWORD f)
+void    Brush::FlagFaces(size_t f)
 {
     Polys::iterator b  = _polys.begin();
     Polys::iterator e  = _polys.end();
@@ -577,7 +577,7 @@ void    Brush::RescalePolys(int s, int e, V3& vv3s, V3& tv, Box& nBox, Box& ob)
 // apllyes the scale in place
 void Brush::ScaleTr(V3& v, V3& t)
 {
-    for(UINT i=0; i< _polys.size(); i++)
+    for(size_t i=0; i< _polys.size(); i++)
     {
         Vertexes::iterator vb  = _polys[i]._vtci.begin();
         Vertexes::iterator ve  = _polys[i]._vtci.end();
@@ -1073,7 +1073,7 @@ void Brush::AlocateResultPtr()
         delete _pResult;
     _pResult = 0;
     _pResult = new Brush();
-    ::_tcscpy(_pResult->_name, _name);
+    ::strcpy(_pResult->_name, _name);
 }
 
 //--|    Brush::Replan|-------------------------------------------------------------------
@@ -2172,7 +2172,7 @@ void Brush::SetSize(Box& extends)
     V3 rap = (extends._max-extends._min)/((_box._max-_box._min)+EPSILON);
     V3 origin = _box.GetCenter();
     
-    for(UINT i=0; i< _polys.size();i++)
+    for(size_t i=0; i< _polys.size();i++)
     {
         Vertexes::iterator vb  = _polys[i]._vtci.begin();
         Vertexes::iterator ve  = _polys[i]._vtci.end();
@@ -2451,7 +2451,7 @@ void    Brush::HalloUnHallo()
         
         ASSERT(_polySec == _polys.size()/2);
 
-        for(UINT i=_polySec; i< _polys.size(); ++i)
+        for(size_t i=_polySec; i< _polys.size(); ++i)
             _polys[i]._polyflags |= POLY_DELETED;
 AGAIN:
         FOREACH(Polys, _polys, p)
@@ -2551,12 +2551,12 @@ BOOL  Brush::CopyDiametral(const Brush& b)
     _nZoneNo  = 0;    // don't copyes triggers
     // paste take care of this
     char name[64];
-    _tcscpy(name, b._name);
+    strcpy(name, b._name);
     StripDigits(name);
     if(strlen(name))
-        _stprintf(_name, "%s%d", name, _unicID);
+        sprintf(_name, "%s%d", name, _unicID);
     else
-        _stprintf(_name, "%d", _unicID);
+        sprintf(_name, "%d", _unicID);
     _polys.clear();
 
 
@@ -2625,7 +2625,7 @@ BOOL  Brush::CopyDiametral(const Brush& b)
     {
         _pResult  = 0;
         _pResult  = new Brush(*b._pResult);
-        ::_tcscpy(_pResult->_name, b._pResult->_name);
+        ::strcpy(_pResult->_name, b._pResult->_name);
     }
     return 1;
 }
@@ -2880,7 +2880,7 @@ int    Brush::CalcVxTask()
     return 1;
 }
 //-----------------------------------------------------------------------------
-int     Brush::GetPolyCount(DWORD flags, DWORD props)
+int     Brush::GetPolyCount(size_t flags, size_t props)
 {
     int nCount = 0;
     FOREACH(Polys, _polys, p)
@@ -2947,7 +2947,7 @@ void    Brush::TriFanIt()
     Recalc();
 }
 
-BOOL    Brush::HasFlag(DWORD f){
+BOOL    Brush::HasFlag(size_t f){
     return (_brushflags&f)!=0;
 }
 

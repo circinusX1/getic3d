@@ -11,6 +11,7 @@
 #include "../baselib/basecont.h"
 
 //---------------------------------------------------------------------------------------
+typedef size_t (*WINAPI)(unsigned long*);
 #define CB_WNDMSG               0x1
 //---------------------------------------------------------------------------------------
 // Used to respond and manage the texture on main thread when used form different threads
@@ -216,7 +217,7 @@
 
 //--------------------------------------------------------------------------------------
 // texture handler. texture id handler
-typedef  DWORD    $Htex[4];
+typedef  size_t    $Htex[4];
 class  NO_VT Htex     
 {
 public:
@@ -228,9 +229,9 @@ public:
 	operator UINT(){return hTex; };
     void    Clear(){hTex=0;glTarget=0;envMode=0;genST=0;}
     HTEX  hTex;                             // texture unique ID
-    DWORD glTarget;							// set by render to GL_TEXTURe_XX	
-    DWORD envMode;                          // additional data not used
-    DWORD genST;                            // align to 16 bytes
+    size_t glTarget;							// set by render to GL_TEXTURe_XX
+    size_t envMode;                          // additional data not used
+    size_t genST;                            // align to 16 bytes
 };
 
 
@@ -251,7 +252,7 @@ public:
 struct RenderLight 
 {
     bool operator==(const RenderLight& r){return _colorDiffuse.r==r._colorDiffuse.r;}
-    DWORD   _flags;
+    size_t   _flags;
     V3      _pos;
     V3      _direction;
     REAL    _radius;
@@ -272,7 +273,7 @@ struct RenderLight
 struct RenderMaterial 
 {
     bool operator==(const  RenderMaterial& r){return _colorDiffuse.r==r._colorDiffuse.r;}
-    DWORD   _flags;
+    size_t   _flags;
     CLR     _colorAmbient;                 
     CLR     _colorDiffuse;
     CLR     _colorEmmisive;
@@ -288,7 +289,7 @@ struct RenderFog
     REAL    _gfar;
     REAL    _dens;
     CLR     _clr;
-    DWORD   _flag;
+    size_t   _flag;
     Plane   _clip;
 };
 
@@ -387,7 +388,7 @@ struct RndStruct
     }
 
 	void*		    wndParent;
-	DWORD          	wndStyle;
+	size_t          	wndStyle;
     void*	    hInstance;
 	BOOL		retainedDraw;
     
@@ -397,13 +398,13 @@ struct RndStruct
     
     
     
-    DWORD       bgColor;
+    size_t       bgColor;
     int         dmPelsWidth; 
     int         dmPelsHeight;
     int         dmBitsPerPel;
     int         dmDisplayFrequency;
 
-	DWORD		xPolyMode;
+	size_t		xPolyMode;
 	BOOL		bFullScreen;
     int         pfDepthBits;
     int         pfStencilBits;
@@ -413,7 +414,7 @@ struct RndStruct
     REAL		fHeight;
     int			nWidth;
     int			nHeight;
-    DWORD       dwVpStyle;
+    size_t       dwVpStyle;
     BOOL		bIsActivated;
 
     BOOL        bsetCapture;
@@ -432,7 +433,7 @@ struct RndStruct
 struct RenderVx
 {
     RenderVx():_v(0),_n(0),_b(0),_c(0),_sz(0){_u[0]=_u[1]=_u[2]=_u[3]=0;}
-    RenderVx(int sz, DWORD what):_v(0),_n(0),_b(0),_c(0),_sz(0){
+    RenderVx(int sz, size_t what):_v(0),_n(0),_b(0),_c(0),_sz(0){
         _u[0]=_u[1]=_u[2]=_u[3]=0;
         _what = what;
         _sz = sz;
@@ -473,7 +474,7 @@ struct RenderVx
     V3* _b;
     CLR* _c;
     int _sz;
-    DWORD _what;
+    size_t _what;
     UV* _u[4];
 
 };
@@ -481,7 +482,8 @@ struct RenderVx
 
 
 //----------RENDERER PLUGIN INTERFACE---------------------------------------------------------
-typedef int (WINAPI *PR_C)();
+typedef int (*PR_C)();
+
 class ISystem;
 class NO_VT Irender  
 {
@@ -498,11 +500,11 @@ public:
     virtual void SwitchMode()=0;
 	virtual void ClearColor(REAL, REAL, REAL, REAL)=0;
     virtual int  UseFontBitmaps(HFONT hf, int a, int b, int c)=0;
-	virtual DWORD Blend(DWORD rCtx)=0;
-    virtual void UnBlend(DWORD context)=0;
+    virtual size_t Blend(size_t rCtx)=0;
+    virtual void UnBlend(size_t context)=0;
     virtual void UnBlendv()=0;
 		
-    virtual void SelectTrMattrix(const Pos* pos, DWORD what)=0;
+	virtual void SelectTrMattrix(const Pos* pos, size_t what)=0;
 	virtual void ReleaseTrMattrix()=0;
     	
 
@@ -511,41 +513,41 @@ public:
 
     virtual void SetArrayPtrs(const Vtx* pxyz, int what)=0;
 	virtual void ResetArrayPtrs(int what)=0;
-    virtual void DrawArrays(int nStart, int vxCnt, DWORD howWhat)=0;
+	virtual void DrawArrays(int nStart, int vxCnt, size_t howWhat)=0;
    	
     virtual PR_C Gpa(const char* fn) = 0;
-    virtual Htex GenTexture(const char* texFile, DWORD creaFlags)=0;
-    virtual Htex ReGenTexture(const Htex& tex, int x, int y, int bpp, const BYTE* pBuff, DWORD creaFlags)=0;
-	virtual Htex GenTexture(int x, int y, int bpp, const BYTE* pBuff, DWORD creaFlags)=0;
+    virtual Htex GenTexture(const char* texFile, size_t creaFlags)=0;
+    virtual Htex ReGenTexture(const Htex& tex, int x, int y, int bpp, const BYTE* pBuff, size_t creaFlags)=0;
+    virtual Htex GenTexture(int x, int y, int bpp, const BYTE* pBuff, size_t creaFlags)=0;
     virtual void AlterTexture(const Htex& itex, const BYTE* psub, int s, int t, int u, int v)=0;
     virtual void SetCanonicalState(void)=0;
-    virtual DWORD BindAllTextures(const Htex* pTxStg, DWORD comb)=0;
-    virtual DWORD BindTexture(const Htex& txStg,  int stage)=0;
+    virtual size_t BindAllTextures(const Htex* pTxStg, size_t comb)=0;
+    virtual size_t BindTexture(const Htex& txStg,  int stage)=0;
 	virtual void UnBindTexture(const Htex& txStg, int stage)=0;
     virtual void DisableTextures(BOOL force=FALSE)=0;    
     virtual void RemoveAllTextures()=0;
 	virtual void RemoveTexture(UINT index,BOOL=TRUE)=0;
     virtual void RemoveTextures(const UINT* ptex, int count)=0;
     virtual void  SetCurrent()=0;
-    virtual DWORD BindTex1(const Htex*)=0;
-    virtual DWORD BindTex2(const Htex*, const Htex* )=0;
-    virtual DWORD BindTex3(const Htex*, const Htex*,const Htex*  )=0;
+    virtual size_t BindTex1(const Htex*)=0;
+    virtual size_t BindTex2(const Htex*, const Htex* )=0;
+    virtual size_t BindTex3(const Htex*, const Htex*,const Htex*  )=0;
     
     virtual void Render(int font, REAL x, REAL y, REAL z, const char* text, const CLR& clr)=0;
-    virtual void Render(const Pos* pOp, DWORD trCtx, DWORD dCtx, const Htex* txCtx,  DWORD comb, const Vtx* pVtx, int vxCnt, DWORD how)=0;
-    virtual void Render(const Pos* pOp, DWORD trCtx, const Htex* txCtx , DWORD comb,  const Vtx* pVtx, int vxCnt , DWORD how)=0;
-    virtual void Render(const Pos* pOp, DWORD trCtx, const Vtx* pVtx, int vxCnt , DWORD how)=0;
-    virtual void Render(DWORD dCtx, const Htex* txCtx, DWORD comb, const Vtx* pVtx, int vxCnt , DWORD how)=0;
-    virtual void RenderFace(const Htex* dwctx, DWORD comb, const Vtx* pvx, int count, DWORD how)=0;
-	virtual void Render(const Vtx* pVx, int first, int  vxCnt, DWORD how)=0;
-    virtual void Render(const BYTE* pV, int start, int count, DWORD what)=0;
+    virtual void Render(const Pos* pOp, size_t trCtx, size_t dCtx, const Htex* txCtx,  size_t comb, const Vtx* pVtx, int vxCnt, size_t how)=0;
+    virtual void Render(const Pos* pOp, size_t trCtx, const Htex* txCtx , size_t comb,  const Vtx* pVtx, int vxCnt , size_t how)=0;
+    virtual void Render(const Pos* pOp, size_t trCtx, const Vtx* pVtx, int vxCnt , size_t how)=0;
+    virtual void Render(size_t dCtx, const Htex* txCtx, size_t comb, const Vtx* pVtx, int vxCnt , size_t how)=0;
+    virtual void RenderFace(const Htex* dwctx, size_t comb, const Vtx* pvx, int count, size_t how)=0;
+    virtual void Render(const Vtx* pVx, int first, int  vxCnt, size_t how)=0;
+    virtual void Render(const BYTE* pV, int start, int count, size_t what)=0;
     virtual void Render(int strps, int grps, int* prims, V3* vxes, V3* norms, UV* uvs1, UV* uvs2, int* idxes)=0;
     virtual void RenderFontList(REAL x, REAL y, const char* text, int fontlist, const CLR& color)=0;
     virtual void RenderFontList3(const V3& pos, const char* text, int fontlist, const CLR& color)=0;
     virtual void TextOut(int fontlist, REAL xpos, REAL ypos, const char* text, const CLR& color)=0;
     virtual void EnableStencil(long how)=0;
     virtual void MatrixMode(int m)=0;
-    virtual void RenderVertex(const Vtx* pvtci, DWORD dww=0xF)=0;
+    virtual void RenderVertex(const Vtx* pvtci, size_t dww=0xF)=0;
     virtual void Vertex2(REAL x, REAL y)=0;
 	virtual void Vertex3(REAL x, REAL y, REAL z)=0;
 	virtual void Texture2(REAL u, REAL v)=0;
@@ -594,15 +596,15 @@ public:
     virtual void DeleteList(UINT id,UINT many=1)=0;
     virtual void CallList(UINT ID)=0;
     virtual void CallLists(UINT a, UINT b, const void* ptr)=0;// states
-    virtual void EnableLighting(BOOL bEnable, DWORD c)=0;
-    virtual void EnableRenderMaterialLighting(DWORD amb, BOOL b)=0;
+    virtual void EnableLighting(BOOL bEnable, size_t c)=0;
+    virtual void EnableRenderMaterialLighting(size_t amb, BOOL b)=0;
     virtual void SetLights(const RenderLight** pl, int ncount);
     virtual int  GetMaxHwLights()=0;
     virtual void SetMaterial(const RenderMaterial& mat);
-    virtual const char*   GetExtensions(DWORD b)=0;
+    virtual const char*   GetExtensions(size_t b)=0;
     virtual RndStruct* GetStruct()=0;
     virtual BOOL InitShader()=0;
-    virtual void SetTransform(const Pos* pos, DWORD dCtx )=0;
+    virtual void SetTransform(const Pos* pos, size_t dCtx )=0;
 	virtual void ResetTransform()=0;
 
 };

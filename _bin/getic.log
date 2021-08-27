@@ -1,0 +1,35 @@
+****************************************************
+*** A Program Fault occurred:
+  Build: May  2 2010 01:43:00*** Error code C0000005: ACCESS VIOLATION
+****************************************************
+***   Address: 00000000
+***     Flags: 00000000
+
+  Fault Occurred At $ADDRESS:00000000
+         with E4 C1 CF EB 00 F6 32 00 A0 DA B1 00 50 4C 60 00 0E 00 00 00 
+
+***  0 called from $ADDRESS:0053E65B
+         with D4 F6 32 00 7C CD CF EB 78 18 AC 00 50 4C 60 00 E8 50 60 00 
+
+***  1 called from $ADDRESS:0053E2A9
+         with E4 C9 CF EB 38 40 AE 00 64 00 01 00 63 00 01 00 50 4C 60 00 
+
+***  2 called from $ADDRESS:0053AF1A
+         with FE FF FF FF 00 00 00 00 01 00 00 00 
+
+***  3 called from $ADDRESS:005A7CEA
+         with 00 00 40 00 00 00 00 00 E2 0B 11 00 01 00 00 00 58 C8 CF EB 
+
+***  4 called from $ADDRESS:00578CDF
+         with 00 F0 3F 00 FC 4C 45 7B FC 4C 45 7B FC 4C 45 7B 
+
+***  5 called from $ADDRESS:7B454882
+         with 00 F0 3F 00 4A 8D 57 00 74 FF 32 00 74 FF 32 00 00 00 00 00 
+
+***  6 called from $ADDRESS:7B454CFC
+         with 8E 48 45 7B 4A 8D 57 00 00 F0 3F 00 
+
+***  7 called from $ADDRESS:7B45488E
+         with 
+
+***  8 called from $ADDRESS:00000000

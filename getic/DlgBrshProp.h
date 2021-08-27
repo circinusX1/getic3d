@@ -3,10 +3,10 @@
 
 #ifndef __DLG_BRUSH_PROPS_H__
 #define __DLG_BRUSH_PROPS_H__
-#pragma warning (disable: 4786)
-#include "vertdlgdlg.h"
+
+#include "VertDlgDlg.h"
 #include "GListCtrl.h"
-#include "PrpLb.h"
+#include "Prplb.h"
 
 
 
@@ -74,7 +74,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnButton1();
 	afx_msg void OnCloseupContent();
-	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+	afx_msg void OnShowWindow(BOOL bShow, size_t nStatus);
 	afx_msg void OnAdd();
 	afx_msg void OnSkydom();
 	afx_msg void OnNocoll();

@@ -276,8 +276,8 @@ BOOL PrpListControl::AddItem(CString		Information,
 	lv.iItem		= CListCtrl::GetItemCount();
 	lv.iSubItem		= 0;
 	lv.mask			= LVIF_TEXT|LVIF_PARAM;
-	lv.lParam		= (DWORD) SetRelatedInfo(Operation_type, InputStringList, Data);
-	lv.pszText		= (LPTSTR)(LPCTSTR)Information;
+	lv.lParam		= (size_t) SetRelatedInfo(Operation_type, InputStringList, Data);
+	lv.pszText		= (LPTSTR)(const char*)Information;
 	lv.cchTextMax	= Information.GetLength();
 	int	index		= CListCtrl::InsertItem(&lv);
 
@@ -285,7 +285,7 @@ BOOL PrpListControl::AddItem(CString		Information,
 	lv.iSubItem		= 1;
 	lv.mask			= LVIF_TEXT;
 	lv.lParam		= NULL;
-	lv.pszText		= (LPTSTR)(LPCTSTR)Data;
+	lv.pszText		= (LPTSTR)(const char*)Data;
 	lv.cchTextMax	= Data.GetLength();
 	CListCtrl::SetItem(&lv);
     SetFont(GetFont());
@@ -574,7 +574,7 @@ BOOL PrpListControl::GetTitle(int	Index, CString& Title)
 void PrpListControl::OnClick(NMHDR* pNMHDR, LRESULT* pResult) 
 {
 	// TODO: Add your control notification handler code here
-	DWORD	dwPos	= ::GetMessagePos();
+	size_t	dwPos	= ::GetMessagePos();
 	CPoint	point((int) LOWORD (dwPos), (int)HIWORD(dwPos));
 	ScreenToClient(&point);
 	int		Index	= CListCtrl::HitTest(point);

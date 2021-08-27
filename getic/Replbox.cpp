@@ -105,7 +105,7 @@ void CRepLBox::OnDestroy()
 
 
 
-HBRUSH CRepLBox::CtlColor(CDC* pDC, UINT nCtlColor) 
+HBRUSH CRepLBox::CtlColor(CDC* pDC, size_t nCtlColor) 
 {
     return _bkBrush;
 }

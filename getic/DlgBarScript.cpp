@@ -140,15 +140,15 @@ void DlgBarScript::PopulateScenTabCtrl()
     //_scTab
     Scene&   scene     = DOC()->_scene;
 	CString	 sceneTitl = DOC()->GetTitle();
-	char	 szt[_MAX_PATH];
+	char	 szt[PATH_MAX];
 
-	_tcscpy(szt, sceneTitl);
+	strcpy(szt, sceneTitl);
 	PathHandler	ph(szt);
 
     
     HTREEITEM htrR = _scTab.GetRootItem();
     HTREEITEM htrS = _scTab.InsertItem(ph.File(),htrR);
-	_scTab.SetItemData(htrS, (DWORD) &DOC()->_scene);	//scene//Scene
+	_scTab.SetItemData(htrS, (size_t) &DOC()->_scene);	//scene//Scene
 	
 
     HTREEITEM htrCat[32] = {0};  
@@ -230,13 +230,13 @@ void DlgBarScript::OnEndlabeleditScene(NMHDR* pNMHDR, LRESULT* pResult)
     if(_pCurItem)
     {
         CString& cs =  _scTab.GetItemText(pTVDispInfo->item.hItem);
-        _tcscpy(_pCurItem->_name, cs);
+        strcpy(_pCurItem->_name, cs);
     }
 
     if(_pCurBrush)
     {
         CString& cs =  _scTab.GetItemText(pTVDispInfo->item.hItem);
-        _tcscpy(_pCurBrush->_name, cs);
+        strcpy(_pCurBrush->_name, cs);
     }
 
 
@@ -257,7 +257,7 @@ BOOL DlgBarScript::PreTranslateMessage(MSG* pMsg)
 	return CDialogBar::PreTranslateMessage(pMsg);
 }
 
-void        DlgBarScript::AttachItemScriptFile(LPCTSTR fName)
+void        DlgBarScript::AttachItemScriptFile(const char* fName)
 {
     /**
     if(_pCurItem)
@@ -356,9 +356,9 @@ void    DlgBarScript::PopulateFromFile(const char* szTmplFname)
             index = _lbEvents.AddString(szLine);
 			Event* pe = new Event;
 
-            _tcscpy(pe->msgNName, szLine);
-			_tcscpy(pe->fooProto,pTokFoo);
-            _lbEvents.SetItemData(index, (DWORD)pe);
+            strcpy(pe->msgNName, szLine);
+			strcpy(pe->fooProto,pTokFoo);
+            _lbEvents.SetItemData(index, (size_t)pe);
         }
 
         if(feof(fw._pf))
@@ -382,9 +382,9 @@ void DlgBarScript::OnDblclkEvents()
 	char	fDecl[128];
 	char	itmName[128];
 
-	_tcscpy(itmName, _pCurItem->_name);
+	strcpy(itmName, _pCurItem->_name);
 	::StripSpaces(itmName);
-	_stprintf(fDecl, pe->fooProto, itmName);
+	sprintf(fDecl, pe->fooProto, itmName);
 
 	CPoint	pt(0,0);
 	

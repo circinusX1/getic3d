@@ -48,13 +48,13 @@ public:
     BOOL InitGL(int i3d,HDC hDC, HGLRC& hrc);
     void SetShift(CZ_ed2View* pSrc);
     void SetZoom(CZ_ed2View* pSrc);
-	void ReposCamLight(DWORD enableBits, int availLght, REAL offset=128.0, CLR cdif=ZBLACK);
+	void ReposCamLight(size_t enableBits, int availLght, REAL offset=128.0, CLR cdif=ZBLACK);
     void DisableAll(BOOL bd);
 	void RayIntersectBrush(V3& s, V3& end,_EL_SEL sel);
     void RayIntersectItems(V3& s, V3& end);
     void SetErrorPoint(V3& v){_errPoint = v;};
     void SetActiveWiew(CWnd* pWnd){_pActiveView = pWnd;};
-	DWORD SetFaceMode(BOOL resetBlends=FALSE);
+	size_t SetFaceMode(BOOL resetBlends=FALSE);
 	void  SetLightMode(BOOL inv=TRUE);
     void  SbarShowCurMode();
     void  MoveCamera(V3& p);
@@ -67,7 +67,7 @@ public:
                           vvector<Poly*>&,
                           BOOL usesel=FALSE);
     void DrawSpecialPolygons(z_ed3View *pV,
-                             DWORD lMaps,
+                             size_t lMaps,
                              vvector<Poly*>& backDraw,
                              vvector<Poly*>& transPolys,
                              vvector<Poly*>& mirrors,
@@ -88,7 +88,7 @@ public:
     void    DeSelectTextCtx();
     void    PrintOut(int x, int y, const char *fmt, CLR& clr=ZLIGHTGRAY);
 	void    PrintOut(V3& v, char vt, const char* text, CLR& clr/*=ZLIGHTGRAY*/);
-    void    PrintCoords(RECT& wrect, FRECT& vrect, V3& pct, char vt, BOOL active, LPCTSTR ct, POINT* mc);
+    void    PrintCoords(RECT& wrect, FRECT& vrect, V3& pct, char vt, BOOL active, const char* ct, POINT* mc);
     Htex    RecreateAmbLmap();
     CString ResFile(const char* filenme);
     BOOL    DuplicateFile(const char* src, BOOL over = TRUE);
@@ -101,9 +101,9 @@ public:
 	virtual void Serialize(CArchive& ar);
 	virtual void DeleteContents();
 	virtual void OnFinalRelease();
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
-	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
-	virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
+	virtual BOOL OnCmdMsg(size_t nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
+	virtual BOOL OnOpenDocument(const char* lpszPathName);
+	virtual BOOL OnSaveDocument(const char* lpszPathName);
 	virtual void OnCloseDocument();
 	protected:
 	virtual BOOL SaveModified();
@@ -494,8 +494,8 @@ public:
     void      CleanProjections(Brush& projBrush, BOOL onlyFlags=0);
 	void	  LocalDrawBspTreeGraph(Compiler& compiler, int& leafNo, z_ed3View* pV);
 	void	  LocalDrawReadyBSP(Compiler&  compiler, Scene& scene, z_ed3View* pV);
-    BOOL      LoadPrefFile(LPCTSTR szFileName, Brush** pBRet=0);
-    void      DrawPolyVertexes(DWORD how, Poly& poly, BOOL gen, DWORD what=0);
+    BOOL      LoadPrefFile(const char* szFileName, Brush** pBRet=0);
+    void      DrawPolyVertexes(size_t how, Poly& poly, BOOL gen, size_t what=0);
     void      DrawPolyLines(Poly& poly);
     void      DrawPolygon(Poly& poly, BOOL wireMode);
     void      DrawOrtho(const V3& pos, const V3& dir, REAL len, REAL clratn=1.0);
@@ -503,9 +503,9 @@ public:
     void      ReadFromFile(const char* szFilename);
 protected:
     void AddVertex(Poly* ps, const V3& v);
-    void SaveInFile(LPCTSTR pSzName, BOOL prims=FALSE);
+    void SaveInFile(const char* pSzName, BOOL prims=FALSE);
     void SavePrefFile();
-    void SaveInXML(LPCTSTR pSzName, BOOL bBrshes=FALSE);
+    void SaveInXML(const char* pSzName, BOOL bBrshes=FALSE);
     void ReadFromBSP(const char* szFilename);
     void _BSP_ReadPolys(const FileWrap& fw, int elements);
 
@@ -548,7 +548,7 @@ protected:
     void ApplyCloserLights(const Poly& poly);
     void DrawItems();
     void RecalcBrushes();
-    BOOL HasExtension(LPCTSTR szex); //{"_GL_EXT_separate_specular_color")
+    BOOL HasExtension(const char* szex); //{"_GL_EXT_separate_specular_color")
     void TestFreeVersion(int polys);
     void _DrawCamera();
     void _SeColor(COLORREF crf, PPolys& pSelPolys);
@@ -557,14 +557,14 @@ protected:
     void _SeColor(COLORREF crf, PBrushes& pSelBrushes);
 
 public:
-    UINT            _frmTimer;
+    size_t            _frmTimer;
     BOOL            _blocksel;	 //blocks selection when evaluate mode is on
     CWnd            *_pActiveView; 
     BR_MODE         _brmode;
     BR_MODE         _brmodePrev;
     EL_SEL          _selmode;
     EL_SEL          _prevSelmode;
-    DWORD           _compviewmode;
+    size_t           _compviewmode;
     BOOL            _bSnapGrid;
 	Camera		    _cam;
     BOOL            _alignment;
@@ -634,13 +634,13 @@ public:
     tstring        _docdir;
     tstring        _lasterror;
     int            _viewCount;
-	DWORD		  _lvupdate;
+	size_t		  _lvupdate;
     CDialogEvalDets	_devdet;
     BOOL            _clearing;
     CView*          _lastFocusView;
     CString        _tempfileName;
     BOOL           _complBreaking;
-    DWORD          _polycount;
+    size_t          _polycount;
     int            _use2splitidx;
     int            _maxLights; 
     int            _numLights;

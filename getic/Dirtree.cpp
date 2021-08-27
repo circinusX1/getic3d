@@ -21,12 +21,12 @@ char* DupString( LPTSTR szData )
 	char * szRet = NULL;
 	int nLength	  = 0;
 	if( szData )
-		nLength = _tcslen( szData )+1;
+		nLength = strlen( szData )+1;
 	if( nLength > 0 )
 	{
 		szRet = new char[nLength];
 		ASSERT( szRet );
-		_tcscpy( szRet, szData );
+		strcpy( szRet, szData );
 	}
 	return szRet;
 }
@@ -117,7 +117,7 @@ void CDirTree::PreSubclassWindow()
 	{
 		CString sDrive = cLetter;
 		sDrive += _T(":");						
-		UINT nType = GetDriveType( sDrive + _T("\\") );
+		size_t nType = GetDriveType( sDrive + _T("\\") );
 		if( DRIVE_REMOVABLE <= nType && nType <= DRIVE_RAMDISK )
 			InsertItem2( TVI_ROOT, sDrive, nType );
 	}
@@ -127,7 +127,7 @@ void CDirTree::PreSubclassWindow()
 	CTreeCtrl::PreSubclassWindow();
 }
 
-HTREEITEM CDirTree::FindItem(LPCTSTR lpszText, HTREEITEM hItem)
+HTREEITEM CDirTree::FindItem(const char* lpszText, HTREEITEM hItem)
 {
 	HTREEITEM htiSelected = hItem ? hItem : GetSelectedItem();
 	HTREEITEM htiCurrent = GetNextItemEx(htiSelected);
@@ -197,8 +197,8 @@ BOOL    CDirTree::PreSelectFolder(LPCSTR pszFolder)
     
     if(!strstr(pszFolder,":\\"))
     {
-        char cd[_MAX_PATH];
-        _getcwd(cd, _MAX_PATH);
+        char cd[PATH_MAX];
+        _getcwd(cd, PATH_MAX);
         m_sPath = cd;
         m_sPath += "\\";
         m_sPath +=pszFolder;
@@ -356,7 +356,7 @@ void CDirTree::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
     if(!_frompop)
     {
         m_sPath     = sPath; 
-        GetParent()->SendMessage(WM_SELCHANGED, 0, (LPARAM)(LPCTSTR) m_sPath);
+        GetParent()->SendMessage(WM_SELCHANGED, 0, (LPARAM)(const char*) m_sPath);
     }
 }
 

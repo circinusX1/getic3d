@@ -30,7 +30,7 @@ class CLbDlg : public CBASEDLG
 {
 // Construction
 public:
-	CLbDlg(UINT iDD, CWnd* pParent = NULL);   // standard constructor
+	CLbDlg(size_t iDD, CWnd* pParent = NULL);   // standard constructor
     void    SetIndex(int idx){_index = idx;}
 
 
@@ -92,7 +92,7 @@ public:
 	//{{AFX_VIRTUAL(CLbDlg)
 	public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
+	virtual BOOL OnCmdMsg(size_t nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
@@ -104,7 +104,7 @@ protected:
     
 	// Generated message map functions
 	//{{AFX_MSG(CLbDlg)
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDown(size_t nFlags, CPoint point);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	virtual BOOL OnInitDialog();
 	afx_msg int  OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -273,7 +273,7 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(DlbFILE)
 	afx_msg void OnButton1();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnSize(size_t nType, int cx, int cy);
 	afx_msg void OnDestroy();
 	afx_msg void OnChange1();
 	//}}AFX_MSG
@@ -314,7 +314,7 @@ protected:
 	//{{AFX_MSG(DlbEDSpin)
 	afx_msg void OnDeltapos1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnChange1();
-	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnVScroll(size_t nSBCode, size_t nPos, CScrollBar* pScrollBar);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
@@ -383,7 +383,7 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(DlbCLR)
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, size_t nCtlColor);
 	afx_msg void OnPaint();
 	afx_msg void OnButton2();
 	afx_msg void OnDestroy();
@@ -515,8 +515,8 @@ public:
 public:
     // ad items. returns the proper DlgControl
     void       Clean() ;
-    CLbDlg*    AddItem(char* str, CLbDlg* lbDlg, UINT nID);
-    CLbDlg*    AddItem(char* str, UINT nID);
+    CLbDlg*    AddItem(char* str, CLbDlg* lbDlg, size_t nID);
+    CLbDlg*    AddItem(char* str, size_t nID);
     CLbDlg*    GetCurItemSel(int idx){
         return (CLbDlg*)GetItemData(idx);
     }
@@ -535,7 +535,7 @@ public:
 	virtual void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-    virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+    virtual LRESULT WindowProc(size_t message, WPARAM wParam, LPARAM lParam);
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	protected:
 	virtual void PreSubclassWindow();
@@ -551,9 +551,9 @@ public:
 protected:
 	//{{AFX_MSG(CPrpLb)
 	afx_msg void OnDestroy();
-	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnVScroll(size_t nSBCode, size_t nPos, CScrollBar* pScrollBar);
 	afx_msg void OnSetfocus();
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnKeyDown(size_t nChar, size_t nRepCnt, size_t nFlags);
 	//}}AFX_MSG
     afx_msg LRESULT OnSetCurSel(WPARAM, LPARAM);
     afx_msg LRESULT OnRedraw(WPARAM, LPARAM);

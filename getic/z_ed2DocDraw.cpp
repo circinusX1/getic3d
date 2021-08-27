@@ -206,7 +206,7 @@ void CZ_ed2Doc::LocalDrawReadyBSP(Compiler&  compiler, Scene& scene, z_ed3View* 
         return;
 
 	int nLeaf = compiler._bTrees[0]->R_FindLeaf(0,_cam._pos);
-    DWORD zoneVis = 0xFFFFFFFF;
+    size_t zoneVis = 0xFFFFFFFF;
     Brush* pz = compiler.GetZone(_cam._pos);
     if(pz) zoneVis =pz->VisData();
     FOREACH(vvector<CBspTree*>, compiler._bTrees, ppBt)
@@ -404,7 +404,7 @@ void CZ_ed2Doc::Draw2DBrushes(CZ_ed2View *pV)
     {
         _compiler.Render(0, _compviewmode|REND_BSP);
 
-        DWORD zoneVis = 0xFFFFFFFF;
+        size_t zoneVis = 0xFFFFFFFF;
         Brush* pz = _compiler.GetZone(_cam._pos);
         if(pz) zoneVis =pz->VisData();
         BOOL visible = 1;
@@ -1007,7 +1007,7 @@ void CZ_ed2Doc::DrawSolidBrush(Brush& rb,
                                vvector<Poly*>& guround,
                                BOOL usesel)
 {   
-    DWORD genTex  = 0;
+    size_t genTex  = 0;
     glColor4ubv(CLR_WHITE);
     PPoly pb = rb._polys.begin();
     PPoly pe = rb._polys.end();
@@ -1198,7 +1198,7 @@ static void __SetFogColor(V3& v, CLR& color)
 
 //---------------------------------------------------------------------------------------
 void CZ_ed2Doc::DrawSpecialPolygons(z_ed3View *pV,
-                                    DWORD lmaps, 
+                                    size_t lmaps, 
                                     vvector<Poly*>& backDraw,
                                     vvector<Poly*>& transPolys,
                                     vvector<Poly*>& mirrors,
@@ -1353,7 +1353,7 @@ void CZ_ed2Doc::DrawSpecialPolygons(z_ed3View *pV,
         FOREACH(vvector<Poly*>, mirrors, ppPoly)
         {
             pPoly = *ppPoly;
-            DrawPolyVertexes(GL_POLYGON, *pPoly, 0, (DWORD)-1); 
+            DrawPolyVertexes(GL_POLYGON, *pPoly, 0, (size_t)-1); 
         }
 
         glColorMask(GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE);
@@ -1627,7 +1627,7 @@ void CZ_ed2Doc::DrawGridLines()
 }
 
 //---------------------------------------------------------------------------------------
-void CZ_ed2Doc::ReposCamLight(DWORD lightbits, int avaliCnt, REAL offset, CLR difLight)
+void CZ_ed2Doc::ReposCamLight(size_t lightbits, int avaliCnt, REAL offset, CLR difLight)
 {
 
 	V3 pl = _cam._pos;
@@ -1942,7 +1942,7 @@ void    CZ_ed2Doc::GLDrawBox(Box& box, BOOL asWire, RGBA color)
 
 
 //-----------------------------------------------------------------------------
-DWORD CZ_ed2Doc::SetFaceMode(BOOL resetAll)
+size_t CZ_ed2Doc::SetFaceMode(BOOL resetAll)
 {
     if(resetAll)
     {
@@ -1999,7 +1999,7 @@ void CZ_ed2Doc::DrawPolygon(Poly& poly, BOOL wireMode)
 }
 
 
-void CZ_ed2Doc::PrintCoords(RECT& wrect, FRECT& vrect, V3& pct, char vt, BOOL active, LPCTSTR cs, POINT* mt)
+void CZ_ed2Doc::PrintCoords(RECT& wrect, FRECT& vrect, V3& pct, char vt, BOOL active, const char* cs, POINT* mt)
 {
     if(_clearing || !b_showgrid)
         return;
@@ -2255,7 +2255,7 @@ void    CZ_ed2Doc::DrawOrtho(const V3& pos, const V3& euler, REAL len, REAL clra
 static void AnimateSurfaceTexture(Poly& face, UV& tc, int ts)
 {
 
-    DWORD texBits = (face._polyflags2 & 0xF);
+    size_t texBits = (face._polyflags2 & 0xF);
     if(texBits==0) texBits=1; // fix if tanim flag is set animate first stage
     if(texBits & (1 << ts))
     {
@@ -2375,7 +2375,7 @@ static void AnimateSurfaceTexture(Poly& face, UV& tc, int ts)
     }
 } 
 
-void CZ_ed2Doc::DrawPolyVertexes(DWORD how, Poly& poly, int texCoord, DWORD what)
+void CZ_ed2Doc::DrawPolyVertexes(size_t how, Poly& poly, int texCoord, size_t what)
 {
     BYTE    farclr[4] = {255,255,255,255};
     UV      texC;

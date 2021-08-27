@@ -7,10 +7,10 @@
 // DlgStartPlayItem.h : header file
 //
 #include "basecont.h"
-#include "uienhancer.h"
+#include "UiEnhancer.h"
 #include "ColorButon.h"
 #include "VertDlgDlg.h"
-#include "TexLbox.h"
+#include "Texlbox.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // DlgStartPlayItem dialog

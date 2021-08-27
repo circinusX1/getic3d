@@ -37,7 +37,7 @@ BEGIN_MESSAGE_MAP(CDlgBar, BASE_CLS)
 END_MESSAGE_MAP()
 
 
-HBRUSH CDlgBar::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+HBRUSH CDlgBar::OnCtlColor(CDC* pDC, CWnd* pWnd, size_t nCtlColor)
 {
     pDC->SetBkColor(theApp._color[1]);
 	return theApp._brush[1];
@@ -189,7 +189,7 @@ void CDlgBar::OnUpdateCmdUI( CFrameWnd* pTarget, BOOL bDisableIfNoHndler )
 }
 
 //---------------------------------------------------------------------------------------
-void    CDlgBar::ShowItemProps(DWORD itmtype)
+void    CDlgBar::ShowItemProps(size_t itmtype)
 {
     RECT rt;
 	GetDlgItem(IDC_STATICF2)->GetWindowRect(&rt);
@@ -464,7 +464,7 @@ void CDlgBar::ShowFacesProperties(Poly** ppPolys, int nCount)
         const char* textutrName = GTexSys.GetTexName(pPoly->GetHtex(GUtex));
         if(textutrName)
         {
-            char loco[_MAX_PATH];
+            char loco[PATH_MAX];
             strcpy(loco, textutrName);
             char* pd =strchr(loco,'?');
             if(pd)*pd=0;
@@ -479,7 +479,7 @@ void CDlgBar::ShowFacesProperties(Poly** ppPolys, int nCount)
 	BlockRetreive(0);
 }
 
-DWORD   CDlgBar::GettexGenFlag()
+size_t   CDlgBar::GettexGenFlag()
 {
 	if(::IsWindow(_dlgtex.m_hWnd) )
 	{
@@ -497,14 +497,14 @@ char*   CDlgBar::GetCurSelTexture()
 		_dlgtex.GetCurSel(Sttt);
 
         if(Sttt[0]==0)
-            _tcscpy(Sttt, "EF-TEX-RGBY");
+            strcpy(Sttt, "EF-TEX-RGBY");
 		return Sttt;
 	}
 	return "*";
 }
 
 //---------------------------------------------------------------------------------------
-BOOL CDlgBar::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
+BOOL CDlgBar::OnCmdMsg(size_t nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
 {
     if(::IsWindow(_tb.m_hWnd))
         _tb.OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
@@ -707,7 +707,7 @@ void    CDlgBar::UpdateMotionProps(Brush* pBrush, CMotion* pM)
 }
 
 //-----------------------------------------------------------------------------
-void CDlgBar::OnSize(UINT nType, int cx, int cy) 
+void CDlgBar::OnSize(size_t nType, int cx, int cy) 
 {
 	BASE_CLS::OnSize(nType, cx, cy);
 }
@@ -740,7 +740,7 @@ void CDlgBar::ResetDlgsContent()
 }
 
 //-----------------------------------------------------------------------------
-void CDlgBar::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CDlgBar::OnVScroll(size_t nSBCode, size_t nPos, CScrollBar* pScrollBar) 
 {
  	//CView::OnVScroll(nSBCode, nPos, pScrollBar);
 }

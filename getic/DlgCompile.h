@@ -81,7 +81,7 @@ protected:
 	afx_msg void OnOk();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, size_t nCtlColor);
 	afx_msg void OnSelchangeTab1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnSelchangingTab1(NMHDR* pNMHDR, LRESULT* pResult);
 	//}}AFX_MSG

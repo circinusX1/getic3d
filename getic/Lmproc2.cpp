@@ -10,7 +10,7 @@
 #include "basecont.h"
 #include "Scene.h"
 #include "MainFrm.h"
-#include "..\\_include\\BspFIleStr.h"
+#include "bspfilestr.h"
 #include "BspTree.h"
 #include "compiler.h"
 #include "LightBulb.h"
@@ -382,7 +382,7 @@ BOOL LMProc::Calculate(Scene* pScene, CBspTree* pTreeMain, CBspTree* pTree, vvec
 }
 
 //---------------------------------------------------------------------------------------    
-static void Smooth(BYTE* pLMap, SIZE& sz)
+static void Smooth(BYTE* pLMap, size_t& sz)
 {
   
 }
@@ -477,7 +477,7 @@ void LMProc::NTC_BuildLmaps(CBspTree* pTree)
 
     RemoveLmapTexture(pTree->_polys,0);
 
-    DWORD tg = TEX_LOWREZ;
+    size_t tg = TEX_LOWREZ;
     if(Compiler::PCompiler->_b3SampleLM)
     {
         tg = TEX_NORMAL_LM;
@@ -496,7 +496,7 @@ void LMProc::NTC_BuildLmaps(CBspTree* pTree)
         LmSizeBuff*  plmBuffer   = 0;
         plmBuffer   = _lMaps[plLmInf._lmIndex];
      
-        SIZE lmsz = {plLmInf._size.cx & 0xFFFF, plLmInf._size.cy & 0xFFFF};
+        size_t lmsz = {plLmInf._size.cx & 0xFFFF, plLmInf._size.cy & 0xFFFF};
 #ifdef _DEBUG
         Srgb3* prgb = (Srgb3*)plmBuffer->pBuff;
 #endif //
@@ -523,7 +523,7 @@ void LMProc::NTC_BuildLmaps(TerTree* pTree)
 {
     if(pTree->g_light.size())
         return;
-    DWORD tg = TEX_LOWREZ;
+    size_t tg = TEX_LOWREZ;
     if(Compiler::PCompiler->_b3SampleLM)
         tg = TEX_NORMAL_LM;
 
@@ -543,7 +543,7 @@ void LMProc::NTC_BuildLmaps(TerTree* pTree)
         LmInfo&      plLmInf     = pLeaf->lm_info;
         LmSizeBuff*  plmBuffer   = _lMaps[plLmInf._lmIndex];
 
-        SIZE lmsz = {plLmInf._size.cx & 0xFFFF, plLmInf._size.cy & 0xFFFF};
+        size_t lmsz = {plLmInf._size.cx & 0xFFFF, plLmInf._size.cy & 0xFFFF};
 
         
 
@@ -562,9 +562,9 @@ void LMProc::NTC_BuildLmaps(TerTree* pTree)
 }
 
 
-SIZE  LMProc::CalcBmpDims(const UV& edgesLength)
+size_t  LMProc::CalcBmpDims(const UV& edgesLength)
 {
-    SIZE sz ={  (int)(ceil( edgesLength.u / Compiler::PCompiler->_lMapLumelSz )),     
+    size_t sz ={  (int)(ceil( edgesLength.u / Compiler::PCompiler->_lMapLumelSz )),     
                 (int)(ceil( edgesLength.v / Compiler::PCompiler->_lMapLumelSz ))  };
 
     CLAMPVAL(sz.cx, 4, Compiler::PCompiler->_lmapMaxSize);
@@ -725,7 +725,7 @@ void LMProc::CalculateTtLm(TerTree& tt, vvector<CLightBulb*>& lights)
     REAL            xS  = (ex.x) / (REAL)pbt->n_xtiles;
     REAL            zS  = (ex.z) / (REAL)pbt->n_ztiles;
     V3              vWalk1, vWalk2, vWalk3, vmin = pbt->b_box._min;
-    UINT            x,z;
+    size_t            x,z;
 
     tt.g_light.clear();
     CLRNOA     rgbnoa;
@@ -784,8 +784,8 @@ void LMProc::CalculateTtLm(TerTree& tt, vvector<CLightBulb*>& lights)
         pLeaf = (*ppLeaf);
         LmSizeBuff*  lmPls = new LmSizeBuff (TerLeafCelTiles, TerLeafCelTiles, TerLeafCelTiles, TerLeafCelTiles, 3);
         int   offset   = 0;
-        const SIZE& s  = pLeaf->s_tiles[0];
-        const SIZE& e  = pLeaf->s_tiles[1];
+        const size_t& s  = pLeaf->s_tiles[0];
+        const size_t& e  = pLeaf->s_tiles[1];
         BOOL  leafislit= FALSE;
         for(x=s.cx; x < e.cx; x++)
         {
@@ -880,7 +880,7 @@ int  LMProc::_GetLumColor(V3& pLumel, V3& lumelPos, const V3& norm, vvector<CLig
 
 		if(_pMainTree->SegmentIntersect(pLB->_t, lumelPos, 1, col))
         {
-            DWORD dwp = 0;
+            size_t dwp = 0;
             if(_pMainTree != col._pTree)
             {
                 dwp = GET_CONTENT(col._pTree->_treeprops);
@@ -979,7 +979,7 @@ NOSEG:
 }
 
 
-int  LMProc::_RoundToClosestPow2(SIZE& sz, int up)
+int  LMProc::_RoundToClosestPow2(size_t& sz, int up)
 {
     int tp2,tp21;
     if(!IsPowOf2(sz.cx))

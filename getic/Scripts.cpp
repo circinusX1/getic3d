@@ -53,10 +53,10 @@ ScrTmpl	tmpls[] =
 const char*	CScripts::GetTemplate(SceItem* pItem)
 {
 	char	name[32];
-	_tcscpy(name, pItem->_name);
+	strcpy(name, pItem->_name);
 	StripSpaces(name);
 
-	_stprintf(Strfmt, tmpls[(int)pItem->_item].psz, name)	;
+	sprintf(Strfmt, tmpls[(int)pItem->_item].psz, name)	;
 
 	return Strfmt;
 }

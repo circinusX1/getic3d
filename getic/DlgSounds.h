@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 // DlgSounds.h : header file
 //
-#pragma warning (disable: 4786)
+//   #pragma warning (disable: 4786)
 
 #include "basecont.h"
 #include "GListCtrl.h"
@@ -50,7 +50,7 @@ protected:
 	afx_msg void OnItemchangedList1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnDeleteitemList1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnOk();
-	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+	afx_msg void OnShowWindow(BOOL bShow, size_t nStatus);
 	afx_msg void OnChangeRad();
 	afx_msg void OnChangeVol();
 	//}}AFX_MSG

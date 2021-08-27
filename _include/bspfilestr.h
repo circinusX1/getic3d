@@ -14,7 +14,7 @@ HISTORY:
 #define __BSPFILESTR_H__
 
 //---------------------------------------------------------------------------------------
-#include "..\\baselib\\baselib.h"           // Basic math types       
+#include "baselib.h"           // Basic math types
 
 //---------------------------------------------------------------------------------------
 #ifdef PROP_PATCHES

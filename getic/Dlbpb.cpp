@@ -114,7 +114,7 @@ void CDirTree::FillTreeCtrl (LPSHELLFOLDER lpsf, LPITEMIDLIST lpifq, HTREEITEM h
     LPTVITEMDATA    lptvid=NULL;
     LPMALLOC        lpMalloc=NULL;
     ULONG           ulFetched;
-    UINT            uCount=0;
+    size_t            uCount=0;
     HRESULT         hr;
     TCHAR           szBuff[256];
     HWND            hwnd=::GetParent(m_hWnd);
@@ -234,7 +234,7 @@ void CDirTree::FillTreeCtrl (LPSHELLFOLDER lpsf, LPITEMIDLIST lpifq, HTREEITEM h
 
 
 //--| CDirTree::GetName |-----------------------------------------------------------------
-BOOL CDirTree::GetName (LPSHELLFOLDER lpsf, LPITEMIDLIST lpi, DWORD dwFlags, LPSTR lpFriendlyName)
+BOOL CDirTree::GetName (LPSHELLFOLDER lpsf, LPITEMIDLIST lpi, size_t dwFlags, LPSTR lpFriendlyName)
 {
     BOOL   bSuccess=TRUE;
     STRRET str;
@@ -256,11 +256,11 @@ BOOL CDirTree::GetName (LPSHELLFOLDER lpsf, LPITEMIDLIST lpi, DWORD dwFlags, LPS
             break;
             
             case STRRET_OFFSET:
-                _tcscpy(lpFriendlyName, (LPSTR)lpi+str.uOffset);
+                strcpy(lpFriendlyName, (LPSTR)lpi+str.uOffset);
             break;
             
             case STRRET_CSTR:
-                _tcscpy(lpFriendlyName, (LPSTR)str.cStr);
+                strcpy(lpFriendlyName, (LPSTR)str.cStr);
             break;
             
             default:
@@ -371,8 +371,8 @@ LPITEMIDLIST CDirTree::CopyITEMID(LPMALLOC lpMalloc, LPITEMIDLIST lpi)
 LPITEMIDLIST CDirTree::ConcatPidls(LPCITEMIDLIST pidl1, LPCITEMIDLIST pidl2)
 {
     LPITEMIDLIST pidlNew;
-    UINT cb1;
-    UINT cb2;
+    size_t cb1;
+    size_t cb2;
     
     if (pidl1)  //May be NULL
     cb1 = GetSize(pidl1) - sizeof(pidl1->mkid.cb);
@@ -409,9 +409,9 @@ void CDirTree::GetNormalAndSelectedIcons ( LPITEMIDLIST lpifq, LPTV_ITEM lptvite
 }
 
 //--| CDirTree::GetSize|------------------------------------------------------------------
-UINT CDirTree::GetSize(LPCITEMIDLIST pidl)
+size_t CDirTree::GetSize(LPCITEMIDLIST pidl)
 {
-    UINT cbTotal = 0;
+    size_t cbTotal = 0;
     if (pidl)
     {
         cbTotal += sizeof(pidl->mkid.cb);       // Null terminator
@@ -440,7 +440,7 @@ LPITEMIDLIST CDirTree::Next(LPCITEMIDLIST pidl)
 
 
 //--| CDirTree::Create|-------------------------------------------------------------------
-LPITEMIDLIST CDirTree::Create(UINT cbSize)
+LPITEMIDLIST CDirTree::Create(size_t cbSize)
 {
     LPMALLOC lpMalloc;
     HRESULT  hr;
@@ -501,9 +501,9 @@ BOOL CDirTree::PreSelectFolder(LPCSTR pszFolder)
     LPCSTR    pToken = 0;
     HTREEITEM   htI    = TVI_ROOT;
     
-    _tcscpy(sDir, pszFolder);
-    _tcscpy(addDir, "");
-    _tcscpy(token,"\\");
+    strcpy(sDir, pszFolder);
+    strcpy(addDir, "");
+    strcpy(token,"\\");
     
     Expand(htI,TVE_EXPAND);
     htI = GetNextItem(htI,TVGN_ROOT);
@@ -540,7 +540,7 @@ HTREEITEM CDirTree::GetDirEntry(LPCSTR pToken,HTREEITEM hti)
         
         lptvid=(LPTVITEMDATA)GetItemData(htInitial);
         GetFullyQualPidl(lptvid->lpsfParent, lptvid->lpi,szBuff);
-    }while(strncmp(szBuff, pToken, _tcslen(szBuff)-1) &&
+    }while(strncmp(szBuff, pToken, strlen(szBuff)-1) &&
     (htInitial = GetNextItem(htInitial,TVGN_NEXT))&&
     htInitial != TVI_ROOT);
     if(htInitial && htInitial!=TVI_ROOT)

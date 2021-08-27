@@ -1,7 +1,7 @@
 #ifndef __DHGGLOBS_H__
 #define __DHGGLOBS_H__
 
-#pragma warning (disable: 4786)
+//   #pragma warning (disable: 4786)
 
 #include "UiEnhancer.h"
 //---------------------------------------------------------------------------------------

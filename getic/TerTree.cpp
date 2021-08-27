@@ -53,7 +53,7 @@ BOOL  TerTree::Compile(CBigTerrain* pbt)
     //tansfer props for owner brush poly to terrain
     this->x_flags=pbt->Flags();
 
-    SIZE            tiles   = {pbt->n_xtiles, pbt->n_ztiles};
+    size_t            tiles   = {pbt->n_xtiles, pbt->n_ztiles};
     BYTE*           vxes    = &pbt->v_vxes;
     V3              corner  = pbt->b_box._min;
     V3              ext     = pbt->b_box._max - pbt->b_box._min;
@@ -87,15 +87,15 @@ BOOL  TerTree::Compile(CBigTerrain* pbt)
         }
     }
     int depth = -1;
-    SIZE    startSz = {0, 0};
+    size_t    startSz = {0, 0};
     _R_Compile(pRoot, startSz, tiles, ext, corner, depth);
     return 1;
 }
 
 //---------------------------------------------------------------------------------------
 int  TerTree::_R_Compile(TerNode  *pParentNode,
-                          const SIZE& startSz, 
-                          const SIZE& tiles, 
+                          const size_t& startSz, 
+                          const size_t& tiles, 
                           const V3& ext,
                           const V3& corner, 
                           int& depth)
@@ -103,11 +103,11 @@ int  TerTree::_R_Compile(TerNode  *pParentNode,
     ++depth;
 
     int     x,z;
-    SIZE    tileDim;
-    SIZE    tileSF; //tiles start and and for front
-    SIZE    tileEF;
-    SIZE    tileSB; //tiles start and and for end
-    SIZE    tileEB;
+    size_t    tileDim;
+    size_t    tileSF; //tiles start and and for front
+    size_t    tileEF;
+    size_t    tileSB; //tiles start and and for end
+    size_t    tileEB;
     V3      lext = ext;
 
     if((depth & 1) == 0)    // x 
@@ -263,9 +263,9 @@ void TerTree::_RenderLeaf(const TerLeaf* pLeaf,
 
     int   x,z;
     V3    v0,v1;
-    const SIZE& s   = pLeaf->s_tiles[0];
-          SIZE  e   = pLeaf->s_tiles[1];
-    const SIZE  t   = {p_Terrain->n_xtiles,p_Terrain->n_ztiles};
+    const size_t& s   = pLeaf->s_tiles[0];
+          size_t  e   = pLeaf->s_tiles[1];
+    const size_t  t   = {p_Terrain->n_xtiles,p_Terrain->n_ztiles};
     const V3&   c   = p_Terrain->b_box._min;
     const V3&   ex  = p_Terrain->b_box.GetExtends();
     const REAL  xS  = (ex.x) / (REAL)p_Terrain->n_xtiles;
@@ -276,7 +276,7 @@ void TerTree::_RenderLeaf(const TerLeaf* pLeaf,
     UV          tc0,tc1;
     UV          lMsz(TerLeafCelTiles*xS, TerLeafCelTiles*zS);
     REAL        fx,fx1,fz;
-    DWORD       texLayerBits = (1<<texLayer);
+    size_t       texLayerBits = (1<<texLayer);
     BOOL        untt[4] = {x_flags & TERR_UTT0,
                            x_flags & TERR_UTT1,
                            x_flags & TERR_UTT2,
@@ -411,7 +411,7 @@ void TerTree::_RenderLeaf(const TerLeaf* pLeaf,
 void TerTree::_R_Render(const V3& pos, int node, BOOL d3)
 {
     const TerNode*  pNode = p_nodes[node];
-    const DWORD     dmode = DOC()->_compviewmode;// & C_LMAP
+    const size_t     dmode = DOC()->_compviewmode;// & C_LMAP
     Texs&           tex   = p_Terrain->Texs();
     CLR             rgbc  = ZWHITE ;
     

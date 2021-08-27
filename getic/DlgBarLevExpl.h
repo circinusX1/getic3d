@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 // DlgBarLevExpl.h : header file
 //
-#pragma warning (disable: 4786)
+//   #pragma warning (disable: 4786)
 #include "GListCtrl.h"
 
 /////////////////////////////////////////////////////////////////////////////

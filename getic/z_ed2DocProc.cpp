@@ -49,7 +49,7 @@ void CZ_ed2Doc::DoHSR()
 	}
 	else
 	{
-		DWORD dw = GetTickCount();
+		size_t dw = GetTickCount();
 		_compiler.PerformHSR(_scene.GetPrimitives());
 		dw = GetTickCount()-dw;
 		SBT(0,MKSTR("%d polygons in %d ms", _compiler._polysStats, dw));
@@ -70,8 +70,8 @@ void CZ_ed2Doc::DoHSR()
 void CZ_ed2Doc::OnCompileroptions() 
 {
 
-    char   docName[_MAX_PATH];
-    ::_tcscpy(docName, DOC()->GetTitle());
+    char   docName[PATH_MAX];
+    ::strcpy(docName, DOC()->GetTitle());
     PathHandler ph(docName);
 
     _compiler._finalBSpFileName = theApp.BspsDir();

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "z-edmap.h"
-#include "TexRef.h"
+#include "Texref.h"
 #include "MainFrm.h"
 #include "z_ed3View.h"
 #include "z_ed2Doc.h"
@@ -8,7 +8,7 @@
 #include "extern/glext.h"
 #include "extern/wglext.h"
 
-#pragma warning (disable: 4786)
+//   #pragma warning (disable: 4786)
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
@@ -87,13 +87,13 @@ void	TexRef::RemoveTex(Htex* it, int i)
 	    ::wglMakeCurrent(z_ed3View::P3DView->_hdc, z_ed3View::P3DView->m_hRC); 
 	if(*it > 0 && glIsTexture(*it))
     {
-        glDeleteTextures(1,(UINT*)&it->hTex);
+        glDeleteTextures(1,(size_t*)&it->hTex);
     }
 }
 
 
 
-Htex TexRef::GlGenTex(int x, int y, int bpp, BYTE* pBuff, DWORD flags)
+Htex TexRef::GlGenTex(int x, int y, int bpp, BYTE* pBuff, size_t flags)
 {
     ASSERT(ThrID == GetCurrentThreadId());
 	if(ThrID != GetCurrentThreadId())
@@ -119,7 +119,7 @@ void	TexRef::_RemoveTex(Htex& it)
 
 	if(it > 0 && glIsTexture(it))
     {
-		glDeleteTextures(1,(UINT*)&it);
+		glDeleteTextures(1,(size_t*)&it);
     }
 }
 
@@ -139,14 +139,14 @@ void Local_LoadBytes(BYTE* pD, BYTE* pS, int sx, int sy, int x, int y, int lS)
 }
 
 
-Htex	TexRef::_GlGenTex(int x, int y, int bpp, BYTE* pBuff, DWORD flags)
+Htex	TexRef::_GlGenTex(int x, int y, int bpp, BYTE* pBuff, size_t flags)
 {
 	Htex    hTex;
-    DWORD   texTarget;
+    size_t   texTarget;
     BOOL    ok=0;
     try{
 
-        ::glGenTextures(1,(UINT*)&hTex.hTex);
+        ::glGenTextures(1,(size_t*)&hTex.hTex);
 
         if(0==hTex.hTex)
         {
@@ -304,7 +304,7 @@ BYTE* TexRef::LoadRCTextureBuffer(const char* szId,int sx, int sy)
         if(hResLoad)
         {
             // read the dim here
-            DWORD dwSize = SizeofResource(  AfxGetResourceHandle(), hrsrc);
+            size_t dwSize = SizeofResource(  AfxGetResourceHandle(), hrsrc);
 
 			if(sx==sy)
 			{
@@ -359,7 +359,7 @@ Htex  TexRef::LoadRCTexture(const char* szId, int sx, int sy, BYTE* pwantbuff)
         if(hResLoad)
         {
             // read the dim here
-            DWORD dwSize = SizeofResource(  AfxGetResourceHandle(), hrsrc);
+            size_t dwSize = SizeofResource(  AfxGetResourceHandle(), hrsrc);
 
 			if(sx==sy)
 			{
@@ -389,7 +389,7 @@ Htex  TexRef::LoadRCTexture(const char* szId, int sx, int sy, BYTE* pwantbuff)
 
 
 
-Htex TexRef::LoadThisFile(const char* pszFileName, DWORD flags)
+Htex TexRef::LoadThisFile(const char* pszFileName, size_t flags)
 {
     TexHandler  th;
     if(th.LoadThisFile(pszFileName, flags))
@@ -397,7 +397,7 @@ Htex TexRef::LoadThisFile(const char* pszFileName, DWORD flags)
     return _defTex;
 }
 
-Htex  TexRef::LoadFile(char* pszFileName, DWORD flags)
+Htex  TexRef::LoadFile(char* pszFileName, size_t flags)
 {
     TexHandler  th;
     if(th.LoadFile(pszFileName, flags))
@@ -408,7 +408,7 @@ Htex  TexRef::LoadFile(char* pszFileName, DWORD flags)
 void   TexRef::Clear(BOOL b)
 {
 	GTexSys.Clean();
-    ::memset(GTexSys._texmap,0,sizeof(UINT)*TEX_CAPACITY);
+    ::memset(GTexSys._texmap,0,sizeof(size_t)*TEX_CAPACITY);
 }
 
 void  TexRef::GlLmapMode(BOOL start)
@@ -454,7 +454,7 @@ void  TexRef::GlHalloMode(BOOL start)
     {
 /*        
         
-        DWORD modes[]={     GL_ZERO,
+        size_t modes[]={     GL_ZERO,
                             GL_ONE,
                             GL_SRC_COLOR,
                             GL_ONE_MINUS_SRC_COLOR,
@@ -491,7 +491,7 @@ void  TexRef::GlDetailMode(BOOL start)
     {
 
      
-        DWORD modes[]={     GL_ZERO,
+        size_t modes[]={     GL_ZERO,
                             GL_ONE,
                             GL_SRC_COLOR,
                             GL_ONE_MINUS_SRC_COLOR,
@@ -581,7 +581,7 @@ void SmartTex::AddRef(){
     ++(*_pRefs);
 }
 
-SmartTex& SmartTex::Assign(const char* p, DWORD flags){
+SmartTex& SmartTex::Assign(const char* p, size_t flags){
     if(_TexCopy==0) 
         return *this;
     Clear();

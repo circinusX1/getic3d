@@ -64,7 +64,7 @@ void CCompilerOutDlg::OnOk()
 }
 
 //--| CCompilerOutDlg::OnSize|------------------------------------------------------------
-void CCompilerOutDlg::OnSize(UINT nType, int cx, int cy)
+void CCompilerOutDlg::OnSize(size_t nType, int cx, int cy)
 {
     CDialogBar::OnSize(nType, cx, cy);
     
@@ -120,7 +120,7 @@ void CCompilerOutDlg::OnDblclkOut()
 
 
 //--| CCompilerOutDlg::AddText|-----------------------------------------------------------
-void CCompilerOutDlg::AddText(LPCTSTR p)
+void CCompilerOutDlg::AddText(const char* p)
 {
     int i = _lbout.AddString(p);
     _lbout.SetCurSel(i);
@@ -134,7 +134,7 @@ void CCompilerOutDlg::OnClose()
 	
 }
 
-HBRUSH CCompilerOutDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+HBRUSH CCompilerOutDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, size_t nCtlColor) 
 {
 	HBRUSH hbr = CDialogBar::OnCtlColor(pDC, pWnd, nCtlColor);
 	

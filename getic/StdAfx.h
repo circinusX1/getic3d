@@ -15,7 +15,7 @@
 #define _USE_BASEG
 // #define _BAR_DLGPANE     // tools dialog is on a slplitter
 
-#pragma warning (disable: 4786)
+//   #pragma warning (disable: 4786)
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
 #include <afxdisp.h>        // MFC Automation classes
@@ -28,7 +28,7 @@
 #include <afxtempl.h> 
 #include <afxole.h> 
 #include "progressdlg.h"
-#include "TexRef.h"
+#include "Texref.h"
 #include <set>
 #include "baselibhdrs.h"
 
@@ -47,7 +47,7 @@ extern BOOL     GFrustCull;
 extern BOOL     BShowLCirc;
 extern BOOL     BShowCb;
 extern BOOL     BShowTrPolys;
-extern DWORD    PaintCounter;
+extern size_t    PaintCounter;
 extern BOOL		GCullTerrCell;
 extern BOOL     GDisableGrpCSG;
 extern BOOL     GKeepProjections;
@@ -65,8 +65,8 @@ extern BOOL		GForceBSP;
 extern BOOL     GCarving;
 extern BOOL	    GUpdateImm;
 extern  BOOL    GAutoSave;
-extern UINT     GUtex;    
-extern UINT		GAnimCompilation;
+extern size_t     GUtex;    
+extern size_t		GAnimCompilation;
 extern BOOL     GSelTexFace;
 extern  BOOL    BrushTask;
 extern BOOL     BVxNormals;
@@ -114,7 +114,7 @@ extern	RGBA    CLR_AXES_X		;
 extern	RGBA    CLR_AXES_Y		;
 extern	RGBA    CLR_AXES_Z		;
 
-extern	UINT	ThrID;
+extern	size_t	ThrID;
 
 extern char    GeticPrimitiveFile[];//   = "GPGF";   // getic primitive geometry file
 extern char    GeticGeometryRawFile[];// = "GGRF";   // getic primitive geometry file
@@ -224,7 +224,7 @@ INLN void	GCalcNormal(Plane* p, V3& a, V3& b, V3& c)
 	p->CalcNormal(c,b,a);
 }
 
-INLN REAL ParseREAL(CWnd* pWnd, UINT iD)
+INLN REAL ParseREAL(CWnd* pWnd, size_t iD)
 {
     char sz[64];
     REAL  ret = 0;
@@ -234,7 +234,7 @@ INLN REAL ParseREAL(CWnd* pWnd, UINT iD)
     return ret;
 }
 
-INLN V3 ParseV3(CWnd* pWnd, UINT iD)
+INLN V3 ParseV3(CWnd* pWnd, size_t iD)
 {
     char sz[64];
     V3    ret;
@@ -242,7 +242,7 @@ INLN V3 ParseV3(CWnd* pWnd, UINT iD)
 
     if(pWnd->GetDlgItem(iD)->GetWindowText(sz,64))
     {
-        for(UINT i=0;i<strlen(sz);i++)
+        for(size_t i=0;i<strlen(sz);i++)
         {
             if(sz[i] == ',')
                 comma++;
@@ -253,7 +253,7 @@ INLN V3 ParseV3(CWnd* pWnd, UINT iD)
     return ret;
 }
 
-INLN UV ParseUV(CWnd* pWnd, UINT iD)
+INLN UV ParseUV(CWnd* pWnd, size_t iD)
 {
     char sz[64];
     UV    ret;
@@ -261,7 +261,7 @@ INLN UV ParseUV(CWnd* pWnd, UINT iD)
 
     if(pWnd->GetDlgItem(iD)->GetWindowText(sz,64))
     {
-        for(UINT i=0;i<strlen(sz);i++)
+        for(size_t i=0;i<strlen(sz);i++)
         {
             if(sz[i] == ',')
                 comma++;
@@ -273,7 +273,7 @@ INLN UV ParseUV(CWnd* pWnd, UINT iD)
 }
 
 
-INLN CLR ParseCLR(CWnd* pWnd, UINT iD)
+INLN CLR ParseCLR(CWnd* pWnd, size_t iD)
 {
     char sz[64];
     CLR    ret;
@@ -281,7 +281,7 @@ INLN CLR ParseCLR(CWnd* pWnd, UINT iD)
 
     if(pWnd->GetDlgItem(iD)->GetWindowText(sz,64))
     {
-        for(UINT i=0;i<strlen(sz);i++)
+        for(size_t i=0;i<strlen(sz);i++)
         {
             if(sz[i] == ',')
                 comma++;
@@ -298,19 +298,19 @@ INLN CLR ParseCLR(CWnd* pWnd, UINT iD)
 }
 
 
-INLN void Sct(CWnd* pWnd, UINT iD, REAL value)
+INLN void Sct(CWnd* pWnd, size_t iD, REAL value)
 {
     CWnd* pCtl = pWnd->GetDlgItem(iD);
     pCtl->SetWindowText(MKSTR("%.2f",value));
 }
 
-INLN void Sct(CWnd* pWnd, UINT iD, V3& value)
+INLN void Sct(CWnd* pWnd, size_t iD, V3& value)
 {
     CWnd* pCtl = pWnd->GetDlgItem(iD);
     pCtl->SetWindowText(MKSTR("%.2f,%.2f,%.2f",value.x,value.y,value.z));
 }
 
-INLN void Sct(CWnd* pWnd, UINT iD, CLR& value)
+INLN void Sct(CWnd* pWnd, size_t iD, CLR& value)
 {
     CWnd* pCtl = pWnd->GetDlgItem(iD);
     pCtl->SetWindowText(MKSTR("%d,%d,%d,%d",value.r,value.g,value.b,value.a));
@@ -353,7 +353,7 @@ INLN REAL Str2Real(const char* psz, REAL def)
     return def;
 }
 
-const char* MakeBinStr(DWORD dw);
+const char* MakeBinStr(size_t dw);
 
 #define DI(v_)  GetDlgItem(v_)
 
@@ -369,7 +369,7 @@ const char* MakeBinStr(DWORD dw);
 
 BOOL    G_CopyFolder(const char* dst, const char* src, const char* filter, BOOL recurs=0);
 
-LPCTSTR BrowseForFolder(char* title,  const char* cs);
+const char* BrowseForFolder(char* title,  const char* cs);
 void    DelayUpdateWindow(HWND);
 
 #include "geticgui.h"

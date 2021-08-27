@@ -34,9 +34,9 @@ public:
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CCoolDialogBar)
     public:
-    virtual BOOL Create(CWnd* pParentWnd, CDialog *pDialog, CString &pTitle, UINT nID, DWORD dwStyle = WS_CHILD | WS_VISIBLE | CBRS_LEFT);
+    virtual BOOL Create(CWnd* pParentWnd, CDialog *pDialog, CString &pTitle, size_t nID, size_t dwStyle = WS_CHILD | WS_VISIBLE | CBRS_LEFT);
     virtual CSize CalcFixedLayout( BOOL bStretch, BOOL bHorz );
-    virtual CSize CalcDynamicLayout( int nLength, DWORD dwMode );
+    virtual CSize CalcDynamicLayout( int nLength, size_t dwMode );
     //}}AFX_VIRTUAL
 
 // Implementation
@@ -58,7 +58,7 @@ protected:
     CSize       m_sizeFloat;
     CRect       m_rectBorder;
     CRect       m_rectTracker;
-    UINT        m_nDockBarID;
+    size_t        m_nDockBarID;
     CPoint      m_ptOld;
     BOOL        m_bTracking;
     BOOL        m_bInRecalcNC;
@@ -80,18 +80,18 @@ protected:
 // Generated message map functions
 protected:
    //{{AFX_MSG(CCoolDialogBar)
-    afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-    afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-    afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+    afx_msg void OnLButtonUp(size_t nFlags, CPoint point);
+    afx_msg void OnMouseMove(size_t nFlags, CPoint point);
+    afx_msg BOOL OnSetCursor(CWnd* pWnd, size_t nHitTest, size_t message);
     afx_msg void OnWindowPosChanged(WINDOWPOS FAR* lpwndpos);
     afx_msg void OnNcPaint();
-    afx_msg void OnNcLButtonDown(UINT nHitTest, CPoint point);
-    afx_msg UINT OnNcHitTest(CPoint point);
+    afx_msg void OnNcLButtonDown(size_t nHitTest, CPoint point);
+    afx_msg size_t OnNcHitTest(CPoint point);
     afx_msg void OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS FAR* lpncsp);
-    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+    afx_msg void OnLButtonDown(size_t nFlags, CPoint point);
     afx_msg void OnCaptureChanged(CWnd *pWnd);
-    afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
-	afx_msg void OnNcLButtonDblClk(UINT nHitTest, CPoint point);
+    afx_msg void OnLButtonDblClk(size_t nFlags, CPoint point);
+	afx_msg void OnNcLButtonDblClk(size_t nHitTest, CPoint point);
 	//}}AFX_MSG
 
     DECLARE_MESSAGE_MAP()

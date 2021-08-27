@@ -1,8 +1,8 @@
 #if !defined(AFX_DLGITEMS_H__111F8863_BDED_48A2_94C1_8DE527020479__INCLUDED_)
 #define AFX_DLGITEMS_H__111F8863_BDED_48A2_94C1_8DE527020479__INCLUDED_
-#pragma warning (disable: 4786)
-#include "uienhancer.h"
-#include "LboxItem.h"
+
+#include "UiEnhancer.h"
+#include "Lboxitem.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // DlgItems dialog
@@ -51,7 +51,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnOk();
 	virtual void OnCancel();
-	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+	afx_msg void OnShowWindow(BOOL bShow, size_t nStatus);
 	afx_msg void OnDblclkList1();
 	afx_msg void OnCloseupGroup();
 	afx_msg void OnSelchangeList1();
@@ -61,7 +61,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
     map<int,int> _itemstates;
     BOOL        _blockDocUpdate;
-    UINT        _firstItmSelType;
+    size_t        _firstItmSelType;
 };
 
 //{{AFX_INSERT_LOCATION}}

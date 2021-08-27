@@ -87,10 +87,10 @@ struct LmSizeBuff
         pBuff = 0;
     }
     int     index;
-    SIZE    sz;
-    SIZE    realsz;
+    size_t    sz;
+    size_t    realsz;
     int     bpp;
-    DWORD   flags;
+    size_t   flags;
     BYTE*   pBuff;
     char    lmName[16];
 };
@@ -123,14 +123,14 @@ private:
 	void    BuildLmapEdges(REAL d2p, V3& normal, UV& minUV, UV& maxUV, V3& v0, V3& v1 ,V3& v2);
 //	BOOL    R_Snd2Tree(CLightBulb* pLB, int nodeIdx)  ;
     void    IluminatePolygons(CLightBulb* pLB, CLeaf*  pLeaf);
-    SIZE    CalcBmpDims(const UV& edgesLength);
-    BYTE*   GetPrevLumels(Poly& poly, V3* pLumels, SIZE sz);
-    void    StoreLumels(Poly& poly, V3* pLumels, SIZE sz);
+    size_t    CalcBmpDims(const UV& edgesLength);
+    BYTE*   GetPrevLumels(Poly& poly, V3* pLumels, size_t sz);
+    void    StoreLumels(Poly& poly, V3* pLumels, size_t sz);
     void    CalculateTtLm(TerTree& tt, vvector<CLightBulb*>& lights);
     void    _GatherSamePolys(vvector<Poly>&, vvector<Poly>::iterator&, vvector<Poly*>&, Box&);
     int    _YolTtLight(TerTree& tt,int x, int z, const V3& vWalk1, const V3& vWalk2, const V3& vWalk3, CLRNOA* glight, int xtiles, vvector<CLightBulb*>&);
     int    _GetLumColor(V3& lumel,  V3& lumelPos, const V3& norm, vvector<CLightBulb*>&);
-    int    _RoundToClosestPow2(SIZE& sz, int updown);
+    int    _RoundToClosestPow2(size_t& sz, int updown);
 private:
     REAL                 _lmUnit;
     Scene*               _pScene;

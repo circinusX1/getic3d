@@ -4,18 +4,18 @@
 
 Tadapt       Ta;  
 
-UINT Targets[]={   GL_TEXTURE_2D,
+size_t Targets[]={   GL_TEXTURE_2D,
                    GL_TEXTURE_CUBE_MAP,
                    GL_TEXTURE_2D};
 
  
-BOOL Tadapt::Bind(Htex& tex, DWORD objFlags)
+BOOL Tadapt::Bind(Htex& tex, size_t objFlags)
 {
     if(!_enabled)  return 0;
     REG BOOL  force = 0;
     if(tex.glTarget>4)tex.glTarget=0;
-    DWORD     tgt   = Targets[TGET_TARGET(tex.glTarget)];
-    DWORD     gen   = TGET_GENST(objFlags);
+    size_t     tgt   = Targets[TGET_TARGET(tex.glTarget)];
+    size_t     gen   = TGET_GENST(objFlags);
 
     if(tgt != _glTarget)
     {
@@ -62,11 +62,11 @@ BOOL Tadapt::Bind(Htex& tex, DWORD objFlags)
     return TRUE;
 }
 
-BOOL Tadapt::Binds(Htex* pTexts, DWORD comb)
+BOOL Tadapt::Binds(Htex* pTexts, size_t comb)
 {
     /*
     REG int   stage;
-    REG DWORD bmask = 1;
+    REG size_t bmask = 1;
 
     glActiveTextureARB(GL_TEXTURE0_ARB); 
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);

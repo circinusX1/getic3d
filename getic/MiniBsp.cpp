@@ -81,13 +81,13 @@ struct S_SortBySplitIdx
 {
     bool operator()( Poly& a,  Poly& b) const
     {
-        return (DWORD)a._use2splitidx < (DWORD)b._use2splitidx;
+        return (size_t)a._use2splitidx < (size_t)b._use2splitidx;
     }
 };
 
 
 //------------------------------------------------------------------------------------------
-BOOL MiniBsp::Compile(vvector<Poly>& polys, DWORD brFlags, BOOL bLog, BOOL btextConvex)
+BOOL MiniBsp::Compile(vvector<Poly>& polys, size_t brFlags, BOOL bLog, BOOL btextConvex)
 {
     Clear(); 
     PolyList		loco;
@@ -481,18 +481,18 @@ int MiniBsp::GetBestSplitter(PolyList& polys, Poly* pWantPoly)
 
     int                     splitCnt    = 0;
 	int		                retval		= -1;
-	DWORD	                bestscore	= INFINIT;
+	size_t	                bestscore	= INFINIT;
     PolyList::iterator    bpIt        = polys.end();
     int                     maxbacks    = 0;
     int                     maxfronts   = 0;
 
 	FOREACH(PolyList, polys, pPoly1)
 	{
-		DWORD	score		= 0; 
-		DWORD	boths		= 0;
-        DWORD   planars     = 0;
-		DWORD	backs		= 0;
-		DWORD	fronts		= 0;
+		size_t	score		= 0; 
+		size_t	boths		= 0;
+        size_t   planars     = 0;
+		size_t	backs		= 0;
+		size_t	fronts		= 0;
 		Poly&	polySpliter = *pPoly1;
 
         MiniBsp::_pWorkingPoly[0] = &polySpliter; //debug purposes
@@ -555,9 +555,9 @@ int MiniBsp::GetBestSplitter(PolyList& polys, Poly* pWantPoly)
     if( (_treeflags & BRSH_DETAIL) && 
         Compiler::PCompiler->_maxFacesLeaf!=0)
     {
-        if(polys.size() > (UINT)Compiler::PCompiler->_maxFacesLeaf)
+        if(polys.size() > (size_t)Compiler::PCompiler->_maxFacesLeaf)
         {
-            if((UINT)maxbacks >= polys.size()-1) // still convex
+            if((size_t)maxbacks >= polys.size()-1) // still convex
             {
                 Plane& plane = GetCSGTerOptimSpliterPlane(polys, 0);
                 return FindPLane(plane);
@@ -643,7 +643,7 @@ void MiniBsp::Trace(int idx)
 //------------------------------------------------------------------------------------------
 // collects all planes and make polys indicating to this planes. The node tree
 // is gonna keep instead a whole poly as it's splitter only a plane
-void	MiniBsp::BuildPlaneArray(PolyList& polys, DWORD flags)
+void	MiniBsp::BuildPlaneArray(PolyList& polys, size_t flags)
 {
     ASSERT(_planes.size()==0);
     
@@ -1155,7 +1155,7 @@ Plane   MiniBsp::GetCSGTerOptimSpliterPlane(PolyList& polys, int moe)
 	    oneEx     *= 8;
 	    if((allEx.x <=  oneEx.x &&  
            allEx.y <= oneEx.y   && 
-           allEx.z <=  oneEx.z) || polys.size() <= (UINT)moe)
+           allEx.z <=  oneEx.z) || polys.size() <= (size_t)moe)
         {
 		    c = allBox._min; // one unit down
             c.x -= 1;

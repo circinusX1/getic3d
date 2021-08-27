@@ -7,7 +7,7 @@
 // DlgNewTerrain.h : header file
 //
 #include "texlbox.h"
-#include "StaticGL.h"
+#include "Staticgl.h"
 #include "DlgTextures.h"
 /////////////////////////////////////////////////////////////////////////////
 // CDlgBigTerrain dialog
@@ -26,7 +26,7 @@ public:
 	CColorButon	m_o;
     CStaticGL*   _pStaticGL;
 	//}}AFX_DATA
-    DWORD      _untiledTex[5];//CK_NOTILE
+    size_t      _untiledTex[5];//CK_NOTILE
     
 
 // Overrides

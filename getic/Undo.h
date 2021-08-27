@@ -19,17 +19,17 @@ public:
         BaseEntity       *p_Obj;
         BaseEntity       *p_Obj0; //inital 0
         CLS_TYPE        e_type;
-        DWORD           e_action;  // action taken to taht changed the p_ObjOriginal
+        size_t           e_action;  // action taken to taht changed the p_ObjOriginal
         int             e_sequence;
         int             e_delseq;
     };
     CUndo():_cursor(0){_fromHere=0;};
     virtual ~CUndo(){Clear();};
     void  Clear();
-    void  Add(Brush* pB, DWORD action, int sequence);
-    void  Add(SceItem* pB, DWORD action, int sequence);
-    void  Undo(CZ_ed2Doc* pDoc, DWORD action);
-    UINT  Size(){return _records.size();}
+    void  Add(Brush* pB, size_t action, int sequence);
+    void  Add(SceItem* pB, size_t action, int sequence);
+    void  Undo(CZ_ed2Doc* pDoc, size_t action);
+    size_t  Size(){return _records.size();}
 
 private:
     void  _UpdatePtrs(BaseEntity* pB, BaseEntity* pBnew, int delseq);

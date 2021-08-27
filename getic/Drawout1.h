@@ -2,8 +2,8 @@
 #define AFX_DRAWOUT1_H__7040D650_2ECD_439D_95A8_F568121FCDEE__INCLUDED_
 
 #include "MMove.h"
-#include "LMProc.h"
-#include "LMProc2.h"
+#include "Lmproc.h"
+#include "Lmproc2.h"
 // Drawout1.h : header file
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -12,7 +12,7 @@ class CDrawOut : public CWnd
 // Construction
 public:
     CDrawOut(){_pth=0;};
-    BOOL CreateWnd(CWnd* parent, UINT isctrl);
+    BOOL CreateWnd(CWnd* parent, size_t isctrl);
     static void    RegisterClass(){
         WNDCLASS wndclsGL;
         ::memset(&wndclsGL, 0, sizeof(WNDCLASS));   // start with NULL defaults
@@ -47,7 +47,7 @@ public:
 // Implementation
 public:
     virtual ~CDrawOut(){};
-    BOOL Create(LPCTSTR cn, LPCTSTR wn, DWORD dws, const RECT& rt, CWnd* pParent, UINT id, CCreateContext* pCtx=0)
+    BOOL Create(const char* cn, const char* wn, size_t dws, const RECT& rt, CWnd* pParent, size_t id, CCreateContext* pCtx=0)
     {
 	    return CreateEx(WS_EX_TOOLWINDOW, "DRAW_DC_WIN", wn,
 		                dws ,
@@ -59,19 +59,19 @@ public:
     
 	//{{AFX_MSG(CDrawOut)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(size_t nFlags, CPoint point);
+	afx_msg void OnLButtonDown(size_t nFlags, CPoint point);
+	afx_msg void OnMouseMove(size_t nFlags, CPoint point);
+	afx_msg void OnLButtonDblClk(size_t nFlags, CPoint point);
 	afx_msg void OnDestroy();
 	afx_msg void OnPaint();
 	//}}AFX_MSG
 	
 
 	DECLARE_MESSAGE_MAP()
-    SIZE            _scroll;    
+    size_t            _scroll;    
     MMove           _mmove;
-    SIZE            _maxscroll;
+    size_t            _maxscroll;
     static CDrawOut*    p_DrawBig;
 };
 /////////////////////////////////////////////////////////////////////////////

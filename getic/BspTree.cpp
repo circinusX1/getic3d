@@ -5,16 +5,16 @@
 //----------------------------------------------------------------------------------------
 
 #include "stdafx.h"
-#include "scene.h"
+#include "Scene.h"
 #include "MainFrm.h"
-#include "bsptree.h"
-#include <gl/glu.h>
+#include "Bsptree.h"
+#include <GL/glu.h>
 #include <assert.h>
 #include "z_ed3View.h"
-#include "Mainfrm.h"
+#include "MainFrm.h"
 #include "PortalPrc.h"
 #include "z_ed2Doc.h"
-#include "texadapter.h"
+#include "TexAdapter.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -57,14 +57,14 @@ static BOOL GetPvsBit (BYTE *pVisArray, int pDestLeaf)
 #define PON_BOTH  (PON_FRONT|PON_BACK)
 #define PON_FACE  4
 
-//--|   DWORD ClassifyBox|----------------------------------------------------------------
-static   DWORD ClassifyBox(Plane& plan, Box& box)
+//--|   size_t ClassifyBox|----------------------------------------------------------------
+static   size_t ClassifyBox(Plane& plan, Box& box)
 {
     V3   corners[2];
     GetCornersOfPlane(box._min, box._max, plan._n, corners);
     REAL d1 = plan.DistTo(corners[0]);
     REAL d2 = plan.DistTo(corners[1]);
-    DWORD side = 0;
+    size_t side = 0;
     if (d1 >= 0)
        side |= PON_FRONT;
     if (d2 < 0)
@@ -95,7 +95,7 @@ CBspTree::~CBspTree()
 Compile the bsp
 */
 //--| CBspTree::Compile|------------------------------------------------------------------
-BOOL CBspTree::Compile(vvector<Poly>& polys, DWORD brFlags, BOOL bLog, BOOL btextConvex) // virtual from base
+BOOL CBspTree::Compile(vvector<Poly>& polys, size_t brFlags, BOOL bLog, BOOL btextConvex) // virtual from base
 {
     
     BOOL b = FALSE;
@@ -210,7 +210,7 @@ void    CBspTree::R_LinkDetailModel(int node, CBspTree* pModelTree)
     
     Box& box = pModelTree->Root()->_bbox;
     
-    DWORD rp = ClassifyBox(pNode->GetPlane(), box);
+    size_t rp = ClassifyBox(pNode->GetPlane(), box);
     
     if(rp & PON_FRONT && pNode->_nodeidx[N_FRONT]!=-1) // if model get's out
       R_LinkDetailModel(pNode->_nodeidx[N_FRONT], pModelTree);
@@ -796,7 +796,7 @@ void    CBspTree::PatchPolys(vvector<Poly>& inPolys, vvector<Poly>& outPolys)
 static GLUquadricObj* go;
 
 //--|    CBspTree::Draw2GlTree|------------------------------------------------------------
-void    CBspTree::Draw2GlTree(CZ_ed2View* pV, DWORD mode, int leafNo, BOOL bvisible)
+void    CBspTree::Draw2GlTree(CZ_ed2View* pV, size_t mode, int leafNo, BOOL bvisible)
 {
     Ta.Disable();
 	int nCount = 0;
@@ -912,7 +912,7 @@ void    CBspTree::Draw_Graph(z_ed3View* pV)
 }
 //--|    CBspTree::|------------------------------------------------------------
 //--|    CBspTree::|------------------------------------------------------------
-void    CBspTree::DrawPolys(Poly* pPoly,int ncount, DWORD mode,    CLR* leafcolor,
+void    CBspTree::DrawPolys(Poly* pPoly,int ncount, size_t mode,    CLR* leafcolor,
                                                                        vvector<Poly*>* transPolys,
                                                                        vvector <Poly*>* backDraw,
                                                                        vvector <Poly*>* mirrors,
@@ -1062,7 +1062,7 @@ void    CBspTree::DrawPolys(Poly* pPoly,int ncount, DWORD mode,    CLR* leafcolo
 }
 
 //--|    CBspTree::|------------------------------------------------------------
-void    CBspTree::Draw_BSP_WithLmapsAndTextures(z_ed3View* pV, int& leaf, int curLeaf, DWORD mode)
+void    CBspTree::Draw_BSP_WithLmapsAndTextures(z_ed3View* pV, int& leaf, int curLeaf, size_t mode)
 {
     BOOL            frustCull = 0;
     int             nCount;
@@ -1127,8 +1127,8 @@ void    CBspTree::Draw_BSP_WithLmapsAndTextures(z_ed3View* pV, int& leaf, int cu
         
 	    if(curLeaf >= 0 && (*pNode)->_pvsIdx >=0 && (*pNode)->_leafIdx != curLeaf)
 	    {
-            DWORD zonevis = _leafs[curLeaf]->_zonearea;
-            DWORD nodezone = (*pNode)->_zonearea;
+            size_t zonevis = _leafs[curLeaf]->_zonearea;
+            size_t nodezone = (*pNode)->_zonearea;
             if(!(nodezone & zonevis))
             {
                 pvsHidden = TRUE;
@@ -1168,7 +1168,7 @@ void    CBspTree::Draw_BSP_WithLmapsAndTextures(z_ed3View* pV, int& leaf, int cu
 }
 
 //--|    CBspTree::Draw_SelectedLeafByLeaf|-----------------------------------------------
-void    CBspTree::Draw_SelectedLeafByLeaf(z_ed3View* pV, int& leaf, int curLeaf, DWORD mode)
+void    CBspTree::Draw_SelectedLeafByLeaf(z_ed3View* pV, int& leaf, int curLeaf, size_t mode)
 {
     CLeaf* pSelLeaf = 0;
     int    lfCount = 0;
@@ -1217,7 +1217,7 @@ void    CBspTree::Draw_SelectedLeafByLeaf(z_ed3View* pV, int& leaf, int curLeaf,
 }
 
 //--|    CBspTree::Draw3DBSPTree|------------------------------------------------------------
-void    CBspTree::Draw3DBSPTree(z_ed3View* pV, int& leaf, int curLeaf, DWORD mode)
+void    CBspTree::Draw3DBSPTree(z_ed3View* pV, int& leaf, int curLeaf, size_t mode)
 {
     glColor4ubv(CLR_WHITE);
     DOC()->SetFaceMode();

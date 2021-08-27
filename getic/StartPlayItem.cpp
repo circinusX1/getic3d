@@ -25,7 +25,7 @@ CStartPlayItem::CStartPlayItem():SceItem()
     _euler          = V3(0,0,0);           // spheric no spot
     _item           = ITM_STARTPLAY;
     strcpy(_catname , "ITM_STARTPLAY") ;
-    _stprintf(_name,"Start%d",_id);
+    sprintf(_name,"Start%d",_id);
     _team            = "";
 }
 

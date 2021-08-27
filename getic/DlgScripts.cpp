@@ -63,7 +63,7 @@ void DlgScripts::OnDel()
     {
 		ScriptItem* pSi = *ppScr;
 		cst = _list.GetItemText(iSel,0);
-		if(::atol(cst) == (DWORD)pSi)
+		if(::atol(cst) == (size_t)pSi)
 		{
 
 			SCENE().DelScript(pSi);
@@ -102,7 +102,7 @@ BOOL DlgScripts::Refresh()
 	return TRUE;  
 }
 
-void DlgScripts::OnShowWindow(BOOL bShow, UINT nStatus) 
+void DlgScripts::OnShowWindow(BOOL bShow, size_t nStatus) 
 {
 	CBASEDLG::OnShowWindow(bShow, nStatus);
 	if(bShow)

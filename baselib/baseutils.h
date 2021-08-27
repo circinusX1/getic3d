@@ -20,11 +20,11 @@
 #ifdef WINDOWS
         INLN void _cdecl TRACEX(LPCSTR lpszFormat, ...)
 	    {
-		    static CHAR szBuffer[1024];
+			static char szBuffer[1024];
 
             va_list args;
 		    va_start(args, lpszFormat);
-            unsigned int nBuf = ::_vsnprintf(szBuffer, sizeof(szBuffer) / sizeof(CHAR), lpszFormat, args);
+			unsigned int nBuf = ::_vsnprintf(szBuffer, sizeof(szBuffer) / sizeof(char), lpszFormat, args);
 #ifdef _CONSOLE
             printf(szBuffer);
 #else
@@ -42,7 +42,7 @@
             #ifdef _CONSOLE
                 #define TRACEX printf
             #else
-                INLN TRACEX(LPCTSTR lpszFormat, ...){}
+                void TRACEX(const char* lpszFormat, ...){}
             #endif //
         #endif
 
@@ -50,21 +50,6 @@
 
 //---------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------
-#define DECLARE_TIME()      static LARGE_INTEGER _Start;\
-                                static LARGE_INTEGER _Freq;\
-                                static LARGE_INTEGER _End;\
-                                QueryPerformanceFrequency(&_Freq);\
-                                QueryPerformanceCounter(&_Start)
-#define WAIT_HERE(msec)     QueryPerformanceCounter(&_End);\
-                            while( (_End.QuadPart - _Start.QuadPart)*1000 / _Freq.QuadPart < msec)\
-							{\
-								 QueryPerformanceCounter(&_End);\
-								 Sleep(0);\
-							}
-#define TRACETIME(msec)     QueryPerformanceCounter(&_End);\
-                            TRACEX(_T("%s %d ms\r\n"),msec ,(_End.QuadPart - _Start.QuadPart)*1000 / _Freq.QuadPart)
-#define READ_CLOCK()        QueryPerformanceCounter(&_Start)
-
 namespace baseg{
 
 //---------------------------------------------------------------------------------------
@@ -106,7 +91,7 @@ template <size_t SZ=256> class Tsstring
 {
 public:
     Tsstring(){_t[0]=0;}
-    Tsstring(const char* o){::_tcscpy(_t, o);}
+    Tsstring(const char* o){::strcpy(_t, o);}
     const char* c_str(){return _t;}
 
 private:
@@ -190,23 +175,23 @@ class Cfms
 {
 public:
 #ifdef _UNICODE
-    Cfms(WCHAR* p,...){
+	Cfms(Wchar* p,...){
 		va_list args;
 		va_start(args, p);
         ::_vsnwprintf(_s, sizeof(_s) / sizeof(char), p, args);
 		va_end(args);
 	}
-	operator const WCHAR*(){return _s;}
-	WCHAR _s[256];
+	operator const Wchar*(){return _s;}
+	Wchar _s[256];
 #else
-	Cfms(CHAR* p,...){
+	Cfms(char* p,...){
 		va_list args;
 		va_start(args, p);
-        ::_vsnprintf(_sc, sizeof(_sc) / sizeof(CHAR), p, args);
+		::snprintf(_sc, sizeof(_sc) / sizeof(char), p, args);
 		va_end(args);
 	}
-    operator const CHAR*(){return _sc;}
-    CHAR _sc[256];
+	operator const char*(){return _sc;}
+	char _sc[256];
 #endif //
 };
 #define	MKSTR	(const char*)Cfms
@@ -224,7 +209,7 @@ public:
         _pf=0;
     }
 
-    BOOL    Open(const CHAR* file, const CHAR* how){
+    BOOL    Open(const char* file, const char* how){
         char loco[256];
         strcpy(loco, file);
         mOffset=0;
@@ -261,7 +246,7 @@ public:
         mOffset=0;
     }
 
-    DWORD GetPos(){
+    size_t GetPos(){
         return ::ftell(_pf);
     }
 
@@ -269,9 +254,9 @@ public:
         return feof(_pf);
     }
 
-    DWORD Getlength(){
+    size_t Getlength(){
         ::fseek(_pf,0,SEEK_END);
-        DWORD flength = ftell(_pf);
+        size_t flength = ftell(_pf);
         ::fseek(_pf,0,SEEK_SET);
         return flength;
     }
@@ -298,7 +283,7 @@ public:
         return (lenr == sizeof(T));
     }
 
-    SIZE_T Read(void* pv, size_t len) {
+    size_t Read(void* pv, size_t len) {
         size_t lenr= ::fread(pv,1,len,_pf);
         mOffset+=lenr;
         return (lenr);
@@ -362,15 +347,16 @@ public:
     }
 	PlugInDll(const char* szDll):_pIface(0),_refs(0),_hdll(0)
 	{
-		_tcscpy(_dllName,szDll);
+		strcpy(_dllName,szDll);
 		Load(szDll);
 	}
 	BOOL Load(const char* szDll, BOOL create=TRUE)
 	{
         BOOL rv = FALSE;
-		_tcscpy(_dllName,szDll);
+        strcpy(_dllName,szDll);
         if(!_hdll)
         {
+            /*
 		    _hdll = LoadLibrary(szDll);
 		    if(_hdll)
 		    {
@@ -385,6 +371,7 @@ public:
                         rv = TRUE;
 			        }
 		    }
+			*/
         }
         return rv;
 	}
@@ -394,11 +381,13 @@ public:
         if(_hdll)_refs--;
 		if(0 == _refs && _hdll)
 		{
+			/*
 			DeleteT  pdc = (DeleteT)GetProcAddress(_hdll,"DestroyInstance");
 			(pdc)(_pIface);
             _pIface = 0;
 			FreeLibrary(_hdll);
             _hdll  = 0;
+            */
 		}
     }
 
@@ -406,22 +395,27 @@ public:
     {
         if(_hdll)
 		{
+			/*
 			CreateT	ptc = (CreateT)GetProcAddress(_hdll,_T("CreateInstance"));
 			if(ptc)
 			{
 				return (T*)(ptc)();
 			}
+			*/
 		}
         return 0;
     }
 
     void Delete(T* pt)
     {
+        /*
 		if(_hdll)
 		{
 			DeleteT  pdc = (DeleteT)GetProcAddress(_hdll,"DestroyInstance");
 			(pdc)(pt);
 		}
+		*/
+
     }
 
 	BOOL IsValid(){
@@ -446,45 +440,14 @@ class NO_VT Timer
 {
 public:
     Timer(){
-	    _fRate	= 0; _fCnt	= 0; _fpsTo = 0.00;
-        if (QueryPerformanceFrequency((LARGE_INTEGER *)&_pFreq)) {
-		    QueryPerformanceCounter((LARGE_INTEGER *) &_lt);
-		    _ts	 = 1.00 / _pFreq;
-	    }
     }
 
-    INLN DWORD Tick( float fLockFPS = 0.00 ) {
-	    QueryPerformanceCounter((LARGE_INTEGER *)&_ct);
-	    _dt = (_ct - _lt) * _ts;
-        if ( fLockFPS > 0.00 ) {
-            while ( _dt < (1.00 / fLockFPS))
-            {
-	            QueryPerformanceCounter((LARGE_INTEGER*)&_ct);
-	            _dt = (_ct - _lt) * _ts;
-            }
-        }
-	    _lt = _ct;
-	    _fCnt++;
-	    _fpsTo += _dt;
-	    if ( _fpsTo > 1.00)
-        {
-		    _fRate	= _fCnt;
-		    _fCnt	= 0;
-		    _fpsTo	= 0.00;
-	    }
-        return _fRate;
+    INLN size_t Tick( float fLockFPS = 0.00 ) {
+        return 0;
     }
-    REAL GetDeltaTime(){return _dt;}
-    REAL GetCurentTime(){return _ct;}
+    REAL GetDeltaTime(){return 0;}
+    REAL GetCurentTime(){return 0;}
 private:
-	REAL    _ts;
-	REAL    _dt;
-	REAL    _fpsTo;
-    DWORD   _fRate;
-	DWORD   _fCnt;
-    __int64 _ct;
-    __int64 _lt;
-	__int64 _pFreq;
 };
 
 //-----------------------------------------------------------------------------------
@@ -492,21 +455,21 @@ class NO_VT CDirChange
 {
 public:
 	CDirChange(const char * newDir){
-        ::_tgetcwd(_olddir,_MAX_PATH);
+		::getcwd(_olddir,PATH_MAX);
         if(newDir)
         {
-            _tcscpy(_curdir, newDir);
-            if( _curdir[_tcslen(_curdir)-1] == _T('\\') ||
-                _curdir[_tcslen(_curdir)-1] == _T('/'))
+            strcpy(_curdir, newDir);
+            if( _curdir[strlen(_curdir)-1] == _T('\\') ||
+                _curdir[strlen(_curdir)-1] == _T('/'))
             {
-                _curdir[_tcslen(_curdir)-1] = 0;
+                _curdir[strlen(_curdir)-1] = 0;
             }
-            _rv = _tchdir(_curdir);
+            _rv = chdir(_curdir);
         }
-		_tgetcwd(_curdir,_MAX_PATH);
+        getcwd(_curdir,PATH_MAX);
 	}
 	~CDirChange(){
-		_tchdir(_olddir);
+		chdir(_olddir);
 	}
     const char* CurDir(){return _curdir;};
     const char* OldDir(){return _olddir;};
@@ -515,8 +478,8 @@ public:
     }
     int InError(){return _rv;}
 private:
-	char _olddir[_MAX_PATH];
-    char _curdir[_MAX_PATH];
+    char _olddir[PATH_MAX];
+    char _curdir[PATH_MAX];
     int   _rv;
 };
 
@@ -524,27 +487,18 @@ private:
 class NO_VT  PathHandler
 {
 public:
-    static void FixSlashes(char* fname, char bs=BS)
-    {
-        char* p=fname;
-        while(*p){
-            if(*p==OPBS) *p = BS;
-            ++p;
-        }
-    }
-
 
     PathHandler(const char* fullPathFile)
     {
-        ::_tcscpy(_szPath, fullPathFile);
-        ::_tsplitpath(fullPathFile, _szDrive, _szDir, _szFName, _szExt);
+        ::strcpy(_szPath, fullPathFile);
+        //::_tsplitpath(fullPathFile, _szDrive, _szDir, _szFName, _szExt);
     }
     const char* Path(){
-        ::_stprintf(_szTemp,_T("%s%s"),_szDrive,_szDir);
+        ::sprintf(_szTemp,_T("%s%s"),_szDrive,_szDir);
         return _szTemp;
     }
     const char* File(){
-        ::_stprintf(_szTemp,_T("%s%s"),_szFName,_szExt);
+        ::sprintf(_szTemp,_T("%s%s"),_szFName,_szExt);
         return _szTemp;
     }
     const char* Ext(){
@@ -557,12 +511,12 @@ public:
 		return _szFName;
 	}
 private:
-    char   _szDir[_MAX_PATH];
-    char   _szFName[_MAX_FNAME];
-    char   _szExt[_MAX_EXT];
-    char   _szDrive[_MAX_DRIVE];
-    char   _szPath[_MAX_PATH];
-    char   _szTemp[_MAX_PATH];
+    char   _szDir[PATH_MAX];
+    char   _szFName[24];
+    char   _szExt[8];
+    char   _szDrive[8];
+    char   _szPath[PATH_MAX];
+    char   _szTemp[PATH_MAX];
 };
 
 

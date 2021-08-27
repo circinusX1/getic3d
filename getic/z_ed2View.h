@@ -6,17 +6,17 @@
 #ifndef __ZED2VIEW_H__
 #define __ZED2VIEW_H__
 
-#pragma warning (disable: 4251)
-#pragma warning (disable: 4786)
+//   #pragma warning (disable: 4251)
+//   #pragma warning (disable: 4786)
 
 #include <stdio.h>
-#include <gl/gl.h>			
-#include <gl/glu.h>			
-#include <gl/glaux.h>	
-#include "mmove.h"
+#include <GL/gl.h>
+#include <GL/glu.h>
+// #include <gl/Glaux.h>
+#include "MMove.h"
 #include "zedtypes.h"
 #include "SceItem.h"
-#include "DlgBar.h"
+#include "Dlgbar.h"
 #include "UiEnhancer.h"
 #include "MyStatusBar.h"
 
@@ -75,25 +75,25 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnDestroy();
 	afx_msg void OnPaint();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnSize(size_t nType, int cx, int cy);
+	afx_msg BOOL OnMouseWheel(size_t nFlags, short zDelta, CPoint pt);
+	afx_msg void OnLButtonDown(size_t nFlags, CPoint point);
+	afx_msg void OnLButtonUp(size_t nFlags, CPoint point);
+	afx_msg void OnMouseMove(size_t nFlags, CPoint point);
+	afx_msg BOOL OnSetCursor(CWnd* pWnd, size_t nHitTest, size_t message);
+	afx_msg void OnKeyDown(size_t nChar, size_t nRepCnt, size_t nFlags);
+	afx_msg void OnRButtonDown(size_t nFlags, CPoint point);
+	afx_msg void OnRButtonUp(size_t nFlags, CPoint point);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
-	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
-	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnLButtonDblClk(size_t nFlags, CPoint point);
+	afx_msg void OnKeyUp(size_t nChar, size_t nRepCnt, size_t nFlags);
 	//}}AFX_MSG
     afx_msg LRESULT OnUsrMsgRepaint(WPARAM,LPARAM); 
     LRESULT OnPostInit(WPARAM pb1, LPARAM pb2);
 	DECLARE_MESSAGE_MAP()
 
-    void    SetCursorText(POINT& ct, LPCTSTR str)    ;
+    void    SetCursorText(POINT& ct, const char* str)    ;
     void    MouseWorldMove(REAL mxw, REAL  myw,CPoint& pt);
 	void	DrawInHrc(HDC, BOOL update=0);
     void	DrawView(HDC hdc, BOOL update=0);
@@ -122,7 +122,7 @@ protected:
 	void    ResolveCurInBox(Box& acumBox,int& Mx,int& My,int& mx,int& my);
     void    HideTheCursor (void);
     void    ShowTheCursor (void);
-    void    MouseMove(UINT nFlags, CPoint point, BOOL fromUp=FALSE);
+    void    MouseMove(size_t nFlags, CPoint point, BOOL fromUp=FALSE);
     void    SnapPoint(CPoint& point);
     void    Rollover(CPoint pt);
     void    GetSelCenter(Poly** pPoly, int count);
@@ -161,10 +161,10 @@ public:
     _BR_MODE  _accmode;
     BOOL    _selBox;
     BOOL    _dd;    //draw dirty. can be redrawned
-    DWORD	_scaleDir;
-	DWORD	_canMove;
-	DWORD	_canMoveDown;
-    DWORD	_scaleDirDown;
+    size_t	_scaleDir;
+	size_t	_canMove;
+	size_t	_canMoveDown;
+    size_t	_scaleDirDown;
 	int		_depl;			//limits the move on one axis to allow alig on move scale rot
     POINT   _scrPoint;
 	V3	    _cccGrd;

@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "geticgui.h"
 #include "z-edmap.h"
-#include "DlgScene.h"
+#include "Dlgscene.h"
 #include "DlgBar.h"
 #include "z_ed2Doc.h"
 #include "BaseEntity.h"
@@ -98,7 +98,7 @@ BOOL CDlgScene::NotyFoo(PrpListControl* pList, int index)
 
 
 
-void CDlgScene::OnShowWindow(BOOL bShow, UINT nStatus) 
+void CDlgScene::OnShowWindow(BOOL bShow, size_t nStatus) 
 {
 	CVertDlgDlg::OnShowWindow(bShow, nStatus);
     if(bShow)
@@ -345,7 +345,7 @@ void CDlgScene::PopTreeScene()
 		Brush* pB =*ppbb;
 
         htmp = m_tree.InsertItem(MKSTR("_B:%s",pB->_name), 0, 0, hRoot);
-        m_tree.SetItemData(htmp, (DWORD)pB);
+        m_tree.SetItemData(htmp, (size_t)pB);
 
         //polys
         vvector<Poly>::iterator pb = pB->_polys.begin();
@@ -353,7 +353,7 @@ void CDlgScene::PopTreeScene()
         for(;pb!=pe;pb++)
         {
             htmps = m_tree.InsertItem(MKSTR("_F:%d",j++),1,1, htmp);
-            m_tree.SetItemData(htmps, (DWORD)(&(*pb)));
+            m_tree.SetItemData(htmps, (size_t)(&(*pb)));
         }
 
         if(pB->_brushflags & BRSH_HASTRIG)
@@ -363,7 +363,7 @@ void CDlgScene::PopTreeScene()
         if(pB->_pMotion)
         {
             htmps = m_tree.InsertItem("_M",3,3, htmp);
-            m_tree.SetItemData(htmps, (DWORD)pB->_pMotion);
+            m_tree.SetItemData(htmps, (size_t)pB->_pMotion);
         }
         
         if(pB->_pCutBrshes.size())
@@ -373,7 +373,7 @@ void CDlgScene::PopTreeScene()
             for(;ppCut!=ppCutE;ppCut++)
             {
                 m_tree.InsertItem(MKSTR("_B:%s",(*ppCut)->_name),2,2, htmp);
-                m_tree.SetItemData(htmps, (DWORD)(*ppCut));
+                m_tree.SetItemData(htmps, (size_t)(*ppCut));
             }
         }
     }
@@ -385,7 +385,7 @@ void CDlgScene::PopTreeScene()
         SceItem* pItem = *pItemPtr;
 
         htmps = m_tree.InsertItem(MKSTR("_I:%s",pItem->_name), hRoot);
-        m_tree.SetItemData(htmps, (DWORD)pItem);
+        m_tree.SetItemData(htmps, (size_t)pItem);
     }
 }
 
@@ -408,7 +408,7 @@ void CDlgScene::OnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
     DOC()->DeselectAll();
 
     HTREEITEM   sitem = pNMTreeView->itemNew.hItem;
-    DWORD       ptr   = m_tree.GetItemData(sitem);
+    size_t       ptr   = m_tree.GetItemData(sitem);
     CString     cs    = m_tree.GetItemText(sitem);
     
     V3      center;
@@ -434,7 +434,7 @@ void CDlgScene::OnSelchangedTree1(NMHDR* pNMHDR, LRESULT* pResult)
         
         
         HTREEITEM   parsitem = m_tree.GetParentItem(sitem);
-        DWORD       ptr   = m_tree.GetItemData(parsitem);
+        size_t       ptr   = m_tree.GetItemData(parsitem);
         if(ptr)
             p_be  = reinterpret_cast<BaseEntity*>(ptr);
     }
@@ -484,7 +484,7 @@ void CDlgScene::OnKillfocusDetails()
         HTREEITEM   sitem = m_tree.GetSelectedItem();
         if(!sitem)
             return;
-        DWORD       ptr   = m_tree.GetItemData(sitem);
+        size_t       ptr   = m_tree.GetItemData(sitem);
         CString     cs    = m_tree.GetItemText(sitem);
         if(cs.Find("_B")!=-1 || cs.Find("_I")!=-1)
         {
@@ -500,7 +500,7 @@ void CDlgScene::OnKillfocusDetails()
     {
         map<string ,string>&  descs = SCENE().Descriptions();
         CString cs; m_det.GetWindowText(cs);
-        descs[p_be->_name] = (LPCTSTR)cs;
+        descs[p_be->_name] = (const char*)cs;
     }
 }
 
@@ -539,7 +539,7 @@ void CDlgScene::OnLogo()
     PathHandler ph(dlg.m_ofn.lpstrFile);
 
     REDIR();
-    _tcscpy(SCENE()._si.sceneLogoFile, ph.File());
+    strcpy(SCENE()._si.sceneLogoFile, ph.File());
 
     DOC()->DuplicateFile(DOC()->ResFile(SCENE()._si.sceneLogoFile), TRUE);
     

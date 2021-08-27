@@ -400,7 +400,7 @@ void DlgLightItem::OnAction()
     BARDLG()->OnApply();	
 }
 
-void DlgLightItem::OnRadioButtons(UINT iCmd)
+void DlgLightItem::OnRadioButtons(size_t iCmd)
 {
 	OnAction() ;
 }

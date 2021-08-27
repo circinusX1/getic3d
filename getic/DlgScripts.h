@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 // DlgScripts.h : header file
 //
-#pragma warning (disable: 4786)
+//   #pragma warning (disable: 4786)
 #include "GListCtrl.h"
 /////////////////////////////////////////////////////////////////////////////
 // DlgScripts dialog
@@ -42,7 +42,7 @@ protected:
 	afx_msg void OnDel();
 	afx_msg void OnEdit();
 	virtual BOOL OnInitDialog();
-	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+	afx_msg void OnShowWindow(BOOL bShow, size_t nStatus);
 	//}}AFX_MSG
 	LRESULT OnItemSelected(WPARAM,LPARAM);
 	DECLARE_MESSAGE_MAP()

@@ -1,9 +1,7 @@
 #ifndef __TEXLBOX_H__
 #define __TEXLBOX_H__
 
-#pragma warning (disable: 4786)
-
-
+#include "baselib.h"
 
 class CarryTex{
 public:
@@ -14,7 +12,7 @@ public:
 
 
 	int             _bpp;
-    SIZE            _sz;
+    size_t            _sz;
     tstring         _name;
 };
 
@@ -51,8 +49,8 @@ protected:
 	//{{AFX_MSG(CTexLbox)
 	afx_msg void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 	afx_msg void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonDown(size_t nFlags, CPoint point);
+	afx_msg void OnLButtonDown(size_t nFlags, CPoint point);
     afx_msg void OnSelchange() ;
 	//}}AFX_MSG
     void    DrawBmp(HDC hdc, CBitmap* pBmp, int x, int y, int slice);

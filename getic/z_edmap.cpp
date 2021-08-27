@@ -15,7 +15,7 @@
 #else
     #include "..\\_include\\geticplug.h"
 #endif
-#include "StaticGL.h"
+#include "Staticgl.h"
 #include "ToolFrame.h"
 #include "Crc.h"
 #include "geticplug.h"
@@ -45,7 +45,7 @@ static void CheckGbtx();
 #include "geticgui.h"
 #include "aboutdlg.h"
 
-UINT	ThrID;
+size_t	ThrID;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -53,7 +53,7 @@ UINT	ThrID;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-void _RegisterShellFileTypes(LPCTSTR path);
+void _RegisterShellFileTypes(const char* path);
 int GRuns = 40;
 BOOL _Ginitializing ;
 extern HICON   __icos[4];
@@ -147,7 +147,7 @@ CZ_ed2App theApp;
 
 //---------------------------------------------------------------------------------------
 // 
-static LPCTSTR m_pszProfileNameOLD;
+static const char* m_pszProfileNameOLD;
 static char   sz_PROFILE[256];
 static char   sz_NOAPPDATA[256] = "GETIC.CFG";
 BOOL CZ_ed2App::InitInstance()
@@ -376,8 +376,8 @@ void CZ_ed2App::OnAppAbout()
 //---------------------------------------------------------------------------------------
 BOOL    CZ_ed2App::Dbg_ResolveCurDir()
 {
-    char sPath[_MAX_PATH];
-    _getcwd(sPath,_MAX_PATH);
+    char sPath[PATH_MAX];
+    _getcwd(sPath,PATH_MAX);
 
     _homeDir   = GetProfileString( _T("DIR"), _T("HOME"),_T(""));
     if(_homeDir.size() && _homeDir.find("_bin")!=-1)
@@ -506,8 +506,8 @@ void CZ_ed2App::CreatePaths()
         mkdir("server_levels");
         mkdir("export");
 
-        char cd[_MAX_PATH];
-        _getcwd(cd,_MAX_PATH);
+        char cd[PATH_MAX];
+        _getcwd(cd,PATH_MAX);
         WriteProfileString( _T("DIR"), _T("HOME"),cd);
         WriteProfileInt("MAIN", "FIRSTRUN",1);
     }
@@ -539,11 +539,11 @@ LONG CZedmapModule::Lock()
 }
 
 //---------------------------------------------------------------------------------------
-LPCTSTR CZedmapModule::FindOneOf(LPCTSTR p1, LPCTSTR p2)
+const char* CZedmapModule::FindOneOf(const char* p1, const char* p2)
 {
 	while (*p1 != NULL)
 	{
-		LPCTSTR p = p2;
+		const char* p = p2;
 		while (*p != NULL)
 		{
 			if (*p1 == *p)
@@ -657,7 +657,7 @@ GAutoSave = 0;
      _dwpCsgTbar    = GetProfileInt("TOOLBARS", "CSG_BAR_DOCK",   AFX_IDW_DOCKBAR_BOTTOM);
      _dwpBuildTbar  = GetProfileInt("TOOLBARS", "BUILD_BAR_DOCK", AFX_IDW_DOCKBAR_TOP    );
 
-     UINT retreived = sizeof(RECT);
+     size_t retreived = sizeof(RECT);
      BYTE* pBuff =0;
 
      GetProfileBinary("TOOLBARS", "CSG_BAR_L",     &pBuff, &retreived);
@@ -913,7 +913,7 @@ void CZ_ed2App::CheckPlug(const char* dllName)
     if(thePlug.IsValid())
     {
         char  pszMenu[128]={0};
-        DWORD  typo = 0;
+        size_t  typo = 0;
         if(0==thePlug->GetMenuStringAndType(pszMenu, &typo))
         {
             if(typo & PLUG_IMPORTER && pMenuM)
@@ -922,7 +922,7 @@ void CZ_ed2App::CheckPlug(const char* dllName)
                 if(pMenu)
                 {
                     
-                    UINT uid = _cmdPlugIn;
+                    size_t uid = _cmdPlugIn;
                     pMenu->InsertMenu(0,MF_STRING|MF_BYPOSITION, uid, pszMenu);
                     _plugins.push_back(SPlugIn(dllName,uid));
                 }
@@ -932,7 +932,7 @@ void CZ_ed2App::CheckPlug(const char* dllName)
                 pMenu = pMenuM->GetSubMenu(9);
                 if(pMenu)
                 {
-                    UINT uid = _cmdPlugIn+1;
+                    size_t uid = _cmdPlugIn+1;
                     pMenu->InsertMenu(0,MF_STRING|MF_BYPOSITION, uid, pszMenu);
                     _plugins.push_back(SPlugIn(dllName,uid));
                 }
@@ -957,7 +957,7 @@ void CZ_ed2App::CheckPlug(const char* dllName)
 static    FARPROC g_lpMsgBoxProc;          // Message box window procedure
 static    HHOOK   g_hhookCBT;              
 static    LRESULT CALLBACK HookProc(int nCode, WPARAM wParam, LPARAM lParam);
-static    LRESULT CALLBACK MsgBoxSubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+static    LRESULT CALLBACK MsgBoxSubClassProc(HWND hwnd, size_t msg, WPARAM wParam, LPARAM lParam);
 
 int CZ_ed2App::DoFileDialog(CFileDialog& d)
 {
@@ -969,7 +969,7 @@ int CZ_ed2App::DoFileDialog(CFileDialog& d)
 }
 
 //---------------------- | overwrite AfxMessagbox |---------------------------------------------
-int CZ_ed2App::DoMessageBox(LPCTSTR lpszPrompt, UINT nType, UINT nIDPrompt) 
+int CZ_ed2App::DoMessageBox(const char* lpszPrompt, size_t nType, size_t nIDPrompt) 
 {
     int i;
 	for(int i=0;i<8;i++)
@@ -1043,7 +1043,7 @@ public:
 static    CBitmapButtonMb gbmpButt[16];
 
 //---------------------- | actual procedure of subclassed dlgbox|------------------------------
-LRESULT CALLBACK MsgBoxSubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK MsgBoxSubClassProc(HWND hwnd, size_t msg, WPARAM wParam, LPARAM lParam)
 {
     static    int             buts         = 0;
     static    HWND            hWnds[16]    = {0};
@@ -1255,7 +1255,7 @@ void CZ_ed2App::ExportHeader()
 
 
 
-BOOL CZ_ed2App::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
+BOOL CZ_ed2App::OnCmdMsg(size_t nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
 {
     
 	BOOL b = CWinApp::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
@@ -1268,7 +1268,7 @@ BOOL CZ_ed2App::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* 
     return b;
 }
 
-void CZ_ed2App::OnPlugInsCmd(UINT cmd)
+void CZ_ed2App::OnPlugInsCmd(size_t cmd)
 {
     //store when scanning plugins assoc between cmd and plugin name dll to load it
     if(DOC())
@@ -1296,7 +1296,7 @@ void CZ_ed2App::CleanTexMan()
 
 
 WNDPROC owpdll = 0;
-long ButProc(HWND hw, UINT msg, WPARAM wp, LPARAM lp)
+long ButProc(HWND hw, size_t msg, WPARAM wp, LPARAM lp)
 {
     switch(msg)
     {
@@ -1343,11 +1343,11 @@ void CZ_ed2App::UnSuperClassAll()
     }
 }
 
-void CZ_ed2App::PumpMessage(UINT imsg, UINT tout)
+void CZ_ed2App::PumpMessage(size_t imsg, size_t tout)
 {
     MSG msg;
     tout = 10;
-    for(UINT i=0; i < tout ;i++)
+    for(size_t i=0; i < tout ;i++)
     {
         if(PeekMessage(&msg,0,0,0,PM_REMOVE))
             DispatchMessage(&msg);
@@ -1357,14 +1357,14 @@ void CZ_ed2App::PumpMessage(UINT imsg, UINT tout)
 long GeticEditor::GetTextureInfo(_Plg_Texture* pt)
 {
     TexHandler      th;
-    char            local[_MAX_PATH] = {0};
+    char            local[PATH_MAX] = {0};
 
     pt->pBuffer     = 0;
     pt->dims[0]     = 0;
     pt->dims[1]     = 0;
     pt->bpp         = 0;
 
-    _getcwd(local,_MAX_PATH);
+    _getcwd(local,PATH_MAX);
 
     if(pt->filename[0])
     {
@@ -1468,9 +1468,9 @@ void CheckGbtx()
     CoUninitialize();
 }
 
-static  BOOL _RegSetKey(LPCTSTR lpszKey, 
-                        LPCTSTR lpszValue, 
-                        LPCTSTR lpszValueName=0)
+static  BOOL _RegSetKey(const char* lpszKey, 
+                        const char* lpszValue, 
+                        const char* lpszValueName=0)
 {
 	if (lpszValueName == NULL)
 	{
@@ -1495,7 +1495,7 @@ static  BOOL _RegSetKey(LPCTSTR lpszKey,
 }
 
 
-void _RegisterShellFileTypes(LPCTSTR pathNoSlash)
+void _RegisterShellFileTypes(const char* pathNoSlash)
 {
 
 	CString strTemp;
@@ -1512,26 +1512,26 @@ void _RegisterShellFileTypes(LPCTSTR pathNoSlash)
             strFileTypeId="GBT.Script", 
             strFileTypeName="Script";
 
-    strTemp.Format("%s\\DefaultIcon", (LPCTSTR)strFileTypeId);
+    strTemp.Format("%s\\DefaultIcon", (const char*)strFileTypeId);
     _RegSetKey(strTemp, csAppName+icIdx);
 
 
-    LONG lSize = _MAX_PATH * 2;
+    LONG lSize = PATH_MAX * 2;
 
-	strTemp.Format("%s\\Shell", (LPCTSTR)strFilterExt);
+	strTemp.Format("%s\\Shell", (const char*)strFilterExt);
 	_RegSetKey(strTemp, "", 0);
 
-	strTemp.Format("%s\\Shell\\open", (LPCTSTR)strFilterExt);
+	strTemp.Format("%s\\Shell\\open", (const char*)strFilterExt);
 	_RegSetKey(strTemp, "", 0);
 
-	strTemp.Format("%s\\Shell\\open\\command\\", (LPCTSTR)strFilterExt);
+	strTemp.Format("%s\\Shell\\open\\command\\", (const char*)strFilterExt);
     csAppName+=" \"%1\"";
 	_RegSetKey(strTemp, csAppName, 0);
 
-	strTemp.Format("%s\\OpenWithList\\'%s'", (LPCTSTR)strFilterExt, "moge.exe");
+	strTemp.Format("%s\\OpenWithList\\'%s'", (const char*)strFilterExt, "moge.exe");
 	_RegSetKey(strTemp, "", 0);
 
-	strTemp.Format("%s\\Def", (LPCTSTR)strFilterExt);
+	strTemp.Format("%s\\Def", (const char*)strFilterExt);
 	_RegSetKey(strTemp, csAppName, 0);
 }
 

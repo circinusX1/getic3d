@@ -128,7 +128,7 @@ void DlgSounds::OnOk()
 }
 
 
-void DlgSounds::OnShowWindow(BOOL bShow, UINT nStatus) 
+void DlgSounds::OnShowWindow(BOOL bShow, size_t nStatus) 
 {
 	CDialog::OnShowWindow(bShow, nStatus);
 	if(!bShow && _dirty && _ncursel>=0)

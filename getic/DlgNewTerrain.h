@@ -7,7 +7,7 @@
 // DlgNewTerrain.h : header file
 //
 #include "texlbox.h"
-#include "StaticGL.h"
+#include "Staticgl.h"
 #include "DlgTextures.h"
 /////////////////////////////////////////////////////////////////////////////
 // CDlgNewTerrain dialog

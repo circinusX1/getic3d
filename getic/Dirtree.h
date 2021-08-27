@@ -30,7 +30,7 @@ public:
 
 // Attributes
 public:
-    HTREEITEM   FindItem(LPCTSTR lpszText, HTREEITEM hItem);
+    HTREEITEM   FindItem(const char* lpszText, HTREEITEM hItem);
     HTREEITEM   GetNextItemEx(HTREEITEM hItem);
 	CString     GetItemPath( HTREEITEM hItem = 0);
 	BOOL        PopulateTree( CString &sPath, HTREEITEM hParent );

@@ -35,7 +35,7 @@ END_MESSAGE_MAP()
 
 
 
-BOOL CVTabCtrl::Create(UINT ID, CWnd* parent)
+BOOL CVTabCtrl::Create(size_t ID, CWnd* parent)
 {
     if(0 == CVTabCtrl::_registered)
     {
@@ -73,7 +73,7 @@ BOOL CVTabCtrl::Create(UINT ID, CWnd* parent)
     return b;
 }
 
-void CVTabCtrl::AddChildren(CDialog* pDlg, UINT ID, LPCTSTR pTtitle)
+void CVTabCtrl::AddChildren(CDialog* pDlg, size_t ID, const char* pTtitle)
 {
     CRect rw; 
     CRect rt; 
@@ -189,7 +189,7 @@ void    CVTabCtrl::RecalcScroll(int yView)
     _viewportY = yView;
 }
 
-void CVTabCtrl::OnLButtonDown(UINT nFlags, CPoint point) 
+void CVTabCtrl::OnLButtonDown(size_t nFlags, CPoint point) 
 {
     if(_viewportY > _wndRect.bottom && _scrlInval.PtInRect(point))    
     {
@@ -201,7 +201,7 @@ void CVTabCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 	CWnd::OnLButtonDown(nFlags, point);
 }
 
-void CVTabCtrl::OnLButtonUp(UINT nFlags, CPoint point) 
+void CVTabCtrl::OnLButtonUp(size_t nFlags, CPoint point) 
 {
     if(GetCapture()==this)
         ReleaseCapture();
@@ -213,7 +213,7 @@ void CVTabCtrl::OnLButtonUp(UINT nFlags, CPoint point)
 	CWnd::OnLButtonUp(nFlags, point);
 }
 
-void CVTabCtrl::OnMouseMove(UINT nFlags, CPoint point) 
+void CVTabCtrl::OnMouseMove(size_t nFlags, CPoint point) 
 {
     if(_scrDn)
     {
@@ -267,7 +267,7 @@ void CVTabCtrl::OnDestroy()
 	
 }
 
-BOOL CVTabCtrl::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) 
+BOOL CVTabCtrl::OnSetCursor(CWnd* pWnd, size_t nHitTest, size_t message) 
 {
     CPoint pt; 
     GetCursorPos(&pt);

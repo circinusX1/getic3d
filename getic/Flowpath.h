@@ -3,7 +3,7 @@
 //---------------------------------------------------------------------------------------
 #ifndef __FLOW_PATH_H__
 #define __FLOW_PATH_H__
-#pragma warning (disable: 4786)
+//   #pragma warning (disable: 4786)
 
 #include "basecont.h"
 

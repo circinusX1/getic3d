@@ -90,7 +90,10 @@ public:
         for(int i=1; i<_elems; i++){
             if(sfn(t[i-1], t[i]))
             {
-                SWITCHI((DWORD)t[i-1],(DWORD)t[i]);
+                //SWITCHI((size_t)t[i-1],(size_t)t[i]);
+                T t = t[i-1];
+                t[i-1]=t[i];
+                t[i]=t;
                 return TRUE;
             }
         }
@@ -283,7 +286,7 @@ template <class T> UINT				                DPool<T>::_inUse;
 template <class T> mutex*  		                    DPool<T>::_cs;
 
 //------------------------------------------------------------------------------------
-#pragma warning (disable:4786)
+// #pragma warning (disable:4786)
 template <class X> class counted_ptr
 {
 public:
@@ -303,7 +306,7 @@ private:
     void dec(){ if (_c) {if (--_c->c == 0) {delete _c->p; delete _c;}_c = 0;}}
 };
 
-#pragma warning (disable: 4786)
+//#pragma warning (disable: 4786)
 
 //------------------------------------------------------------------------------------
 template <class T> struct RawBuff
@@ -400,8 +403,8 @@ private:
 template <class T, class CLS, class CB, class PAR>
 void forall(T& coll, CLS* pC, CB cbc, PAR& par)
 {
-    TYPENAME T::iterator b = coll.begin();
-    TYPENAME T::iterator e = coll.end();
+    typename T::iterator b = coll.begin();
+    typename T::iterator e = coll.end();
     for(;b!=e;b++){
 		if(FALSE == ((pC)->*cbc)(*b, par))
             break;
@@ -412,8 +415,8 @@ void forall(T& coll, CLS* pC, CB cbc, PAR& par)
 template <class T, class CB, class PAR>
 void forall(T& coll,CB cbc,PAR* pd=0)
 {
-    TYPENAME T::iterator b = coll.begin();
-    TYPENAME T::iterator e = coll.end();
+    typename T::iterator b = coll.begin();
+    typename T::iterator e = coll.end();
     for(;b!=e;b++){
 			if(FALSE == (cbc)(*b,pd))
                 break;
@@ -424,8 +427,8 @@ void forall(T& coll,CB cbc,PAR* pd=0)
 template <class T, class CLS, class CB, class PAR, class PAR1>
 void forall2(T& coll, CLS* pC, CB cbc, PAR& par, PAR1& par1)
 {
-    TYPENAME T::iterator b = coll.begin();
-    TYPENAME T::iterator e = coll.end();
+    typename T::iterator b = coll.begin();
+    typename T::iterator e = coll.end();
     for(;b!=e;b++){
 		if(FALSE == ((pC)->*cbc)(*b, par, par1))
             break;
@@ -434,7 +437,7 @@ void forall2(T& coll, CLS* pC, CB cbc, PAR& par, PAR1& par1)
 
 //------------------------------------------------------------------------------------
 template <class T, class U> void append(T& a, U& b){
-	FOREACH(TYPENAME U,b,pb) {
+	FOREACH(typename U,b,pb) {
 		a.push_back(*pb);
 	}
 }
@@ -442,7 +445,7 @@ template <class T, class U> void append(T& a, U& b){
 //------------------------------------------------------------------------------------
 template <class T, class P>
 void appendif(T& a, T& b, P p){
-	FOREACH(TYPENAME T,b,pb) {
+    FOREACH(typename T,b,pb) {
         if((p)(*pb))
 		    a.push_back(*pb);
 	}
@@ -454,8 +457,8 @@ template <class T>void reverse(T& t){
 	ret.clear();
 	ret =  t;
 	t.clear();
-	TYPENAME T::reverse_iterator b = ret.rbegin();
-    TYPENAME T::reverse_iterator e = ret.rend();
+	typename T::reverse_iterator b = ret.rbegin();
+	typename T::reverse_iterator e = ret.rend();
     for(;b!=e;b++)
 		t.push_back(*b);
 }
@@ -464,7 +467,7 @@ template <class T>void reverse(T& t){
 template <class T> class vvector : public vector<T>
 {
 public:
-    typedef TYPENAME vector<T>::iterator vit;
+	typedef typename vector<T>::iterator vit;
 
 	vvector(){_els=0;}
 	vvector(int sz){
@@ -502,13 +505,13 @@ public:
 		return it;
 	}
 	void deleteelements(){
-		FOREACH(TYPENAME vector<T>,(*this),pp)
+		FOREACH(typename vector<T>,(*this),pp)
 			delete (*pp);
 		clear();
         refresh();
 	}
 	void deleteelementsarr(){
-		FOREACH(TYPENAME vector<T>,(*this),pp)
+		FOREACH(typename vector<T>,(*this),pp)
 			delete[] (*pp);
 		clear();
         refresh();
@@ -574,8 +577,8 @@ public:
     {
         vvector<T>   rev = *this;
         this->vector<T>::clear();
-        TYPENAME vector<T>::reverse_iterator b = rev.rbegin();
-        TYPENAME vector<T>::reverse_iterator e = rev.rend();
+        typename vector<T>::reverse_iterator b = rev.rbegin();
+        typename vector<T>::reverse_iterator e = rev.rend();
         for(;b!=e;b++)
         {
             (*this) <<(*b);

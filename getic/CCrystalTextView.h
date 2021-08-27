@@ -21,7 +21,7 @@
 #if _MSC_VER >= 1000
 #pragma once
 #endif // _MSC_VER >= 1000
-#pragma warning (disable: 4786)
+//   #pragma warning (disable: 4786)
 #include "cedefs.h"
 
 
@@ -62,7 +62,7 @@ class CRYSEDIT_CLASS_DECL CCrystalTextView : public CView
 private:
 	//	Search parameters
 	BOOL m_bLastSearch;
-	DWORD m_dwLastSearchFlags;
+	size_t m_dwLastSearchFlags;
 	LPTSTR m_pszLastFindWhat;
 	BOOL m_bMultipleSearch;         // More search  
 	
@@ -92,10 +92,10 @@ private:
 	CFont *m_apFonts[4];
 
 	//	Parsing stuff
-	DWORD*	m_pdwParseCookies;
+	size_t*	m_pdwParseCookies;
 
 	int m_nParseArraySize;
-	DWORD GetParseCookie(int nLineIndex);
+	size_t GetParseCookie(int nLineIndex);
 
 	//	Pre-calculated line lengths (in characters)
 	int m_nActualLengthArraySize;
@@ -104,7 +104,7 @@ private:
 	BOOL m_bPreparingToDrag;
 	BOOL m_bDraggingText;
 	BOOL m_bDragSelection, m_bWordSelection, m_bLineSelection;
-	UINT m_nDragSelTimer;
+	size_t m_nDragSelTimer;
 	CPoint WordToRight(CPoint pt);
 	CPoint WordToLeft(CPoint pt);
 
@@ -114,12 +114,12 @@ private:
 	void PrepareSelBounds();
 
 	//	Helper functions
-	void ExpandChars(LPCTSTR pszChars, int nOffset, int nCount, CString &line);
+	void ExpandChars(const char* pszChars, int nOffset, int nCount, CString &line);
 
 	int ApproxActualOffset(int nLineIndex, int nOffset);
 	void AdjustTextPoint(CPoint &point);
 	void DrawLineHelperImpl(CDC *pdc, CPoint &ptOrigin, const CRect &rcClip,
-							LPCTSTR pszChars, int nOffset, int nCount);
+							const char* pszChars, int nOffset, int nCount);
 	BOOL IsInsideSelBlock(CPoint ptTextPos);
 
 	BOOL m_bBookmarkExist;     // More bookmarks
@@ -202,7 +202,7 @@ protected:
 
 	//	Clipboard overridable
 	virtual BOOL TextInClipboard();
-	virtual BOOL PutToClipboard(LPCTSTR pszText);
+	virtual BOOL PutToClipboard(const char* pszText);
 	virtual BOOL GetFromClipboard(CString &text);
 
 	//	Drag-n-drop overrideable
@@ -218,7 +218,7 @@ protected:
 	virtual BOOL GetBold(int nColorIndex);
 
 	void DrawLineHelper(CDC *pdc, CPoint &ptOrigin, const CRect &rcClip, int nColorIndex,
-						LPCTSTR pszChars, int nOffset, int nCount, CPoint ptTextPos);
+						const char* pszChars, int nOffset, int nCount, CPoint ptTextPos);
 	virtual void DrawSingleLine(CDC *pdc, const CRect &rect, int nLineIndex);
 	virtual void DrawMargin(CDC *pdc, const CRect &rect, int nLineIndex);
 
@@ -229,7 +229,7 @@ protected:
 		int m_nColorIndex;
 	};
 
-	virtual DWORD ParseLine(DWORD dwCookie, int nLineIndex, TEXTBLOCK *pBuf, int &nActualItems);
+	virtual size_t ParseLine(size_t dwCookie, int nLineIndex, TEXTBLOCK *pBuf, int &nActualItems);
 
 	virtual HINSTANCE GetResourceHandle();
 
@@ -242,8 +242,8 @@ public:
 	virtual int GetLineCount();
 	virtual int GetLineLength(int nLineIndex);
 	virtual int GetLineActualLength(int nLineIndex);
-	virtual LPCTSTR GetLineChars(int nLineIndex);
-	virtual DWORD GetLineFlags(int nLineIndex);
+	virtual const char* GetLineChars(int nLineIndex);
+	virtual size_t GetLineFlags(int nLineIndex);
 	virtual void GetText(const CPoint &ptStart, const CPoint &ptEnd, CString &text);
 	CFont *GetFont(BOOL bItalic = FALSE, BOOL bBold = FALSE);
     void    ReserCursors();
@@ -302,7 +302,7 @@ public:
 
 	//	Buffer-view interaction, multiple views
 	virtual CCrystalTextBuffer *LocateTextBuffer();
-	virtual void UpdateView(CCrystalTextView *pSource, CUpdateContext *pContext, DWORD dwFlags, int nLineIndex = -1);
+	virtual void UpdateView(CCrystalTextView *pSource, CUpdateContext *pContext, size_t dwFlags, int nLineIndex = -1);
 
 	//	Attributes
 	CPoint GetCursorPos();
@@ -314,13 +314,13 @@ public:
 	void EnsureVisible(CPoint pt);
 
 	//	Text search helpers
-	BOOL FindText(LPCTSTR pszText, const CPoint &ptStartPos, DWORD dwFlags, BOOL bWrapSearch, CPoint *pptFoundPos);
-	BOOL FindTextInBlock(LPCTSTR pszText, const CPoint &ptStartPos, const CPoint &ptBlockBegin, const CPoint &ptBlockEnd,
-						DWORD dwFlags, BOOL bWrapSearch, CPoint *pptFoundPos);
+	BOOL FindText(const char* pszText, const CPoint &ptStartPos, size_t dwFlags, BOOL bWrapSearch, CPoint *pptFoundPos);
+	BOOL FindTextInBlock(const char* pszText, const CPoint &ptStartPos, const CPoint &ptBlockBegin, const CPoint &ptBlockEnd,
+						size_t dwFlags, BOOL bWrapSearch, CPoint *pptFoundPos);
 	BOOL HighlightText(const CPoint &ptStartPos, int nLength);
 
 	//	Overridable: an opportunity for Auto-Indent, Smart-Indent etc.
-	virtual void OnEditOperation(int nAction, LPCTSTR pszText);
+	virtual void OnEditOperation(int nAction, const char* pszText);
 
 // Overrides
 	// ClassWizard generated virtual function overrides
@@ -354,22 +354,22 @@ protected:
 	//{{AFX_MSG(CCrystalTextView)
 	afx_msg void OnDestroy();
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnSize(size_t nType, int cx, int cy);
+	afx_msg void OnVScroll(size_t nSBCode, size_t nPos, CScrollBar* pScrollBar);
+	afx_msg BOOL OnSetCursor(CWnd* pWnd, size_t nHitTest, size_t message);
+	afx_msg void OnLButtonDown(size_t nFlags, CPoint point);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
-	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnHScroll(size_t nSBCode, size_t nPos, CScrollBar* pScrollBar);
+	afx_msg void OnLButtonUp(size_t nFlags, CPoint point);
+	afx_msg void OnMouseMove(size_t nFlags, CPoint point);
+	afx_msg void OnTimer(size_t nIDEvent);
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
-	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDblClk(size_t nFlags, CPoint point);
 	afx_msg void OnEditCopy();
 	afx_msg void OnUpdateEditCopy(CCmdUI* pCmdUI);
 	afx_msg void OnEditSelectAll();
 	afx_msg void OnUpdateEditSelectAll(CCmdUI* pCmdUI);
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonDown(size_t nFlags, CPoint point);
 	afx_msg void OnSysColorChange();
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnEditFind();
@@ -406,8 +406,8 @@ protected:
 	afx_msg void OnExtTextEnd();
 	afx_msg void OnUpdateIndicatorCRLF(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateIndicatorPosition(CCmdUI* pCmdUI);
-	afx_msg void OnToggleBookmark(UINT nCmdID);
-	afx_msg void OnGoBookmark(UINT nCmdID);
+	afx_msg void OnToggleBookmark(size_t nCmdID);
+	afx_msg void OnGoBookmark(size_t nCmdID);
 	afx_msg void OnClearBookmarks();
 
 	afx_msg void OnToggleBookmark();	// More bookmarks

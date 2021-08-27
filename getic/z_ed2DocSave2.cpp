@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "TexRef.h"
+#include "Texref.h"
 #include "z-edmap.h"
 #include "z_ed2Doc.h"
 #include "mainfrm.h"
@@ -69,7 +69,7 @@ void CZ_ed2Doc::TestFreeVersion(int polys){}
 #endif //
 
 //---------------------------------------------------------------------------------------
-void __SaveInFileGEMS5(LPCTSTR szName, vvector<CBspTree*>& btrees)
+void __SaveInFileGEMS5(const char* szName, vvector<CBspTree*>& btrees)
 {
     
     FileWrap    fw;
@@ -125,7 +125,7 @@ static void __ReadItmSceItem(FileWrap& fw,
     MakeCurrent('3');       // select GL ctx
 
     int     tmpVal;
-    DWORD    dwTmpVal;
+    size_t    dwTmpVal;
     
     fw.Read(pItem->_combine);
     for(int k=0;k<4;k++)
@@ -133,7 +133,7 @@ static void __ReadItmSceItem(FileWrap& fw,
         fw.Read(tmpVal);
         fw.Read(dwTmpVal);
 
-        if(tmpVal >=0 && (UINT)tmpVal < texNames.size())
+        if(tmpVal >=0 && (size_t)tmpVal < texNames.size())
         {
             pItem->_textures._texApply[k] = dwTmpVal;
             pItem->SetTex(texNames[tmpVal].filename, k, texNames[tmpVal].genMode);
@@ -145,9 +145,9 @@ static void __ReadItmSceItem(FileWrap& fw,
     
 
 //---------------------------------------------------------------------------------------
-void CZ_ed2Doc::SaveInFile(LPCTSTR pSzName, BOOL bBrshes)
+void CZ_ed2Doc::SaveInFile(const char* pSzName, BOOL bBrshes)
 {
-    char         sFileName[_MAX_PATH];
+    char         sFileName[PATH_MAX];
     map<int,int> texids;
 	FileWrap     fw;
     int          fileVer   = DOC_VERSION3;
@@ -294,7 +294,7 @@ void CZ_ed2Doc::SaveInFile(LPCTSTR pSzName, BOOL bBrshes)
                 map<int, int>::iterator fi = texids.find((int)pp->_textures._texts[k]);
                 if(fi != texids.end())
                 {
-                    fw.Write((UINT&) texids[pp->_textures._texts[k]]);
+                    fw.Write((size_t&) texids[pp->_textures._texts[k]]);
                 }
                 else
                 {
@@ -371,7 +371,7 @@ void CZ_ed2Doc::SaveInFile(LPCTSTR pSzName, BOOL bBrshes)
             map<int, int>::iterator fi = texids.find((int)pItem->_textures._texts[k]);
             if(fi != texids.end())
             {
-                fw.Write((UINT&) texids[pItem->_textures._texts[k]]);
+                fw.Write((size_t&) texids[pItem->_textures._texts[k]]);
             }
             else
             {
@@ -396,7 +396,7 @@ void CZ_ed2Doc::SaveInFile(LPCTSTR pSzName, BOOL bBrshes)
                 break;
             case ITM_TRIGER:
                 {
-                    DWORD ptr = -1;
+                    size_t ptr = -1;
                     fw.Write(((TriggerItem*)pItem)->_efectPoint);
                     V3 ex = ((TriggerItem*)pItem)->_drawBrush._box.GetExtends();
                     fw.Write(ex);
@@ -573,12 +573,12 @@ void CZ_ed2Doc::ReadFromFile(const TCHAR* szFilename)
     FileWrap            fw;
     int                 docuse2split = 0;
     long                tmpVal,polys,vxes,brushes;
-    DWORD                dwTmpVal;
+    size_t                dwTmpVal;
     vvector<Texture>    texNames;
     char                szTexName[128] = {0};
     map<int,Brush*>     dynaBrushes ;
     GUID                g;
-    BYTE                buffer[_MAX_PATH];
+    BYTE                buffer[PATH_MAX];
 
     CWaitCursor cwc;
 	//MakeCurrent(0,0);
@@ -737,7 +737,7 @@ void CZ_ed2Doc::ReadFromFile(const TCHAR* szFilename)
                     fw.Read(tmpVal);
                     fw.Read(dwTmpVal);
 
-                    if(tmpVal >=0 && (UINT)tmpVal < texNames.size())
+                    if(tmpVal >=0 && (size_t)tmpVal < texNames.size())
                     {
                         pl._textures._texApply[k] = dwTmpVal;
 
@@ -845,7 +845,7 @@ void CZ_ed2Doc::ReadFromFile(const TCHAR* szFilename)
 
                 case ITM_TRIGER:
                     {
-                        DWORD   dummy;
+                        size_t   dummy;
                         V3      ex;
 
                         TriggerItem* pItem = new TriggerItem();
@@ -940,7 +940,7 @@ void CZ_ed2Doc::ReadFromFile(const TCHAR* szFilename)
 
 		// scripts
 		{
-            TCHAR sz[_MAX_PATH];
+            TCHAR sz[PATH_MAX];
 			fw.Read(tmpVal);
 			assert(tmpVal == SECT_SCRIPTS);
 
@@ -972,7 +972,7 @@ void CZ_ed2Doc::ReadFromFile(const TCHAR* szFilename)
 		}
 
         {   
-            TCHAR sz[_MAX_PATH];
+            TCHAR sz[PATH_MAX];
 
             fw.Read(tmpVal);
 			assert(tmpVal == SECT_SOUNDS);
@@ -1125,7 +1125,7 @@ void      CZ_ed2Doc::SavePrefFile()
             brush.Move(-center);
 
             TCHAR locName[64];
-            _tcscpy(locName, brush._name);
+            strcpy(locName, brush._name);
 			if(FixBadName(locName))
 			{
 				return;
@@ -1194,7 +1194,7 @@ void      CZ_ed2Doc::SavePrefFile()
                         map<int, int>::iterator fi = texids.find((int)pp->_textures._texts[k]);
                         if(fi != texids.end())
                         {
-                            fw.Write((UINT&) texids[pp->_textures._texts[k]]);
+                            fw.Write((size_t&) texids[pp->_textures._texts[k]]);
                         }
                         else
                         {
@@ -1248,7 +1248,7 @@ BOOL CZ_ed2Doc::LoadPrefFile(FileWrap& fw, Brush** pBRet, vvector<Texture >* pTe
     int               tmpVal;
     int               uniqueIdDUmmy;
     int               fVersion;
-    DWORD              dwTmpVal;
+    size_t              dwTmpVal;
     vvector<Texture > texNames;
 	Brush*			  pB = 0;// = new Brush();
 
@@ -1313,7 +1313,7 @@ BOOL CZ_ed2Doc::LoadPrefFile(FileWrap& fw, Brush** pBRet, vvector<Texture >* pTe
                 fw.Read(tmpVal);
                 fw.Read(dwTmpVal);
 
-                if(tmpVal >=0 && (UINT)tmpVal < texNames.size())
+                if(tmpVal >=0 && (size_t)tmpVal < texNames.size())
                 {
                     pl._textures._texApply[k] = dwTmpVal;
                     pl.SetTex(texNames[tmpVal].filename, k, texNames[tmpVal].genMode);
@@ -1533,7 +1533,7 @@ public:
     {
         WriteTag(sect, (int) f);
     }
-    void WriteTag(const TCHAR* sect, DWORD f)
+    void WriteTag(const TCHAR* sect, size_t f)
     {
         WriteTag(sect, (int) f);
     }
@@ -1594,7 +1594,7 @@ private:
 
   
 //---------------------------------------------------------------------------------------
-void CZ_ed2Doc::SaveInXML(LPCTSTR pSzName, BOOL bBrshes)
+void CZ_ed2Doc::SaveInXML(const char* pSzName, BOOL bBrshes)
 {
     map<int,int>    texids;
     int             idx = 0;
@@ -1602,7 +1602,7 @@ void CZ_ed2Doc::SaveInXML(LPCTSTR pSzName, BOOL bBrshes)
     int             fileVer   = DOC_VERSION3;
     int             cntTex=0;
     GUID            g = {0};
-    char            nospacestexfile[_MAX_PATH];
+    char            nospacestexfile[PATH_MAX];
 	
 
 	AfxGetApp()->DoWaitCursor(1);
@@ -1780,7 +1780,7 @@ void CZ_ed2Doc::SaveInXML(LPCTSTR pSzName, BOOL bBrshes)
 		                xmlw.WriteTag("FLAG",pItem->_flags);
 		                xmlw.WriteTag("COLOR",pItem->_colorD);
 		                xmlw.WriteTag("POS",pItem->_t);
-		                xmlw.WriteTag("SIZE",pItem->_s);
+		                xmlw.WriteTag("size_t",pItem->_s);
                         xmlw.WriteTag("TEX-ID_GL", (TCHAR*)MKSTR("%d,%d",texids[pItem->_textures._texts[0]],pItem->_textures._texApply[0]));
                         xmlw.WriteTag("TEX-ID_GL", (TCHAR*)MKSTR("%d,%d",texids[pItem->_textures._texts[1]],pItem->_textures._texApply[1]));
                         xmlw.WriteTag("TEX-ID_GL", (TCHAR*)MKSTR("%d,%d",texids[pItem->_textures._texts[2]],pItem->_textures._texApply[2]));
@@ -1797,7 +1797,7 @@ void CZ_ed2Doc::SaveInXML(LPCTSTR pSzName, BOOL bBrshes)
                                 break;
                             case ITM_TRIGER:
                                 {
-                                    DWORD   ptr = -1;
+                                    size_t   ptr = -1;
                                     V3 ex = ((TriggerItem*)pItem)->_drawBrush._box.GetExtends();
                                     xmlw.WriteTag("TARGETPOINT",((TriggerItem*)pItem)->_efectPoint);
                                     xmlw.WriteTag("DIMS",ex);

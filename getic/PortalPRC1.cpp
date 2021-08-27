@@ -90,7 +90,7 @@ BOOL CBspTree::BuildPortals()
         {
 		    Portal	            p;							// first portal
 		    vvector<Portal>	    plist;				// list op portals
-            _stprintf(p._name,"node %d", iNode);
+            sprintf(p._name,"node %d", iNode);
             CalculateInitialPortal(p, pn);		// calc portal on node pn
 		    ClipPortal(0, p, plist);
             CleanObsolettePortals(plist);

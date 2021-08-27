@@ -38,7 +38,7 @@ public:
 	virtual void	Destroy()=0;
 	virtual Itape*	CreateTape(char *filename, BOOL is3DSound)=0;
 	virtual void	DestroyTape(Itape* p)=0;
-	virtual void	PlayTape(const Itape *audio, DWORD numRepeats)=0;
+	virtual void	PlayTape(const Itape *audio, size_t numRepeats)=0;
 	virtual void	StopTape(const Itape *audio)=0;
 	virtual void	SetListenerPos(REAL cameraX, REAL cameraY, REAL cameraZ)=0;
 	virtual void	SetListenerRolloff(REAL rolloff)=0;

@@ -8,9 +8,10 @@
 #define __ZTEXTURE_H__
 
 #include <map>
+#include "mfc.h"
 #include "baselibhdrs.h"
 #include "basecont.h"
-#include "../_include/_irender.h"
+#include "_irender.h"
 
 
 
@@ -26,8 +27,8 @@ class NO_VT TexHandler
 public: 
 	TexHandler();
 	virtual ~TexHandler();
-    BOOL    LoadThisFile(const char *sFileName, DWORD flags);
-	BOOL    LoadFile(const char *sFileName, DWORD flags);
+    BOOL    LoadThisFile(const char *sFileName, size_t flags);
+	BOOL    LoadFile(const char *sFileName, size_t flags);
 	int     SaveTgaFile(const char *sFileName);
     BOOL    MakeBW();
     BOOL    MakeDot3(REAL);
@@ -60,16 +61,16 @@ public:
     void  SwapRB();
  static void  SetSearchPath(const char* exreaPath){
         if(exreaPath)
-            _tcscpy(_extrapath, exreaPath);
+            strcpy(_extrapath, exreaPath);
         else 
             _extrapath[0]=0;
     }
 protected:	
     BOOL   _GetPixel(BYTE* pOld,  int x, int y);
-    int    LoadFile2(const char *sFileName, DWORD flags=0);
-	BOOL   LoadJpegFile(const char *sFileName, DWORD flags=0);
-	BOOL   LoadTgaFile(const char *sFileName, DWORD flags=0);
-	BOOL   LoadBmpFile(const char *sFileName, DWORD flags=0);
+    int    LoadFile2(const char *sFileName, size_t flags=0);
+	BOOL   LoadJpegFile(const char *sFileName, size_t flags=0);
+	BOOL   LoadTgaFile(const char *sFileName, size_t flags=0);
+	BOOL   LoadBmpFile(const char *sFileName, size_t flags=0);
 
 	BOOL   CreateBuffer(int width,int height, int deep);
 	BOOL   CreateMap(REAL mapScale);
@@ -108,7 +109,7 @@ struct Texture
 };
 
 //-------------[]-----------------------------------------------------------------------
-typedef Htex  (*STCB)(int dx, int dy, int bpp, BYTE* pb, DWORD mips);
+typedef Htex  (*STCB)(int dx, int dy, int bpp, BYTE* pb, size_t mips);
 typedef void  (*RTCB)(Htex* tex, int ncount);
 //-------------------------[manages textures in system]---------------------------------
 class TexSys : public map<tstring, Texture>
@@ -127,16 +128,16 @@ public:
     ~TexSys(){
 		assert(size()==0);
 	}
-    Htex& GenTexture(const char* ptName, int x, int y, int bpp, BYTE* buff, DWORD flags);
-	Htex& AddTextureFile(const char* ptFile, DWORD flags = TEX_NORMAL);
-    Htex& AddTextureFileGetImage(const char* filename, BYTE** pb, int* dx, int* dy, int* bpp, DWORD flags= TEX_NORMAL);
-    Htex& Assign(const char* psz, DWORD flags);
+    Htex& GenTexture(const char* ptName, int x, int y, int bpp, BYTE* buff, size_t flags);
+	Htex& AddTextureFile(const char* ptFile, size_t flags = TEX_NORMAL);
+    Htex& AddTextureFileGetImage(const char* filename, BYTE** pb, int* dx, int* dy, int* bpp, size_t flags= TEX_NORMAL);
+    Htex& Assign(const char* psz, size_t flags);
 	const char* GetTexName(Htex& id);
     void RemoveTexture(Htex& iTex,BOOL b=TRUE);
     void RemoveTextures(Htex* iextures, int count);
-	void RemoveTextureFile(const char* psz, DWORD flags=TEX_NORMAL);
+	void RemoveTextureFile(const char* psz, size_t flags=TEX_NORMAL);
     void Clean();
-    Texture* GetTempTexture(const char* ptName, DWORD flags=TEX_NORMAL);
+    Texture* GetTempTexture(const char* ptName, size_t flags=TEX_NORMAL);
     Texture* GetTempTexture(Htex& tex);
 
 public:

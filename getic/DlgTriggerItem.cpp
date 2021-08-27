@@ -136,7 +136,7 @@ void DlgTriggerItem::RefreshTriggerEfects()
             continue;
         
         int idx = _lbDetBrush.AddString(rb._name);
-        _lbDetBrush.SetItemData(idx,(DWORD)(*ppB));
+        _lbDetBrush.SetItemData(idx,(size_t)(*ppB));
     }
     _lbDetBrush.SetCurSel(-1);
 }
@@ -155,7 +155,7 @@ void DlgTriggerItem::OnDblclkTarget()
 }
 
 
-void DlgTriggerItem::OnShowWindow(BOOL bShow, UINT nStatus) 
+void DlgTriggerItem::OnShowWindow(BOOL bShow, size_t nStatus) 
 {
 	CBASEDLG::OnShowWindow(bShow, nStatus);
 	if(0==bShow)

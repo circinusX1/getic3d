@@ -11,7 +11,7 @@ class GeticProject
 public:
 	GeticProject();
 	virtual ~GeticProject();
-    void     CreateProject(LPCTSTR fullPrjName);
+    void     CreateProject(const char* fullPrjName);
 
 private:
     tstring     _prjpath;

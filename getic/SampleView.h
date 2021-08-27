@@ -30,7 +30,7 @@ public:
 	virtual CCrystalTextBuffer *LocateTextBuffer();
 
 protected:
-	virtual DWORD ParseLine(DWORD dwCookie, int nLineIndex, TEXTBLOCK *pBuf, int &nActualItems);
+	virtual size_t ParseLine(size_t dwCookie, int nLineIndex, TEXTBLOCK *pBuf, int &nActualItems);
 
 // Operations
 public:

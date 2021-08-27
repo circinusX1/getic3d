@@ -7,21 +7,21 @@
 
 
 
-#include <gl/gl.h>			
-#include <gl/glu.h>			
-#include <gl/glaux.h>	
+#include <GL/gl.h>
+#include <GL/glu.h>
+// #include <gl/Glaux.h>
 #include "z-edmap.h"
-#include "poly.h"
-#include "brush.h"
+#include "Poly.h"
+#include "Brush.h"
 #include "texsys.h"
 #include "SceItem.h"
-#include "SkyDom.h"
-#include "..\\_include\\BspFIleStr.h"
+#include "Skydom.h"
+#include "bspfilestr.h"
 #include "Motion.h"
 #include "ScriptItem.h"
 #include "SoundItem.h"
 #include "CustItemCat.h"    /// item categories
-#include "BigTerrain.h"
+#include "rfHillTerrain.h"
 
 //---------------------------------------------------------------------------------------
 class Scene  : public SceItem
@@ -33,8 +33,8 @@ public:
 
     void Initialize()
     {
-        _tcscpy(_si.author,"John Doe");
-        _tcscpy(_si.comments,"Getic 2.3");
+        strcpy(_si.author,"John Doe");
+        strcpy(_si.comments,"Getic 2.3");
         _si.levelType = LEV_QUEST;
         _si.maxActors = 8;
         _si.maxFrags  = 100;
@@ -51,7 +51,7 @@ public:
         _si.fogDens    = 0;
         _si.fogFallOff =0;
 
-        _tcscpy(_name, "scene");
+        strcpy(_name, "scene");
         //_si.camOrient1
         //_si.camOrient2
 
@@ -104,7 +104,7 @@ public:
         return 0;
     }
 
-   int GetItemsByType(SceItem** ppArray, UINT type, int imax)
+   int GetItemsByType(SceItem** ppArray, size_t type, int imax)
    {
        int retval = 0;
         FOREACH(vvector<SceItem*>, _items, ppi){
@@ -117,9 +117,9 @@ public:
         return retval;
    }
 
-   SceItem*  GetItemByPtr(DWORD itemPtr){
+   SceItem*  GetItemByPtr(size_t itemPtr){
         FOREACH(vvector<SceItem*>, _items, ppi){
-            if((DWORD)(*ppi) == itemPtr){
+            if((size_t)(*ppi) == itemPtr){
                 return *ppi;
             }
         }

@@ -1,7 +1,7 @@
 #ifndef __PROJECTOR_H__
 #define __PROJECTOR_H__
 
-#include "brush.h"
+#include "Brush.h"
 
 
 

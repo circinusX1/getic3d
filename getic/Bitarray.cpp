@@ -6,5 +6,5 @@
 
 #include "stdafx.h"
 #include "z-edmap.h"
-#include "BitArray.h"
+#include "Bitarray.h"
 

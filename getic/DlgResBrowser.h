@@ -8,7 +8,7 @@
 //
 #include "DirTree.h"
 #include "Drawout1.h"
-#include "TexLbox.h"
+#include "Texlbox.h"
 #include "ColorButon.h"
 /////////////////////////////////////////////////////////////////////////////
 // DlgResBrowser dialog
@@ -48,7 +48,7 @@ public:
 
 // Implementation
 protected:
-    void PopSubDirText(LPCTSTR subDir);
+    void PopSubDirText(const char* subDir);
 
 
 	// Generated message map functions

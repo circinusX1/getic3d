@@ -6,7 +6,7 @@
 #include "mainfrm.h"
 #include "z_ed2View.h"
 #include "DlgNewItem.h" //
-#include "..\\_include\\BspFIleStr.h"
+#include "bspfilestr.h"
 #include "LightBulb.h"
 #include "z_ed2Doc.h"
 #include "zedtypes.h"
@@ -68,19 +68,19 @@ BOOL DlgNewItem::OnInitDialog()
 
 	
 	int is = _lbItems.AddString(_T("Light Bulb"));
-    _lbItems.SetItemData(is, (DWORD)ITM_LIGTBULB);
+    _lbItems.SetItemData(is, (size_t)ITM_LIGTBULB);
 
 
     is = _lbItems.AddString(_T("Trigger"));
-    _lbItems.SetItemData(is, (DWORD) ITM_TRIGER);
+    _lbItems.SetItemData(is, (size_t) ITM_TRIGER);
 
 
     is = _lbItems.AddString(_T("Sound Source"));
-    _lbItems.SetItemData(is, (DWORD) ITM_SNDSOURCE);
+    _lbItems.SetItemData(is, (size_t) ITM_SNDSOURCE);
 
 
     is = _lbItems.AddString(_T("Actor Start Play"));
-    _lbItems.SetItemData(is, (DWORD) ITM_STARTPLAY);
+    _lbItems.SetItemData(is, (size_t) ITM_STARTPLAY);
 
 
 
@@ -91,7 +91,7 @@ BOOL DlgNewItem::OnInitDialog()
         FOREACH(vvector<ItemCat>, (*pcats), pcat)
         {
             is = _lbItems.AddString(pcat->_catname);
-            _lbItems.SetItemData(is, (DWORD) ITM_GAME);
+            _lbItems.SetItemData(is, (size_t) ITM_GAME);
         }
     }
 

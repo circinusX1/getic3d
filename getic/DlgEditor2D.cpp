@@ -9,7 +9,7 @@
 #include "MainFrm.h"
 #include "DlgEditor2D.h"
 #include "z_ed2Doc.h"
-#include "StaticGL.h"
+#include "Staticgl.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -92,31 +92,31 @@ void SizeHere(CWnd* pWnd, int iWidth, int iHeight)
     PThis->OnSize(0, iWidth, iHeight) ;
 }
 
-BOOL SetCursorHere(UINT msg, V_ACTION act,  CPoint& p, V3& wp) 
+BOOL SetCursorHere(size_t msg, V_ACTION act,  CPoint& p, V3& wp) 
 {
     if(!PThis || !PThis->_pStaticGL)
         return FALSE;
     if(PThis->_pStaticGL->_nMode==V_3DFRONT||PThis->_pStaticGL->_nMode == V_3D)
         return FALSE;
     
-    return PThis->OnSetCursor((UINT)act, p, wp);
+    return PThis->OnSetCursor((size_t)act, p, wp);
 }
 
 
-BOOL    MouseHere(UINT msg, V_ACTION act,  CPoint& p, V3& wp)
+BOOL    MouseHere(size_t msg, V_ACTION act,  CPoint& p, V3& wp)
 {
     switch(msg)
     {
         case WM_LBUTTONDOWN:
-            return PThis->OnLButtonDown((UINT)act, p, wp);
+            return PThis->OnLButtonDown((size_t)act, p, wp);
         case WM_LBUTTONUP:
-            return PThis->OnLButtonUp((UINT)act, p, wp);
+            return PThis->OnLButtonUp((size_t)act, p, wp);
         case WM_RBUTTONDOWN:
-            return PThis->OnRButtonDown((UINT)act, p, wp);
+            return PThis->OnRButtonDown((size_t)act, p, wp);
         case WM_RBUTTONUP:
-            return PThis->OnRButtonUp((UINT)act, p, wp);
+            return PThis->OnRButtonUp((size_t)act, p, wp);
         case WM_MOUSEMOVE:
-            return PThis->OnMouseMove((UINT)act, p, wp);
+            return PThis->OnMouseMove((size_t)act, p, wp);
     }
     return 0;
 }
@@ -217,7 +217,7 @@ void    PaintHere(CWnd* pWnd , V_MODE mode)
             glColor3ubv(CLR_MOTION);
             glBegin(GL_LINE_STRIP);
 
-            for(UINT i=0; i<ps->_points.size(); i++)
+            for(size_t i=0; i<ps->_points.size(); i++)
             {
                 VNT& vtn = ps->_points[i];
                 glVertex3f(vtn.point.x, vtn.point.y, vtn.point.z);
@@ -230,7 +230,7 @@ void    PaintHere(CWnd* pWnd , V_MODE mode)
             if(ps->_points.size())
             {
 
-                for(UINT i=1; i < ps->_points.size()-1; i++)
+                for(size_t i=1; i < ps->_points.size()-1; i++)
                 {
                     V3  prev  = ps->_points[i-1].point;
                     V3& cur   = ps->_points[i].point;
@@ -255,7 +255,7 @@ void    PaintHere(CWnd* pWnd , V_MODE mode)
                     // draw the shape
                     PathShape*  pss = &PThis->_shape;
                     glBegin(GL_LINE_LOOP);
-                    for(UINT i=0; i<pss->_points.size(); i++)
+                    for(size_t i=0; i<pss->_points.size(); i++)
                     {
                         VNT& vtn = pss->_points[i];
                         glColor3ubv(CLR_DARK);
@@ -270,7 +270,7 @@ void    PaintHere(CWnd* pWnd , V_MODE mode)
     }
     else if(PThis->_pWorking )
     {
-        UINT i;
+        size_t i;
         CStaticGL* pGl = PThis->_pStaticGL;
         GLUquadricObj* go;
         go = gluNewQuadric();
@@ -319,7 +319,7 @@ void    PaintHere(CWnd* pWnd , V_MODE mode)
             if(ps == &PThis->_shape)
             {
                 glBegin(GL_LINE_LOOP);
-                for(UINT i=0; i < pPoints->size(); i++)
+                for(size_t i=0; i < pPoints->size(); i++)
                 {
                     VNT& vtn = pPoints->at(i);
                     glVertex3fv(vtn.point);
@@ -330,7 +330,7 @@ void    PaintHere(CWnd* pWnd , V_MODE mode)
             else
             {
                 glBegin(GL_LINE_STRIP);
-                for(UINT i=0; i < pPoints->size(); i++)
+                for(size_t i=0; i < pPoints->size(); i++)
                 {
                     VNT& vtn = pPoints->at(i);
                     glVertex3fv(vtn.point);
@@ -414,7 +414,7 @@ BOOL DlgEditor2D::OnInitDialog()
     CFont *pf = this->GetFont();
     LOGFONT lf;
     pf->GetLogFont(&lf);
-    _tcscpy(lf.lfFaceName,"Verdana");
+    strcpy(lf.lfFaceName,"Verdana");
     
     lf.lfHeight = -24;  
     lf.lfWidth  = 16;
@@ -486,7 +486,7 @@ void DlgEditor2D::OnPaint()
     CDialog::OnPaint();
 }
 
-BOOL DlgEditor2D::OnLButtonDown(UINT nFlags, CPoint& point, V3& wp) 
+BOOL DlgEditor2D::OnLButtonDown(size_t nFlags, CPoint& point, V3& wp) 
 {
     if(_pWorking == 0)
         return 0;
@@ -500,7 +500,7 @@ BOOL DlgEditor2D::OnLButtonDown(UINT nFlags, CPoint& point, V3& wp)
     return 0;
 }
 
-BOOL DlgEditor2D::OnLButtonUp(UINT nFlags, CPoint& point, V3& wp) 
+BOOL DlgEditor2D::OnLButtonUp(size_t nFlags, CPoint& point, V3& wp) 
 {
     if(0 == _pWorking )
         return 0;
@@ -572,14 +572,14 @@ BOOL DlgEditor2D::OnLButtonUp(UINT nFlags, CPoint& point, V3& wp)
     return 0;
 }
 
-BOOL DlgEditor2D::OnSetCursor(UINT nFlags, CPoint& point, V3 wp) 
+BOOL DlgEditor2D::OnSetCursor(size_t nFlags, CPoint& point, V3 wp) 
 {
     if(_pWorking)
     {
         CStaticGL* pGl = PThis->_pStaticGL;
 
         _pWorking->_selp = 0;
-        for(UINT i=0; i<_pWorking->_points.size(); i++)
+        for(size_t i=0; i<_pWorking->_points.size(); i++)
         {
             VNT&    vtn = _pWorking->_points[i];
             V3      vmul(1,1,1);    
@@ -620,7 +620,7 @@ BOOL DlgEditor2D::OnSetCursor(UINT nFlags, CPoint& point, V3 wp)
     return FALSE;
 }
 
-BOOL DlgEditor2D::OnMouseMove(UINT nFlags, CPoint& point, V3& wp) 
+BOOL DlgEditor2D::OnMouseMove(size_t nFlags, CPoint& point, V3& wp) 
 {
     if(nFlags == A_SHIFTVIEW)
     {
@@ -677,7 +677,7 @@ BOOL DlgEditor2D::OnMouseMove(UINT nFlags, CPoint& point, V3& wp)
     return 0;
 }
 
-BOOL DlgEditor2D::OnRButtonDown(UINT nFlags, CPoint& point, V3& wp) 
+BOOL DlgEditor2D::OnRButtonDown(size_t nFlags, CPoint& point, V3& wp) 
 {
     if(0 == _pWorking )
         return 0;
@@ -714,12 +714,12 @@ BOOL DlgEditor2D::OnRButtonDown(UINT nFlags, CPoint& point, V3& wp)
     return 0;
 }
 
-BOOL DlgEditor2D::OnRButtonUp(UINT nFlags, CPoint& point, V3& wp) 
+BOOL DlgEditor2D::OnRButtonUp(size_t nFlags, CPoint& point, V3& wp) 
 {
     return 0;
 }
 
-void DlgEditor2D::OnSize(UINT nType, int iWidth, int iHeight) 
+void DlgEditor2D::OnSize(size_t nType, int iWidth, int iHeight) 
 {
 	
 }
@@ -995,7 +995,7 @@ void DlgEditor2D::MakePath()
 }
 
 
-void DlgEditor2D::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized) 
+void DlgEditor2D::OnActivate(size_t nState, CWnd* pWndOther, BOOL bMinimized) 
 {
 	CBASEDLG::OnActivate(nState, pWndOther, bMinimized);
     if(WA_ACTIVE == nState)
@@ -1040,7 +1040,7 @@ void DlgEditor2D::CreateBrush()
 
     if(ps->_points.size() && pvtn->size())
     {
-        for(UINT i=0; i < pvtn->size(); i++)
+        for(size_t i=0; i < pvtn->size(); i++)
         {
             cur   = pvtn->at(i).point;            
 
@@ -1081,7 +1081,7 @@ void DlgEditor2D::CreateBrush()
             }
 
             // draw the shape
-            for(UINT j=0; j < pvtn2->size(); j++)
+            for(size_t j=0; j < pvtn2->size(); j++)
             {
                 // build the pair points skin
                 V3 v = pvtn2->at(j).point;
@@ -1101,12 +1101,12 @@ void DlgEditor2D::CreateBrush()
 
     if(skin.size())
     {
-        for(UINT i=0; i < skin.size()-1; i++)
+        for(size_t i=0; i < skin.size()-1; i++)
         {
             vvector<V3>& cap1 = skin[i];
             vvector<V3>& cap2 = skin[i+1];
         
-            for(UINT j=0; j < cap1.size(); j++)
+            for(size_t j=0; j < cap1.size(); j++)
             {
                 corn[0] = cap1[j];
                 corn[1] = cap1.nextr(j);
@@ -1127,13 +1127,13 @@ void DlgEditor2D::CreateBrush()
 }
 
 
-void DlgEditor2D::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void DlgEditor2D::OnKeyDown(size_t nChar, size_t nRepCnt, size_t nFlags) 
 {
 
 	CBASEDLG::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
-BOOL DlgEditor2D::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) 
+BOOL DlgEditor2D::OnSetCursor(CWnd* pWnd, size_t nHitTest, size_t message) 
 {
 	// TODO: Add your message handler code here and/or call default
 	
@@ -1187,7 +1187,7 @@ void    DlgEditor2D::MakeSpline()
 }
 
 
-HBRUSH DlgEditor2D::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+HBRUSH DlgEditor2D::OnCtlColor(CDC* pDC, CWnd* pWnd, size_t nCtlColor) 
 {
 	HBRUSH hbr = CBASEDLG::OnCtlColor(pDC, pWnd, nCtlColor);
 	

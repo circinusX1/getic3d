@@ -2,10 +2,10 @@
 #define __DLG_LIGHTITEM_H__
 
 #include "basecont.h"
-#include "uienhancer.h"
+#include "UiEnhancer.h"
 #include "ColorButon.h"
 #include "VertDlgDlg.h"
-#include "TexLbox.h"
+#include "Texlbox.h"
 
 
 // DlgLightItem dialog
@@ -53,7 +53,7 @@ protected:
 	afx_msg void OnSpec();
 	afx_msg void OnQuadratic();
 	//}}AFX_MSG
-	afx_msg void OnRadioButtons(UINT iCmd);
+	afx_msg void OnRadioButtons(size_t iCmd);
 	DECLARE_MESSAGE_MAP()
     BOOL        _filterChanged;
 };

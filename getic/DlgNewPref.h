@@ -2,7 +2,7 @@
 #define AFX_DLGNEWPREF_H__A4D52713_8E0A_4F50_AD81_780830F933F1__INCLUDED_
 
 
-#include "StaticGL.h"
+#include "Staticgl.h"
 #include "LboxItem.h"
 #include "basecont.h"
 #include "dirtree.h"

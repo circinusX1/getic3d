@@ -1,20 +1,20 @@
 // MiniBsp.h: interface for the MiniBsp class.
 //
 //////////////////////////////////////////////////////////////////////
-#ifndef __MINIBSP_H__
-#define	__MINIBSP_H__
+#ifndef __MINIBSPX_H__
+#define	__MINIBSPX_H__
 
 #include <list>
 
 
-#include "brush.h"
-#include "..\\_include\\BspFIleStr.h"
+#include "Brush.h"
+#include "bspfilestr.h"
 
 class MiniBsp ; 
 class CMiniNode  
 {
 public:
-    CMiniNode(MiniBsp* pBsp, DWORD dw=0)
+    CMiniNode(MiniBsp* pBsp, size_t dw=0)
     {
         _cluster      = -1;
         _idxNodeThis  = -1;
@@ -65,16 +65,16 @@ public:
 	int			_leafIdx;
     int         _planeIdxFinal;    // spliter plane index in bsp global plane arrray
     int         _origPolyIndex;    // polygon index just in case;
-	DWORD	    _nodeflags;			
+	size_t	    _nodeflags;			
     int		    _nPolys;       // leaf polys
     int		    _polyIdx;      // start poly leaf index
     int         _cluster;
     MiniBsp*    _pBsp; 
     Box         _bbox;
-    DWORD       _zonearea;
-    DWORD       _flags;
-    DWORD       _selected;
-	DWORD       _content;
+    size_t       _zonearea;
+    size_t       _flags;
+    size_t       _selected;
+	size_t       _content;
 };
 
 
@@ -126,7 +126,7 @@ public:
     }
 	virtual void	Clear();
     vvector<Poly>&  GetPolys() {return _polys;};
-	virtual BOOL Compile(vvector<Poly>& polys, DWORD brFlags, BOOL bRemES=FALSE, BOOL bTextCvx=FALSE); // virtual from base
+	virtual BOOL Compile(vvector<Poly>& polys, size_t brFlags, BOOL bRemES=FALSE, BOOL bTextCvx=FALSE); // virtual from base
     int    AddUniqueVertexes(vvector<V3>& globPool);
     void    ClipBrPolys(vvector<Poly>&, vvector<Poly>& , BOOL , BOOL ,BOOL);
 	CMiniNode*  Root(){return _nodesPtr[0];}//       _pRoot;
@@ -148,14 +148,14 @@ protected:
     BOOL    BuildDummyBSP(vvector<Poly>& polys);
     int     FindPLane(Plane& p);
     void    MakeRoot(){ASSERT(_nodesPtr.size()==0); AddNode(new CMiniNode(this));};
-	void	BuildPlaneArray(PolyList& polys, DWORD flags);
+	void	BuildPlaneArray(PolyList& polys, size_t flags);
 	void    R_ClipPolyList(int,  vvector<Poly>& , vvector<Poly>&);
 	void	R_Compile(int nodeIdx, PolyList&);
 	void	R_TerrainCompile(int nodeIdx, PolyList&);
 	int 	GetBestSplitter(PolyList& polys, Poly* pWantPoly=0);
 	void	RepairSplits(vvector<Poly>& , vvector<Poly>& );
 	void	Trace(int idxnode);
-    virtual CMiniNode*  CreateNode(DWORD dw){return new CMiniNode(this, dw);}
+    virtual CMiniNode*  CreateNode(size_t dw){return new CMiniNode(this, dw);}
 	int		Partition(CMiniNode* pNode, PolyList&, PolyList&,PolyList&);
 	void	PartitionCSGTerrain(CMiniNode* pNode, PolyList&, PolyList&,PolyList&);
     Plane   GetCSGTerOptimSpliterPlane(PolyList& polys, int moe=1);
@@ -183,13 +183,13 @@ public:
     BOOL         _bComplErr;
     BOOL         _bremES;
 	Box			 _addedPolysBox;
-    DWORD        _timeStart;
+    size_t        _timeStart;
     BOOL         _dlgWaitOn;
 	int			 _reachedDepth;
     int          _balance;
 	char		 _name[64];
-    DWORD        _treeprops;
-    DWORD        _treeflags;
+    size_t        _treeprops;
+    size_t        _treeflags;
     int          _lefmost;
 	BOOL		 _btextconvex;
     int          _usersplitters;

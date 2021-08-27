@@ -48,9 +48,9 @@ END_MESSAGE_MAP()
 
 BOOL CDlgTexRefs::OnInitDialog() 
 {
-    char        sFullPath[_MAX_PATH];
-    char        sDummy[_MAX_PATH];
-    char        sFileName[_MAX_PATH];
+    char        sFullPath[PATH_MAX];
+    char        sDummy[PATH_MAX];
+    char        sFileName[PATH_MAX];
     char        sExt[_MAX_EXT];
 
     m_lv.Block();
@@ -61,12 +61,12 @@ BOOL CDlgTexRefs::OnInitDialog()
 
     TexSys::iterator bt = GTexSys.begin();
     TexSys::iterator et = GTexSys.end();
-    DWORD    totalSizes = 0;
+    size_t    totalSizes = 0;
     for(;bt != et; bt++)
     {
         Texture& tex  = (*bt).second;
         
-        _tcscpy(sFullPath,(*bt).first.c_str());
+        strcpy(sFullPath,(*bt).first.c_str());
         _tsplitpath(sFullPath,sDummy,sDummy,sFileName,sExt);
         _tcscat(sFileName,sExt);
         

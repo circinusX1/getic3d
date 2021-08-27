@@ -4,12 +4,14 @@
 // --------------------------------------------------------------------------------------
 #ifndef __BASELIB_H__
 #define __BASELIB_H__
-#pragma pack(push, 8)
+
+
+#include <math.h>
 
 #define _USE_BASEG
 
 #ifdef _CFG_WIN32_WIN
-#define OS_DEFINED 
+#define OS_DEFINED
 #ifndef WINDOWS
 #define WINDOWS
 #endif //
@@ -29,17 +31,15 @@
 #include "GNU_LINUX/os.h"
 #endif
 
+#ifdef _MFC_LINUX
+#include "mfc.h"
+#endif
+
+
 
 #ifndef OS_DEFINED
 #pragma message ("error: _CFG_GNU_LINUX, _CFG_GNU_WIN or _CFG_WIN32_WIN Not defined")
 #endif //
-
-#pragma warning (disable: 4267)
-#pragma warning (disable: 4018)
-#pragma warning (disable: 4786)
-#pragma warning (disable: 4006)
-#pragma warning (disable: 4244)
-#pragma warning (disable: 4996)
 
 
 
@@ -48,7 +48,6 @@
 typedef	double REAL;
 #else
 typedef	float REAL;
-#pragma warning(disable: 4305)
 #endif //
 
 //---------------------------------------------------------------------------------------
@@ -91,7 +90,7 @@ typedef ERR (*Proc3)(void*);
 
 //---------------------------------------------------------------------------------------
 #define EPSILONBIG				0.0625F
-#define EPSILON					0.0009765625F 
+#define EPSILON					0.0009765625F
 #define EPSMED                  0.00390625
 #define INFINIT					999999999.0
 #define PI						3.14159265358900                // PI in radians
@@ -154,7 +153,7 @@ INLN REAL Cosa(REAL gr){
     ROLLG(gr); return Cosr(gr);
 }
 
-INLN NAKED_ long R2I (REAL f){
+INLN long R2I (REAL f){
 #ifdef WINDOWS
     static int i;
     ASM_ fld dword ptr [esp+4]
@@ -285,13 +284,16 @@ public:
     REAL normalize(){
         REAL m = len();
         if (m > 0.0) m = 1.0 / m;
-        else m = 0.0;x *= m;
+        else
+            m = 0.0;
+        x *= m;
         y *= m; z *= m;
         return m;
     }
     INLN  V3 &norm(){	REAL m = len();
     if (m > 0.0) m = 1.0 / m;
-    else m = 0.0;x *= m;
+    else m = 0.0;
+    x *= m;
     y *= m; z *= m;
     return *this;
     }
@@ -302,11 +304,11 @@ public:
     }
     void SetLength(REAL l)
     {
-        REAL len = sqrt(x*x + y*y + z*z);    
+        REAL len = sqrt(x*x + y*y + z*z);
         x *= l/len;
         y *= l/len;
         z *= l/len;
-    } 
+    }
 };
 //---------------------------------------------------------------------------------------
 extern V3 VX;
@@ -376,14 +378,14 @@ public:
     CLR(const CLR& rgb):r(rgb.r),g(rgb.g),b(rgb.b),a(rgb.a){}
     CLR(BYTE rr, BYTE gg, BYTE bb, BYTE aa){r = rr;    g = gg;    b = bb;    a = aa;}
     CLR(BYTE rr, BYTE gg, BYTE bb){	r = rr;    g = gg;    b = bb;    a = 255;}
-    CLR (DWORD dwclr){ a=255; r= (dwclr>>16)&0xff; g= (dwclr>>8)&0xff; b= (dwclr)&0xff;}
-    operator DWORD(){DWORD drv; drv = (r<<24)|(g<<16)|b; return drv;}
+    CLR (size_t dwclr){ a=255; r= (dwclr>>16)&0xff; g= (dwclr>>8)&0xff; b= (dwclr)&0xff;}
+    operator size_t(){size_t drv; drv = (r<<24)|(g<<16)|b; return drv;}
     INLN  operator BYTE*(){	return (BYTE*)&r; }
     INLN void black(){	memset(this,0,sizeof(*this));}
     INLN void white(){	memset(this,255,sizeof(*this));}
     INLN void grey(){	memset(this,128,sizeof(*this));}
     INLN void lgrey(){	memset(this,192,sizeof(*this));}
-    INLN CLR& operator =(DWORD dwclr){ a=255; r= (dwclr>>24)&0xf; g= (dwclr>>16)&0xf; b= (dwclr>>8)&0xf; return *this;}
+    INLN CLR& operator =(size_t dwclr){ a=255; r= (dwclr>>24)&0xf; g= (dwclr>>16)&0xf; b= (dwclr>>8)&0xf; return *this;}
     INLN CLR& operator =(const CLR& rr){	r = rr.r;    g = rr.g;    b = rr.b;    a = rr.a;	return *this;}
     INLN CLR& operator =(const CLRNOA& rr){	r = rr.r;    g = rr.g;    b = rr.b;    a = 255;	return *this;}
     INLN  CLR& operator -=(CLR& rgb){r-=rgb.r;g-=rgb.g;b-=rgb.b;return *this;}
@@ -832,73 +834,73 @@ public:
 
     void rotateradians(REAL dAngleX, REAL dAngleY, REAL dAngleZ)
     {
-	    REAL cr = cos( dAngleX );
-	    REAL sr = sin( dAngleX );
-	    REAL cp = cos( dAngleY );
-	    REAL sp = sin( dAngleY );
-	    REAL cy = cos( dAngleZ );
-	    REAL sy = sin( dAngleZ );
+        REAL cr = cos( dAngleX );
+        REAL sr = sin( dAngleX );
+        REAL cp = cos( dAngleY );
+        REAL sp = sin( dAngleY );
+        REAL cy = cos( dAngleZ );
+        REAL sy = sin( dAngleZ );
 
-	    _m[0] = ( REAL )( cp*cy );
-	    _m[1] = ( REAL )( cp*sy );
-	    _m[2] = ( REAL )( -sp );
+        _m[0] = ( REAL )( cp*cy );
+        _m[1] = ( REAL )( cp*sy );
+        _m[2] = ( REAL )( -sp );
 
-	    REAL srsp = sr*sp;
-	    REAL crsp = cr*sp;
+        REAL srsp = sr*sp;
+        REAL crsp = cr*sp;
 
-	    _m[4] = ( REAL )( srsp*cy-cr*sy );
-	    _m[5] = ( REAL )( srsp*sy+cr*cy );
-	    _m[6] = ( REAL )( sr*cp );
+        _m[4] = ( REAL )( srsp*cy-cr*sy );
+        _m[5] = ( REAL )( srsp*sy+cr*cy );
+        _m[6] = ( REAL )( sr*cp );
 
-	    _m[8] = ( REAL )( crsp*cy+sr*sy );
-	    _m[9] = ( REAL )( crsp*sy-sr*cy );
-	    _m[10] = ( REAL )( cr*cp );
+        _m[8] = ( REAL )( crsp*cy+sr*sy );
+        _m[9] = ( REAL )( crsp*sy-sr*cy );
+        _m[10] = ( REAL )( cr*cp );
 
     }
 
     void multiply (M4 *matrix)
     {
-	    float newMatrix[16];
-	    const float *m1 = _m, *m2 = matrix->_m;
+        float newMatrix[16];
+        const float *m1 = _m, *m2 = matrix->_m;
 
-	    newMatrix[0] = m1[0]*m2[0] + m1[4]*m2[1] + m1[8]*m2[2];
-	    newMatrix[1] = m1[1]*m2[0] + m1[5]*m2[1] + m1[9]*m2[2];
-	    newMatrix[2] = m1[2]*m2[0] + m1[6]*m2[1] + m1[10]*m2[2];
-	    newMatrix[3] = 0;
+        newMatrix[0] = m1[0]*m2[0] + m1[4]*m2[1] + m1[8]*m2[2];
+        newMatrix[1] = m1[1]*m2[0] + m1[5]*m2[1] + m1[9]*m2[2];
+        newMatrix[2] = m1[2]*m2[0] + m1[6]*m2[1] + m1[10]*m2[2];
+        newMatrix[3] = 0;
 
-	    newMatrix[4] = m1[0]*m2[4] + m1[4]*m2[5] + m1[8]*m2[6];
-	    newMatrix[5] = m1[1]*m2[4] + m1[5]*m2[5] + m1[9]*m2[6];
-	    newMatrix[6] = m1[2]*m2[4] + m1[6]*m2[5] + m1[10]*m2[6];
-	    newMatrix[7] = 0;
+        newMatrix[4] = m1[0]*m2[4] + m1[4]*m2[5] + m1[8]*m2[6];
+        newMatrix[5] = m1[1]*m2[4] + m1[5]*m2[5] + m1[9]*m2[6];
+        newMatrix[6] = m1[2]*m2[4] + m1[6]*m2[5] + m1[10]*m2[6];
+        newMatrix[7] = 0;
 
-	    newMatrix[8] = m1[0]*m2[8] + m1[4]*m2[9] + m1[8]*m2[10];
-	    newMatrix[9] = m1[1]*m2[8] + m1[5]*m2[9] + m1[9]*m2[10];
-	    newMatrix[10] = m1[2]*m2[8] + m1[6]*m2[9] + m1[10]*m2[10];
-	    newMatrix[11] = 0;
+        newMatrix[8] = m1[0]*m2[8] + m1[4]*m2[9] + m1[8]*m2[10];
+        newMatrix[9] = m1[1]*m2[8] + m1[5]*m2[9] + m1[9]*m2[10];
+        newMatrix[10] = m1[2]*m2[8] + m1[6]*m2[9] + m1[10]*m2[10];
+        newMatrix[11] = 0;
 
-	    newMatrix[12] = m1[0]*m2[12] + m1[4]*m2[13] + m1[8]*m2[14] + m1[12];
-	    newMatrix[13] = m1[1]*m2[12] + m1[5]*m2[13] + m1[9]*m2[14] + m1[13];
-	    newMatrix[14] = m1[2]*m2[12] + m1[6]*m2[13] + m1[10]*m2[14] + m1[14];
-	    newMatrix[15] = 1;
+        newMatrix[12] = m1[0]*m2[12] + m1[4]*m2[13] + m1[8]*m2[14] + m1[12];
+        newMatrix[13] = m1[1]*m2[12] + m1[5]*m2[13] + m1[9]*m2[14] + m1[13];
+        newMatrix[14] = m1[2]*m2[12] + m1[6]*m2[13] + m1[10]*m2[14] + m1[14];
+        newMatrix[15] = 1;
 
-	    for (int i=0; i<16; i++)
-		    this->_m[i] = newMatrix[i];
+        for (int i=0; i<16; i++)
+            this->_m[i] = newMatrix[i];
     }
-	void  inversetranslatevect(V3& vct)
-	{
-		vct.x = vct.x-_m[12];
-		vct.y = vct.y-_m[13];
-		vct.z = vct.z-_m[14];
-	}
+    void  inversetranslatevect(V3& vct)
+    {
+        vct.x = vct.x-_m[12];
+        vct.y = vct.y-_m[13];
+        vct.z = vct.z-_m[14];
+    }
 
-	void inverserotatevect(V3&  vct)
-	{
-		V3 vec(vct.x*_m[0]+vct.y*_m[1]+vct.z*_m[2],
-		       vct.x*_m[4]+vct.y*_m[5]+vct.z*_m[6],
-		       vct.x*_m[8]+vct.y*_m[9]+vct.z*_m[10]);
+    void inverserotatevect(V3&  vct)
+    {
+        V3 vec(vct.x*_m[0]+vct.y*_m[1]+vct.z*_m[2],
+               vct.x*_m[4]+vct.y*_m[5]+vct.z*_m[6],
+               vct.x*_m[8]+vct.y*_m[9]+vct.z*_m[10]);
 
-		vct = vec;
-	}
+        vct = vec;
+    }
 
 };
 
@@ -1291,7 +1293,7 @@ public:
     REAL	_c;
     unsigned short	_t;
     unsigned short	_u;
-    
+
 };
 
 //---------------------------------------------------------------------------------------
@@ -1342,7 +1344,7 @@ public:
         REAL di = (_r + other._r) - vdist(_c, oc);
         if(d)
             *d = di;
-        return d < 0;
+        return *d < 0.0;
     }
 public:
     V3     _c;
@@ -1355,7 +1357,7 @@ class   NO_VT Box
 {
 public:
     Box():_min(INFINIT),_max(-INFINIT){}
-    Box(V3& m, V3& M4):_min(INFINIT),_max(-INFINIT){AddPoint(m);	AddPoint(M4);}
+    Box(const V3& m, const V3& M4):_min(INFINIT),_max(-INFINIT){AddPoint(m);	AddPoint(M4);}
     Box(const Box& box):_min(box._min),_max(box._max){}
     Box(const Box& box, V3& a, V3& b, REAL ex=0):_min(box._min),_max(box._max){MakeMoveBox(a,b,ex);}
     Box(const Box& box, V3& a):_min(box._min),_max(box._max){Move(a);}
@@ -1370,7 +1372,7 @@ public:
         _max.z = tmax(_max.z, b._max.z);			_min.x = tmin(_min.x, b._min.x);
         _min.y = tmin(_min.y, b._min.y);			_min.z = tmin(_min.z, b._min.z);
     }
-    void AddPoint(V3& a){
+    void AddPoint(const V3& a){
         _max.x = tmax(_max.x, a.x);			_max.y = tmax(_max.y, a.y);
         _max.z = tmax(_max.z, a.z);			_min.x = tmin(_min.x, a.x);
         _min.y = tmin(_min.y, a.y);			_min.z = tmin(_min.z, a.z);
@@ -1451,7 +1453,7 @@ public:
     }
     V3  GetCenter()const	{return (_min + _max)/2;}
 
-   	BOOL ContainBox(const Box& pct){
+    BOOL ContainBox(const Box& pct){
         return  ContainPoint(pct._max) &&
             ContainPoint(pct._min);
     }
@@ -1503,7 +1505,7 @@ public:
             return TRUE;
         return FALSE;
     }
-  
+
     BOOL IsTouchesBox(const Box& other)
     {
         if(_max.x < other._min.x)				return FALSE;
@@ -1673,7 +1675,7 @@ public:
 //---------------------------------------------------------------------------------------
 INLN void    GetCornersOfPlane(V3& mins, V3&  maxs, V3& normal, V3* corners)
 {
-    for (REG int i=0 ; i<3 ; i++)
+    for (int i=0 ; i<3 ; i++)
     {
         if (normal[i] < 0)
         {
@@ -1838,7 +1840,7 @@ INLN REAL DistRayPlane(V3& rOrigin, V3& rDir, V3& pOnPlan, V3& pNormal)
 INLN V3 ClosestLinePointToPoint(V3& lstart, V3& lend, V3& point)
 {
     static V3 vret;
-    // Determine t (the length of the V3 from ‘lstart’ to ‘point’)
+    // Determine t (the length of the V3 from ï¿½lstartï¿½ to ï¿½pointï¿½)
     vret = point;
     vret -= lstart;
     V3 xv = lend;
@@ -1849,7 +1851,7 @@ INLN V3 ClosestLinePointToPoint(V3& lstart, V3& lend, V3& point)
 
     REAL t = Vdp(xv,vret);
 
-    // Check to see if ‘t’ is beyond the extents of the line segment
+    // Check to see if ï¿½tï¿½ is beyond the extents of the line segment
     if (t < 0.0f)
     {
         vret.setval(lstart);
@@ -1868,17 +1870,17 @@ INLN V3 ClosestLinePointToPoint(V3& lstart, V3& lend, V3& point)
 
 INLN const REAL S_PushPlane(Plane& plan, V3& ex, BOOL upward=1)
 {
-	const V3& normal = plan._n;
+    const V3& normal = plan._n;
     if(upward)
     {
         plan._c += (normal.x) * ex.x;
-  	    plan._c += (normal.y) * ex.y;
+        plan._c += (normal.y) * ex.y;
         plan._c += (normal.z) * ex.z;
     }
     else
     {
         plan._c -= normal.x * ex.x;
-    	plan._c -= normal.y * ex.y;
+        plan._c -= normal.y * ex.y;
         plan._c -= normal.z * ex.z;
     }
     return 0;
@@ -1898,7 +1900,7 @@ INLN const REAL ExtendsToPlane(const V3& v, const Plane& p)
 
 //---------------------------------------------------------------------------------------
 typedef  REAL  APos[12];
-class NO_VT Pos 
+class NO_VT Pos
 {
 public:
     V3		_right;
@@ -1914,13 +1916,13 @@ public:
     INLN 	void	MoveFwd(REAL r){_pos  += r * _fwd;}
     INLN    void    Rotate(REAL a, REAL e, REAL r)
     {
-        _euler.y += a;	
-	    _euler.x -= e;	
-	    _euler.z += r;
-	    BLOCKRANGE(_euler.x);
+        _euler.y += a;
+        _euler.x -= e;
+        _euler.z += r;
+        BLOCKRANGE(_euler.x);
         Euler2Pos();
     }
- 
+
     INLN void	SetAngles(REAL a, REAL e, REAL r){
         ROLLPI(a);
         BLOCKRANGE(e);
@@ -1941,19 +1943,19 @@ public:
         return *this;
     }
     void Euler2Pos(){
-	    REAL CosrAz = Cosr(_euler.y);
-	    REAL CosrEl = Cosr(_euler.x);
-	    REAL SinrAz = Sinr(_euler.y);
-	    REAL SinrEl = Sinr(_euler.x);
-	    REAL CosrRl = Cosr(_euler.z);
-	    REAL SinrRl = Sinr(_euler.z);
-	    _fwd.x = SinrAz * CosrEl;
-	    _fwd.y = SinrEl;
-	    _fwd.z = CosrEl * -CosrAz;
-	    _up.x = -CosrAz * SinrRl - SinrAz * SinrEl * CosrRl;
-	    _up.y = CosrEl * CosrRl;
-	    _up.z = -SinrAz * SinrRl - SinrEl * CosrRl * -CosrAz;
-	    _right = Vcp(_fwd, _up);
+        REAL CosrAz = Cosr(_euler.y);
+        REAL CosrEl = Cosr(_euler.x);
+        REAL SinrAz = Sinr(_euler.y);
+        REAL SinrEl = Sinr(_euler.x);
+        REAL CosrRl = Cosr(_euler.z);
+        REAL SinrRl = Sinr(_euler.z);
+        _fwd.x = SinrAz * CosrEl;
+        _fwd.y = SinrEl;
+        _fwd.z = CosrEl * -CosrAz;
+        _up.x = -CosrAz * SinrRl - SinrAz * SinrEl * CosrRl;
+        _up.y = CosrEl * CosrRl;
+        _up.z = -SinrAz * SinrRl - SinrEl * CosrRl * -CosrAz;
+        _right = Vcp(_fwd, _up);
     }
 
     INLN void Dir2Euler(BOOL toDeg){
@@ -1985,10 +1987,6 @@ public:
 
 
 //---------------------------------------------------------------------------------------
-
-#pragma pack(pop)
-
-
 
 #endif // __BASELIB_H__
 

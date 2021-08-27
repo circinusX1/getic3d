@@ -73,7 +73,7 @@ typedef struct  _Plg_Vertex
 
 typedef struct  _Plg_Poly
     {
-    DWORD flags;
+    size_t flags;
     BYTE color[ 4 ];
     Plg_Vertex __RPC_FAR *vXes;
     int nCnt;
@@ -81,7 +81,7 @@ typedef struct  _Plg_Poly
 
 typedef struct  _Plg_Brush
     {
-    DWORD flags;
+    size_t flags;
     Plg_Poly __RPC_FAR *pPolys;
     int nCnt;
     short name[ 32 ];
@@ -152,11 +152,11 @@ EXTERN_C const IID IID_IIGetic;
         
         HRESULT ( STDMETHODCALLTYPE __RPC_FAR *GetTypeInfoCount )( 
             IIGetic __RPC_FAR * This,
-            /* [out] */ UINT __RPC_FAR *pctinfo);
+            /* [out] */ size_t __RPC_FAR *pctinfo);
         
         HRESULT ( STDMETHODCALLTYPE __RPC_FAR *GetTypeInfo )( 
             IIGetic __RPC_FAR * This,
-            /* [in] */ UINT iTInfo,
+            /* [in] */ size_t iTInfo,
             /* [in] */ LCID lcid,
             /* [out] */ ITypeInfo __RPC_FAR *__RPC_FAR *ppTInfo);
         
@@ -164,7 +164,7 @@ EXTERN_C const IID IID_IIGetic;
             IIGetic __RPC_FAR * This,
             /* [in] */ REFIID riid,
             /* [size_is][in] */ LPOLESTR __RPC_FAR *rgszNames,
-            /* [in] */ UINT cNames,
+            /* [in] */ size_t cNames,
             /* [in] */ LCID lcid,
             /* [size_is][out] */ DISPID __RPC_FAR *rgDispId);
         
@@ -177,7 +177,7 @@ EXTERN_C const IID IID_IIGetic;
             /* [out][in] */ DISPPARAMS __RPC_FAR *pDispParams,
             /* [out] */ VARIANT __RPC_FAR *pVarResult,
             /* [out] */ EXCEPINFO __RPC_FAR *pExcepInfo,
-            /* [out] */ UINT __RPC_FAR *puArgErr);
+            /* [out] */ size_t __RPC_FAR *puArgErr);
         
         /* [helpstring][id] */ HRESULT ( STDMETHODCALLTYPE __RPC_FAR *Test )( 
             IIGetic __RPC_FAR * This);
@@ -236,7 +236,7 @@ void __RPC_STUB IIGetic_Test_Stub(
     IRpcStubBuffer *This,
     IRpcChannelBuffer *_pRpcChannelBuffer,
     PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    size_t *_pdwStubPhase);
 
 
 
@@ -291,11 +291,11 @@ EXTERN_C const IID IID_IGeticPlug;
         
         HRESULT ( STDMETHODCALLTYPE __RPC_FAR *GetTypeInfoCount )( 
             IGeticPlug __RPC_FAR * This,
-            /* [out] */ UINT __RPC_FAR *pctinfo);
+            /* [out] */ size_t __RPC_FAR *pctinfo);
         
         HRESULT ( STDMETHODCALLTYPE __RPC_FAR *GetTypeInfo )( 
             IGeticPlug __RPC_FAR * This,
-            /* [in] */ UINT iTInfo,
+            /* [in] */ size_t iTInfo,
             /* [in] */ LCID lcid,
             /* [out] */ ITypeInfo __RPC_FAR *__RPC_FAR *ppTInfo);
         
@@ -303,7 +303,7 @@ EXTERN_C const IID IID_IGeticPlug;
             IGeticPlug __RPC_FAR * This,
             /* [in] */ REFIID riid,
             /* [size_is][in] */ LPOLESTR __RPC_FAR *rgszNames,
-            /* [in] */ UINT cNames,
+            /* [in] */ size_t cNames,
             /* [in] */ LCID lcid,
             /* [size_is][out] */ DISPID __RPC_FAR *rgDispId);
         
@@ -316,7 +316,7 @@ EXTERN_C const IID IID_IGeticPlug;
             /* [out][in] */ DISPPARAMS __RPC_FAR *pDispParams,
             /* [out] */ VARIANT __RPC_FAR *pVarResult,
             /* [out] */ EXCEPINFO __RPC_FAR *pExcepInfo,
-            /* [out] */ UINT __RPC_FAR *puArgErr);
+            /* [out] */ size_t __RPC_FAR *puArgErr);
         
         /* [helpstring][id] */ HRESULT ( STDMETHODCALLTYPE __RPC_FAR *ImportFile )( 
             IGeticPlug __RPC_FAR * This,
@@ -395,7 +395,7 @@ void __RPC_STUB IGeticPlug_ImportFile_Stub(
     IRpcStubBuffer *This,
     IRpcChannelBuffer *_pRpcChannelBuffer,
     PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    size_t *_pdwStubPhase);
 
 
 /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE IGeticPlug_ExportFile_Proxy( 
@@ -408,7 +408,7 @@ void __RPC_STUB IGeticPlug_ExportFile_Stub(
     IRpcStubBuffer *This,
     IRpcChannelBuffer *_pRpcChannelBuffer,
     PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    size_t *_pdwStubPhase);
 
 
 /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE IGeticPlug_GetMenuStringAndType_Proxy( 
@@ -421,7 +421,7 @@ void __RPC_STUB IGeticPlug_GetMenuStringAndType_Stub(
     IRpcStubBuffer *This,
     IRpcChannelBuffer *_pRpcChannelBuffer,
     PRPC_MESSAGE _pRpcMessage,
-    DWORD *_pdwStubPhase);
+    size_t *_pdwStubPhase);
 
 
 

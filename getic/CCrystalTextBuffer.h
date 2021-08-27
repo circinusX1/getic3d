@@ -21,7 +21,7 @@
 #if _MSC_VER >= 1000
 #pragma once
 #endif // _MSC_VER >= 1000
-#pragma warning (disable: 4786)
+//   #pragma warning (disable: 4786)
 #include "cedefs.h"
 #include "CCrystalTextView.h"
 
@@ -94,7 +94,7 @@ private:
 	int m_nCRLFMode;
 	BOOL m_bCreateBackupFile;
 	int m_nUndoBufSize;
-	int FindLineWithFlag(DWORD dwFlag);
+	int FindLineWithFlag(size_t dwFlag);
 
 public:
 #pragma pack(push, 1)
@@ -103,7 +103,7 @@ public:
 	{
 		char	*m_pcLine;
 		int		m_nLength, m_nMax;
-		DWORD	m_dwFlags;
+		size_t	m_dwFlags;
 
 		SLineInfo() { memset(this, 0, sizeof(SLineInfo)); };
 	};
@@ -117,7 +117,7 @@ public:
 	//	[JRT] Support For Descriptions On Undo/Redo Actions
 	struct SUndoRecord
 	{
-		DWORD	m_dwFlags;
+		size_t	m_dwFlags;
 
 		CPoint	m_ptStartPos, m_ptEndPos;			//	Block of text participating
 		int		m_nAction;							//	For information only: action type
@@ -142,12 +142,12 @@ public:
 		//	constructor/destructor for this struct
 		SUndoRecord() { memset(this, 0, sizeof(SUndoRecord)); };
 
-		void SetText(LPCTSTR pszText);
+		void SetText(const char* pszText);
 		void FreeText();
 
-		LPCTSTR GetText() const
+		const char* GetText() const
 		{
-			if (HIWORD((DWORD) m_pszText) != 0)
+			if (HIWORD((size_t) m_pszText) != 0)
 				return m_pszText;
 			return m_szText;
 		};
@@ -182,17 +182,17 @@ public:
 	CList <CCrystalTextView *, CCrystalTextView *> m_lpViews;
 
 	//	Helper methods
-	void InsertLine(LPCTSTR pszLine, int nLength = -1, int nPosition = -1);
-	void AppendLine(int nLineIndex, LPCTSTR pszChars, int nLength = -1);
-	void AppendLine(LPCTSTR pszChars);
+	void InsertLine(const char* pszLine, int nLength = -1, int nPosition = -1);
+	void AppendLine(int nLineIndex, const char* pszChars, int nLength = -1);
+	void AppendLine(const char* pszChars);
 
 	//	Implementation
-	BOOL InternalInsertText(CCrystalTextView *pSource, int nLine, int nPos, LPCTSTR pszText, int &nEndLine, int &nEndChar);
+	BOOL InternalInsertText(CCrystalTextView *pSource, int nLine, int nPos, const char* pszText, int &nEndLine, int &nEndChar);
 	BOOL InternalDeleteText(CCrystalTextView *pSource, int nStartLine, int nStartPos, int nEndLine, int nEndPos);
 
 	//	[JRT] Support For Descriptions On Undo/Redo Actions
 	void AddUndoRecord(BOOL bInsert, const CPoint &ptStartPos, const CPoint &ptEndPos, 
-						LPCTSTR pszText, int nActionType = CE_ACTION_UNKNOWN);
+						const char* pszText, int nActionType = CE_ACTION_UNKNOWN);
 
 	//	Overridable: provide action description
 	virtual BOOL GetActionDescription(int nAction, CString &desc);
@@ -204,10 +204,10 @@ public:
 	~CCrystalTextBuffer();
 
 	//	Basic functions
-    void RemoveAllFlags(DWORD dwFlag);
+    void RemoveAllFlags(size_t dwFlag);
 	BOOL InitNew(int nCrlfStyle = CRLF_STYLE_DOS);
-	BOOL LoadFromFile(LPCTSTR pszFileName, int nCrlfStyle = CRLF_STYLE_AUTOMATIC);
-	BOOL SaveToFile(LPCTSTR pszFileName, int nCrlfStyle , BOOL bClearModifiedFlag , BOOL bIncludeMap, const char* pEx=0);
+	BOOL LoadFromFile(const char* pszFileName, int nCrlfStyle = CRLF_STYLE_AUTOMATIC);
+	BOOL SaveToFile(const char* pszFileName, int nCrlfStyle , BOOL bClearModifiedFlag , BOOL bIncludeMap, const char* pEx=0);
 	void FreeAll();
 
 	//	'Dirty' flag
@@ -222,10 +222,10 @@ public:
 	int GetLineCount();
 	int GetLineLength(int nLine);
 	LPTSTR GetLineChars(int nLine);
-	DWORD GetLineFlags(int nLine);
-	int GetLineWithFlag(DWORD dwFlag);
-	void SetLineFlag(int nLine, DWORD dwFlag, BOOL bSet, BOOL bRemoveFromPreviousLine = TRUE);
-	void GetText(int nStartLine, int nStartChar, int nEndLine, int nEndChar, CString &text, LPCTSTR pszCRLF = NULL);
+	size_t GetLineFlags(int nLine);
+	int GetLineWithFlag(size_t dwFlag);
+	void SetLineFlag(int nLine, size_t dwFlag, BOOL bSet, BOOL bRemoveFromPreviousLine = TRUE);
+	void GetText(int nStartLine, int nStartChar, int nEndLine, int nEndChar, CString &text, const char* pszCRLF = NULL);
 
 	//	Attributes
 	int GetCRLFMode();
@@ -234,7 +234,7 @@ public:
 	void SetReadOnly(BOOL bReadOnly = TRUE);
 
 	//	Text modification functions
-	BOOL InsertText(CCrystalTextView *pSource, int nLine, int nPos, LPCTSTR pszText, int &nEndLine, int &nEndChar, int nAction = CE_ACTION_UNKNOWN);
+	BOOL InsertText(CCrystalTextView *pSource, int nLine, int nPos, const char* pszText, int &nEndLine, int &nEndChar, int nAction = CE_ACTION_UNKNOWN);
 	BOOL DeleteText(CCrystalTextView *pSource, int nStartLine, int nStartPos, int nEndLine, int nEndPos, int nAction = CE_ACTION_UNKNOWN);
 
 	//	Undo/Redo
@@ -253,7 +253,7 @@ public:
 
 	//	Notify all connected views about changes in text
 	void UpdateViews(CCrystalTextView *pSource, CUpdateContext *pContext,
-					DWORD dwUpdateFlags, int nLineIndex = -1);
+					size_t dwUpdateFlags, int nLineIndex = -1);
 
 	// More bookmarks
 	int FindNextBookmarkLine(int nCurrentLine = 0);

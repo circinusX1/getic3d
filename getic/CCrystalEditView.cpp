@@ -39,11 +39,11 @@ class CEditDropTargetImpl : public COleDropTarget
     public:
         CEditDropTargetImpl(CCrystalEditView *pOwner) { m_pOwner = pOwner; };
     
-    virtual DROPEFFECT OnDragEnter(CWnd* pWnd, COleDataObject* pDataObject, DWORD dwKeyState, CPoint point);
+    virtual DROPEFFECT OnDragEnter(CWnd* pWnd, COleDataObject* pDataObject, size_t dwKeyState, CPoint point);
     virtual void OnDragLeave(CWnd* pWnd);
-    virtual DROPEFFECT OnDragOver(CWnd* pWnd, COleDataObject* pDataObject, DWORD dwKeyState, CPoint point);
+    virtual DROPEFFECT OnDragOver(CWnd* pWnd, COleDataObject* pDataObject, size_t dwKeyState, CPoint point);
     virtual BOOL OnDrop(CWnd* pWnd, COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point);
-    virtual DROPEFFECT OnDragScroll(CWnd* pWnd, DWORD dwKeyState, CPoint point);
+    virtual DROPEFFECT OnDragScroll(CWnd* pWnd, size_t dwKeyState, CPoint point);
 };
 
 
@@ -242,7 +242,7 @@ void CCrystalEditView::OnEditDelete()
 }
 
 //--| CCrystalEditView::OnChar|-----------------------------------------------------------
-void CCrystalEditView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
+void CCrystalEditView::OnChar(size_t nChar, size_t nRepCnt, size_t nFlags)
 {
     CCrystalTextView::OnChar(nChar, nRepCnt, nFlags);
     
@@ -458,7 +458,7 @@ void CCrystalEditView::OnEditTab()
         ASSERT_VALIDTEXTPOS(ptCursorPos);
         
         int nLineLength = GetLineLength(ptCursorPos.y);
-        LPCTSTR pszLineChars = GetLineChars(ptCursorPos.y);
+        const char* pszLineChars = GetLineChars(ptCursorPos.y);
         if (ptCursorPos.x < nLineLength)
         {
             int nTabSize = GetTabSize();
@@ -557,7 +557,7 @@ void CCrystalEditView::OnEditUntab()
             int nLength = GetLineLength(L);
             if (nLength > 0)
             {
-                LPCTSTR pszChars = GetLineChars(L);
+                const char* pszChars = GetLineChars(L);
                 int nPos = 0, nOffset = 0;
                 while (nPos < nLength)
                 {
@@ -597,7 +597,7 @@ void CCrystalEditView::OnEditUntab()
                nNewOffset -= nTabSize;
             ASSERT(nNewOffset >= 0);
             
-            LPCTSTR pszChars = GetLineChars(ptCursorPos.y);
+            const char* pszChars = GetLineChars(ptCursorPos.y);
             int nCurrentOffset = 0;
             int I = 0;
             while (nCurrentOffset < nNewOffset)
@@ -655,7 +655,7 @@ void CCrystalEditView::OnUpdateEditSwitchOvrmode(CCmdUI* pCmdUI)
 }
 
 //--| CEditDropTargetImpl::OnDragEnter|---------------------------------------------------
-DROPEFFECT CEditDropTargetImpl::OnDragEnter(CWnd* pWnd, COleDataObject* pDataObject, DWORD dwKeyState, CPoint point)
+DROPEFFECT CEditDropTargetImpl::OnDragEnter(CWnd* pWnd, COleDataObject* pDataObject, size_t dwKeyState, CPoint point)
 {
     if (! pDataObject->IsDataAvailable(CF_TEXT))
     {
@@ -675,7 +675,7 @@ void CEditDropTargetImpl::OnDragLeave(CWnd* pWnd)
 }
 
 //--| CEditDropTargetImpl::OnDragOver|----------------------------------------------------
-DROPEFFECT CEditDropTargetImpl::OnDragOver(CWnd* pWnd, COleDataObject* pDataObject, DWORD dwKeyState, CPoint point)
+DROPEFFECT CEditDropTargetImpl::OnDragOver(CWnd* pWnd, COleDataObject* pDataObject, size_t dwKeyState, CPoint point)
 {
     /*
         if (! pDataObject->IsDataAvailable(CF_TEXT))
@@ -744,7 +744,7 @@ BOOL CEditDropTargetImpl::OnDrop(CWnd* pWnd, COleDataObject* pDataObject, DROPEF
 }
 
 //--| CEditDropTargetImpl::OnDragScroll|--------------------------------------------------
-DROPEFFECT CEditDropTargetImpl::OnDragScroll(CWnd* pWnd, DWORD dwKeyState, CPoint point)
+DROPEFFECT CEditDropTargetImpl::OnDragScroll(CWnd* pWnd, size_t dwKeyState, CPoint point)
 {
     ASSERT(m_pOwner == pWnd);
     m_pOwner->DoDragScroll(point);
@@ -917,7 +917,7 @@ void CCrystalEditView::OnDropSource(DROPEFFECT de)
 }
 
 //--| CCrystalEditView::UpdateView|-------------------------------------------------------
-void CCrystalEditView::UpdateView(CCrystalTextView *pSource, CUpdateContext *pContext, DWORD dwFlags, int nLineIndex /*= -1*/)
+void CCrystalEditView::UpdateView(CCrystalTextView *pSource, CUpdateContext *pContext, size_t dwFlags, int nLineIndex /*= -1*/)
 {
     CCrystalTextView::UpdateView(pSource, pContext, dwFlags, nLineIndex);
     
@@ -985,7 +985,7 @@ void CCrystalEditView::OnEditReplace()
 }
 
 //--| CCrystalEditView::ReplaceSelection|-------------------------------------------------
-BOOL CCrystalEditView::ReplaceSelection(LPCTSTR pszNewText)
+BOOL CCrystalEditView::ReplaceSelection(const char* pszNewText)
 {
     ASSERT(pszNewText != NULL);
     if (! IsSelection())
@@ -1118,7 +1118,7 @@ void CCrystalEditView::OnUpdateEditRedo(CCmdUI* pCmdUI)
 }
 
 //--| CCrystalEditView::OnEditOperation|--------------------------------------------------
-void CCrystalEditView::OnEditOperation(int nAction, LPCTSTR pszText)
+void CCrystalEditView::OnEditOperation(int nAction, const char* pszText)
 {
     if (m_bAutoIndent)
     {
@@ -1131,7 +1131,7 @@ void CCrystalEditView::OnEditOperation(int nAction, LPCTSTR pszText)
             
             // Take indentation from the previos line
             int nLength = m_pTextBuffer->GetLineLength(ptCursorPos.y - 1);
-            LPCTSTR pszLineChars = m_pTextBuffer->GetLineChars(ptCursorPos.y - 1);
+            const char* pszLineChars = m_pTextBuffer->GetLineChars(ptCursorPos.y - 1);
             int nPos = 0;
             while (nPos < nLength && isspace(pszLineChars[nPos]))
                   nPos ++;

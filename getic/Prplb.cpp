@@ -123,16 +123,16 @@ LRESULT CPrpLb::OnRedraw(WPARAM w, LPARAM l)
 }
 
 
-CLbDlg* CPrpLb::AddItem(char* str, CLbDlg* lbDlg, UINT nID)
+CLbDlg* CPrpLb::AddItem(char* str, CLbDlg* lbDlg, size_t nID)
 {
     int idx = AddString(str);
     
     lbDlg->Create(nID,this);
     lbDlg->ShowWindow(SW_SHOW);
 
-    SetItemData(idx,(DWORD)lbDlg);
+    SetItemData(idx,(size_t)lbDlg);
     lbDlg->SetIndex(idx);
-    _tcscpy(lbDlg->_propName,str);
+    strcpy(lbDlg->_propName,str);
 
     RECT rt;    
     RECT rtl;    
@@ -156,7 +156,7 @@ CLbDlg* CPrpLb::AddItem(char* str, CLbDlg* lbDlg, UINT nID)
     return lbDlg;
 }
 
-CLbDlg* CPrpLb::AddItem(char* str, UINT nID)
+CLbDlg* CPrpLb::AddItem(char* str, size_t nID)
 {
     CLbDlg* pNewDlg = 0;
     int idx = AddString(str);
@@ -200,8 +200,8 @@ CLbDlg* CPrpLb::AddItem(char* str, UINT nID)
 
     //pNewDlg->SetWindowPos(this,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_SHOWWINDOW);
 
-    SetItemData(idx,(DWORD)pNewDlg);
-    _tcscpy(pNewDlg->_propName,str);
+    SetItemData(idx,(size_t)pNewDlg);
+    strcpy(pNewDlg->_propName,str);
     pNewDlg->SetIndex(idx);
 
     
@@ -258,7 +258,7 @@ void CPrpLb::Clean()
 }
 
 
-void CPrpLb::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CPrpLb::OnVScroll(size_t nSBCode, size_t nPos, CScrollBar* pScrollBar) 
 {
 	CListBox::OnVScroll(nSBCode, nPos, pScrollBar);
     SeeRects();
@@ -297,7 +297,7 @@ void    CPrpLb::SeeRects() //CListBox
     UpdateWindow();
 }
 
-LRESULT CPrpLb::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CPrpLb::WindowProc(size_t message, WPARAM wParam, LPARAM lParam)
 {
     /*
     if(message > LB_MSGMAX || message < LB_ADDSTRING)
@@ -334,7 +334,7 @@ BOOL CPrpLb::PreTranslateMessage(MSG* pMsg)
 }
 
 
-CLbDlg::CLbDlg(UINT iDD, CWnd* pParent)
+CLbDlg::CLbDlg(size_t iDD, CWnd* pParent)
 	: CBASEDLG(iDD, pParent)
 {
 	//{{AFX_DATA_INIT(CLbDlg)
@@ -388,7 +388,7 @@ END_MESSAGE_MAP()
 
 
 
-void CLbDlg::OnLButtonDown(UINT nFlags, CPoint point) 
+void CLbDlg::OnLButtonDown(size_t nFlags, CPoint point) 
 {
 	CBASEDLG::OnLButtonDown(nFlags, point);
 }
@@ -928,9 +928,9 @@ void DlbFILE::OnChange1()
 {
     if(_bchanging)
         return;
-    char fn[_MAX_PATH];
+    char fn[PATH_MAX];
 
-    GetDlgItemText(E_1, fn, _MAX_PATH);
+    GetDlgItemText(E_1, fn, PATH_MAX);
     _szFile         = fn;
 }
 
@@ -1019,7 +1019,7 @@ void DlbEDSpin::OnChange1()
     _lockNoty = 0;
 }
 
-void DlbEDSpin::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void DlbEDSpin::OnVScroll(size_t nSBCode, size_t nPos, CScrollBar* pScrollBar) 
 {
 	
 	CLbDlg::OnVScroll(nSBCode, nPos, pScrollBar);
@@ -1113,7 +1113,7 @@ void    DlbCLR::OnSelect()
 {
 }
 
-HBRUSH DlbCLR::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+HBRUSH DlbCLR::OnCtlColor(CDC* pDC, CWnd* pWnd, size_t nCtlColor) 
 {
 	HBRUSH hbr = CLbDlg::OnCtlColor(pDC, pWnd, nCtlColor);
     if(nCtlColor == CTLCOLOR_STATIC )
@@ -1374,7 +1374,7 @@ LRESULT CPrpLb::OnSetCurSel(WPARAM w, LPARAM l)
     return lr;
 }
 
-BOOL CLbDlg::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
+BOOL CLbDlg::OnCmdMsg(size_t nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
 {
     CWnd* pWnd = GetParent();
 	BOOL b = CBASEDLG::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
@@ -1387,13 +1387,13 @@ void CPrpLb::OnSetfocus()
     SeeRects();
 }
 
-void CPrpLb::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CPrpLb::OnKeyDown(size_t nChar, size_t nRepCnt, size_t nFlags) 
 {
 	CListBox::OnKeyDown(nChar, nRepCnt, nFlags);
     SeeRects();
 }
 
-void DlbFILE::OnSize(UINT nType, int cx, int cy) 
+void DlbFILE::OnSize(size_t nType, int cx, int cy) 
 {
 	CLbDlg::OnSize(nType, cx, cy);
     if(GetDlgItem(E_1))
@@ -1488,7 +1488,7 @@ void Dlg_ReportPick::_RecalcScrollPos(int starty, RECT& rtc, RECT& rt)
     }
 }
 
-void CChildView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CChildView::OnVScroll(size_t nSBCode, size_t nPos, CScrollBar* pScrollBar) 
 {
     int nDelta;
 	int nMaxPos = i_maxHeight - i_curH;

@@ -32,7 +32,7 @@ protected:
     virtual void DrawItem(LPDRAWITEMSTRUCT pDraw);
 	//{{AFX_MSG(CColorButon)
 	afx_msg void OnDestroy();
-	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+	afx_msg BOOL OnSetCursor(CWnd* pWnd, size_t nHitTest, size_t message);
 	//}}AFX_MSG
 
 	DECLARE_MESSAGE_MAP()

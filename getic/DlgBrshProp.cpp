@@ -5,7 +5,7 @@
 #include "z-edmap.h"
 #include "DlgBrshProp.h"
 #include "DlgBar.h"
-#include "brush.h"
+#include "Brush.h"
 #include "Motion.h"
 #include "z_ed2doc.h"
 #include "DlgMotionState.h"
@@ -124,8 +124,8 @@ void    DlgBrshProp::Update(Brush* pBrush, int selCount)
     _selCount      = selCount;
     _updatingCtrls = TRUE;
 
-    DWORD& cflags = pBrush->_brushflags;
-    DWORD& cprops = pBrush->_brushprops;
+    size_t& cflags = pBrush->_brushflags;
+    size_t& cprops = pBrush->_brushprops;
     BOOL   enable=1;
 
     if((cflags & BRSH_BIGTERRAIN) && _selCount==1)
@@ -136,7 +136,7 @@ void    DlgBrshProp::Update(Brush* pBrush, int selCount)
     int     relation = GW_CHILD|GW_HWNDFIRST;
     while(pWnd = pWnd->GetWindow(relation))
     {
-        UINT iD = pWnd->GetDlgCtrlID();
+        size_t iD = pWnd->GetDlgCtrlID();
         pWnd->GetWindowText(tw, 3);
 
         relation = GW_HWNDNEXT;
@@ -398,8 +398,8 @@ void    DlgBrshProp::Retreive(Brush* pBrush, int selCount)
 
     // flags
     char   szTemp[32];
-    DWORD&  cflags = pBrush->_brushflags;
-    DWORD&  cprops = pBrush->_brushprops;
+    size_t&  cflags = pBrush->_brushflags;
+    size_t&  cprops = pBrush->_brushprops;
     selCount       =  DOC()->_pSelBrushes.size();
 
     if(_touchedIDs.find(EF_NAME) !=  _touchedIDs.end() && selCount==1)
@@ -624,8 +624,8 @@ void    DlgBrshProp::Retreive(Brush* pBrush, int selCount)
         }
     }
 
-    if(_touchedIDs.find((UINT)RB_LIN)!=  _touchedIDs.end() || 
-        _touchedIDs.find((UINT)RB_SPH)!=  _touchedIDs.end())
+    if(_touchedIDs.find((size_t)RB_LIN)!=  _touchedIDs.end() || 
+        _touchedIDs.find((size_t)RB_SPH)!=  _touchedIDs.end())
     {
         FOREACH(PBrushes,  DOC()->_pSelBrushes, ppb)
         {
@@ -721,7 +721,7 @@ void DlgBrshProp::OnCut()
     while(pWnd = pWnd->GetWindow(relation))
     {
         relation = GW_HWNDNEXT;
-        UINT iD = pWnd->GetDlgCtrlID();
+        size_t iD = pWnd->GetDlgCtrlID();
         if(iD == CB_GROUP || 
             iD == EF_NAME || 
             iD == T3_Z    || 
@@ -773,7 +773,7 @@ void DlgBrshProp::OnOk()
 
 
 //-----------------------------------------------------------------------------
-void DlgBrshProp::OnShowWindow(BOOL bShow, UINT nStatus) 
+void DlgBrshProp::OnShowWindow(BOOL bShow, size_t nStatus) 
 {
 	CVertDlgDlg::OnShowWindow(bShow, nStatus);
     if(0 == bShow){
