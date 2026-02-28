@@ -122,7 +122,12 @@ time to finish it. In windows, I dont know if still runs, but under Linux using 
 ![image](https://user-images.githubusercontent.com/69641625/91874971-dbf09900-ec48-11ea-8414-a9421e3bc854.png)
 
 
-      ... tb continued...
-
+### P.S.
+  
+* Software related music:
+  * 
+      * [![Found this funny video](https://ghitara.com/images/local_gith.png)](https://www.youtube.com/@AIureaSonus)
+   
+    
 
 
